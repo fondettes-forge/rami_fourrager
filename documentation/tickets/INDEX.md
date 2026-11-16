@@ -1,0 +1,78 @@
+# Index des tickets — Rami liste (Antoine Savoie, 02/10/2026)
+
+> Liste de référence : [Rami-liste-tickets.md](Rami-liste-tickets.md).
+> Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
+> Mise à jour : 2026-11-16.
+
+## Légende statut
+
+| Statut | Sens |
+|--------|------|
+| ✅ **Implémenté** | code corrigé + tests, non commit (validé en local) |
+| 📄 **Doc écrite** | analyse/préco faite, à implémenter |
+| 📄 **Doc écrite (doublon)** | doublon d'un autre ticket, corrigé via celui-ci |
+| ⏳ **À clarifier** | en attente de décision (INRAE/équipe) |
+| ❌ **Non traité** | ni doc, ni code |
+
+## Tableau de bord
+
+| # | Ticket | Type | Priorité | Statut | Doc | Dépendances / notes |
+|---|--------|------|----------|--------|-----|---------------------|
+| 1 | Carte ration introuvable (Troupeau/Grange) | Bug | Haute | ✅ Implémenté | [ticket-1](ticket-1-carte-ration-introuvable.md) | — (ticket 6 en dépend) |
+| 2 | Paille non comptabilisée (STOCKS/COUTS) | Bug | Haute | 📄 Doc écrite | [ticket-2](ticket-2-paille-stocks-couts.md) | **= ticket 8** (même bloc paille) |
+| 3 | Paille (et céréales) en tonnes | Correction | Moyenne | 📄 Doc écrite | [ticket-3](ticket-3-paille-cereales-tonnes.md) | lié 2/8 (paille) ; 2.2 (céréales) à valider |
+| 4 | Bouton « AJOUTER » Présence inutile | Correction | Basse | 📄 Doc écrite | [ticket-4](ticket-4-bouton-ajouter-presence.md) | — |
+| 5 | Dupliquer / adapter une carte ration | Nouveauté | Moyenne | 📄 Doc écrite | [ticket-5](ticket-5-dupliquer-carte-ration.md) | dépend du ticket 1 (distribué) |
+| 6 | Cartes rations introuvables dans Troupeau | Bug | Haute | 📄 **Doublon du 1** ✅ | [ticket-6](ticket-6-carte-ration-troupeau.md) | **= ticket 1** (fusionner) |
+| 7 | Décliner une baguette entre années climatiques | Nouveauté | Moyenne | 📄 Doc écrite | [ticket-7](ticket-7-baguette-annees-climatiques.md) | bug latent B1 (climatic_year_id) |
+| 8 | Aucune paille consommée (logement + alimentation) | Bug | Haute | 📄 Doc écrite | [ticket-8](ticket-8-paille-aucune-conso.md) | **= ticket 2** (même bloc) ; dépend du 1 ; backend `straw_yield` |
+| 9 | Réordonner les onglets du Bilan | Correction | Basse | 📄 Doc écrite | [ticket-9](ticket-9-ordre-onglets-bilan.md) | — (simple réordonnancement) |
+| 10 | Périodes vides (division par zéro ?) | Bug | Moyenne | 📄 Doc écrite | [ticket-10](ticket-10-periodes-vides.md) | affichage 0% vs vide ; lié 14 |
+| 11 | Compteur de surface Assolement (+ retrait contraintes) | Nouveauté | Moyenne | 📄 Doc écrite | [ticket-11](ticket-11-compteur-surface-assolement.md) | bonus retrait contraintes à valider |
+| 12 | Tourteaux absents de Stocks et Coûts | Nouveauté | **Haute** | 📄 Doc écrite | [ticket-12](ticket-12-tourteaux-stocks-couts.md) | **Option 1 (RP) vs Option 2 (RT) à trancher** ; lié 13 |
+| 13 | Réorganiser la liste de la Grange | Correction | Basse | 📄 Doc écrite | [ticket-13](ticket-13-reorganiser-grange.md) | lié 8 (STRAW) et 12 (RT) pour l'ordre |
+| 14 | Valeurs pâtures VL/VA | À clarifier | Moyenne | ⏳ **À clarifier** | [ticket-14](ticket-14-valeurs-patuares-vl-va.md) | **décision INRAE requise** avant code |
+
+## Synthèse
+
+- **Implémenté** : 1/14 (ticket 1, qui couvre aussi le ticket 6).
+- **Docs écrites, prêtes à implémenter** : 10/14 (tickets 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13).
+- **À clarifier (décision requise)** : 1/14 (ticket 14) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales).
+
+## Blocs de travail suggérés
+
+1. **Bloc paille (tickets 2 + 8)** — le plus gros (~3,25 j), backend
+   (`straw_yield`) + frontend. À traiter **de concert** (même code). Préréquis :
+   ticket 1 (✅) et décision sur l'unité paille (ticket 3, 2.1).
+2. **Bloc simple/rapide** :
+   - ticket 9 (réordonner onglets Bilan, ~0,1 j) ;
+   - ticket 13 (réordonner Grange, ~0,2 j) ;
+   - ticket 4 (bouton Présence, à estimer) ;
+   - ticket 3 (paille en tonnes, ~0,5 j) ;
+   - ticket 11 (compteur surface, ~0,5 j).
+3. **Ticket 12 (tourteaux)** — **à trancher** Option 1 (`RP`, rapide, CSV seul)
+   vs Option 2 (`RT`, propre mais référentiel + migration). Option 1 est la
+   plus rapide pour débloquer.
+4. **Tickets UX** : ticket 5 (dupliquer carte, ~0,5 j), ticket 7 (décliner
+   baguette, ~0,75 j), ticket 10 (périodes vides, ~1,5 j).
+5. **Ticket 14** — en attente de réponse INRAE (aucun code avant décision).
+
+## Dépendances clés
+
+- **Ticket 6 = ticket 1** (doublon, corrigé).
+- **Tickets 2 = 8** (même bloc paille, traiter ensemble).
+- **Ticket 12** → impacte l'ordre du **ticket 13** (si `RT`).
+- **Ticket 8** (ajout `STRAW`) → impacte l'ordre du **ticket 13**.
+- **Ticket 1** (prérequis) → tickets 5, 8 (paille distribuable).
+- **Ticket 14** ↔ **ticket 10** (valeurs pâture).
+
+## Conventions d'implémentation (rappel)
+
+- **Architecture verrouillée** : app quasi stateless côté serveur ; le workspace
+  local + `workspace.json` sont fondamentaux. **Pas de backend/endpoint pour les
+  cartes custom** (elles vivent dans `workspace.classicFeeds`).
+- **Ids custom volatils** : dérivés à la volée par `mergeLists` ; référence par
+  objet (deepEqual) ou `correspondingStock`, **jamais par id**.
+- **Pas de commit** sans accord explicite de l'utilisateur.
+- **Tests** : specs dans `tests/unit/vuex/*.spec.js`, fixture
+  `tests/unit/vuex/fixtures/rootState.json`.
