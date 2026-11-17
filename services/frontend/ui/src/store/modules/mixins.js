@@ -1319,11 +1319,10 @@ export function setTotalStrawStock(simulation, getStic) {
   let totalStrawStock = 0
   simulation.farm.rotations.forEach((rotation) => {
     const stic = getStic(simulation.climaticYear, rotation.name)
-    // rendement paille (kg/ha) — distinct du rendement grain (stic.rendement)
-    // pas de fallback sur rendement : ce dernier est le rendement GRAIN, pas la paille
-    const strawYield = Number(stic.straw_yield) || 0
-    if (strawYield > 0) {
-      totalStrawStock += strawYield * rotation.surface
+    // le stock de paille produit en kg car rendement en kg/ha et surface en ha
+    // stic.rendement est le rendement paille de la culture céréale (colonne CSV Rdt_paille)
+    if (stic.rendement) {
+      totalStrawStock += Number(stic.rendement) * rotation.surface
     }
   })
   return totalStrawStock / 1000
@@ -1333,9 +1332,8 @@ export function getStrawSurface(simulation, getStic) {
   let totalSurface = 0
   simulation.farm.rotations.forEach((rotation) => {
     const stic = getStic(simulation.climaticYear, rotation.name)
-    // rendement paille (kg/ha) — distinct du rendement grain (stic.rendement)
-    const strawYield = Number(stic.straw_yield) || 0
-    if (strawYield > 0) {
+    // le stock de paille produit en kg car rendement en kg/ha et surface en ha
+    if (stic.rendement) {
       totalSurface += rotation.surface
     }
   })

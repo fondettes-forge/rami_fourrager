@@ -16,24 +16,24 @@
 
 ## Tableau de bord
 
-| #   | Ticket                                                     | Type        | Priorité  | Statut                 | Doc                                                   | Dépendances / notes                                              |
-| --- | ---------------------------------------------------------- | ----------- | --------- | ---------------------- | ----------------------------------------------------- | ---------------------------------------------------------------- |
-| 1   | Carte ration introuvable (Troupeau/Grange)                 | Bug         | Haute     | ✅ Implémenté          | [ticket-1](ticket-1-carte-ration-introuvable.md)      | — (ticket 6 en dépend)                                           |
-| 2   | Paille non comptabilisée (STOCKS/COUTS)                    | Bug         | Haute     | 📄 Doc écrite          | [ticket-2](ticket-2-paille-stocks-couts.md)           | **= ticket 8** (même bloc paille)                                |
-| 3   | Paille (et céréales) en tonnes                             | Correction  | Moyenne   | 📄 Doc écrite          | [ticket-3](ticket-3-paille-cereales-tonnes.md)        | lié 2/8 (paille) ; 2.2 (céréales) à valider                      |
-| 4   | Bouton « AJOUTER » Présence inutile                        | Correction  | Basse     | 📄 Doc écrite          | [ticket-4](ticket-4-bouton-ajouter-presence.md)       | —                                                                |
-| 5   | Dupliquer / adapter une carte ration                       | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-5](ticket-5-dupliquer-carte-ration.md)        | dépend du ticket 1 (distribué)                                   |
-| 6   | Cartes rations introuvables dans Troupeau                  | Bug         | Haute     | 📄 **Doublon du 1** ✅ | [ticket-6](ticket-6-carte-ration-troupeau.md)         | **= ticket 1** (fusionner)                                       |
-| 7   | Décliner une baguette entre années climatiques             | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | bug latent B1 (climatic_year_id)                                 |
-| 8   | Aucune paille consommée (logement + alimentation)          | Bug         | Haute     | 📄 Doc écrite          | [ticket-8](ticket-8-paille-aucune-conso.md)           | **= ticket 2** (même bloc) ; dépend du 1 ; backend `straw_yield` |
-| 9   | Réordonner les onglets du Bilan                            | Correction  | Basse     | 📄 Doc écrite          | [ticket-9](ticket-9-ordre-onglets-bilan.md)           | — (simple réordonnancement)                                      |
-| 10  | Périodes vides (division par zéro ?)                       | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-10](ticket-10-periodes-vides.md)              | affichage 0% vs vide ; lié 14                                    |
-| 11  | Compteur de surface Assolement (+ retrait contraintes)     | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-11](ticket-11-compteur-surface-assolement.md) | bonus retrait contraintes à valider                              |
-| 12  | Tourteaux absents de Stocks et Coûts                       | Nouveauté   | **Haute** | 📄 Doc écrite          | [ticket-12](ticket-12-tourteaux-stocks-couts.md)      | **Option 1 (RP) vs Option 2 (RT) à trancher** ; lié 13           |
-| 13  | Réorganiser la liste de la Grange                          | Correction  | Basse     | 📄 Doc écrite          | [ticket-13](ticket-13-reorganiser-grange.md)          | lié 8 (STRAW) et 12 (RT) pour l'ordre                            |
-| 14  | Valeurs pâtures VL/VA                                      | À clarifier | Moyenne   | ⏳ **À clarifier**     | [ticket-14](ticket-14-valeurs-patuares-vl-va.md)      | **décision INRAE requise** avant code                            |
-| 15  | AnimalProfileModal : batch_type + rafraîchissement profils | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-15](ticket-15-animal-profile-batch-type.md)   | TODO `AnimalProfileModal.vue` L260                               |
-| 16  | Export : nom obligatoire + colonnes manquantes             | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-16](ticket-16-export-nom-colonnes.md)         | TODO `Export.vue` L141                                           |
+| #   | Ticket                                                     | Type        | Priorité  | Statut                 | Doc                                                   | Dépendances / notes                                       |
+| --- | ---------------------------------------------------------- | ----------- | --------- | ---------------------- | ----------------------------------------------------- | --------------------------------------------------------- |
+| 1   | Carte ration introuvable (Troupeau/Grange)                 | Bug         | Haute     | ✅ Implémenté          | [ticket-1](ticket-1-carte-ration-introuvable.md)      | — (ticket 6 en dépend)                                    |
+| 2   | Paille non comptabilisée (STOCKS/COUTS)                    | Bug         | Haute     | 📄 Doc écrite          | [ticket-2](ticket-2-paille-stocks-couts.md)           | **= ticket 8** (même bloc paille)                         |
+| 3   | Paille (et céréales) en tonnes                             | Correction  | Moyenne   | 📄 Doc écrite          | [ticket-3](ticket-3-paille-cereales-tonnes.md)        | lié 2/8 (paille) ; 2.2 (céréales) à valider               |
+| 4   | Bouton « AJOUTER » Présence inutile                        | Correction  | Basse     | 📄 Doc écrite          | [ticket-4](ticket-4-bouton-ajouter-presence.md)       | —                                                         |
+| 5   | Dupliquer / adapter une carte ration                       | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-5](ticket-5-dupliquer-carte-ration.md)        | dépend du ticket 1 (distribué)                            |
+| 6   | Cartes rations introuvables dans Troupeau                  | Bug         | Haute     | 📄 **Doublon du 1** ✅ | [ticket-6](ticket-6-carte-ration-troupeau.md)         | **= ticket 1** (fusionner)                                |
+| 7   | Décliner une baguette entre années climatiques             | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | bug latent B1 (climatic_year_id)                          |
+| 8   | Aucune paille consommée (logement + alimentation)          | Bug         | Haute     | 📄 Doc écrite          | [ticket-8](ticket-8-paille-aucune-conso.md)           | **= ticket 2** (même bloc) ; dépend du 1 ; 100 % frontend |
+| 9   | Réordonner les onglets du Bilan                            | Correction  | Basse     | 📄 Doc écrite          | [ticket-9](ticket-9-ordre-onglets-bilan.md)           | — (simple réordonnancement)                               |
+| 10  | Périodes vides (division par zéro ?)                       | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-10](ticket-10-periodes-vides.md)              | affichage 0% vs vide ; lié 14                             |
+| 11  | Compteur de surface Assolement (+ retrait contraintes)     | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-11](ticket-11-compteur-surface-assolement.md) | bonus retrait contraintes à valider                       |
+| 12  | Tourteaux absents de Stocks et Coûts                       | Nouveauté   | **Haute** | 📄 Doc écrite          | [ticket-12](ticket-12-tourteaux-stocks-couts.md)      | **Option 1 (RP) vs Option 2 (RT) à trancher** ; lié 13    |
+| 13  | Réorganiser la liste de la Grange                          | Correction  | Basse     | 📄 Doc écrite          | [ticket-13](ticket-13-reorganiser-grange.md)          | lié 8 (STRAW) et 12 (RT) pour l'ordre                     |
+| 14  | Valeurs pâtures VL/VA                                      | À clarifier | Moyenne   | ⏳ **À clarifier**     | [ticket-14](ticket-14-valeurs-patuares-vl-va.md)      | **décision INRAE requise** avant code                     |
+| 15  | AnimalProfileModal : batch_type + rafraîchissement profils | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-15](ticket-15-animal-profile-batch-type.md)   | TODO `AnimalProfileModal.vue` L260                        |
+| 16  | Export : nom obligatoire + colonnes manquantes             | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-16](ticket-16-export-nom-colonnes.md)         | TODO `Export.vue` L141                                    |
 
 ## Synthèse
 
@@ -43,9 +43,10 @@
 
 ## Blocs de travail suggérés
 
-1. **Bloc paille (tickets 2 + 8)** — le plus gros (~3,25 j), backend
-   (`straw_yield`) + frontend. À traiter **de concert** (même code). Préréquis :
-   ticket 1 (✅) et décision sur l'unité paille (ticket 3, 2.1).
+1. **Bloc paille (tickets 2 + 8)** — le plus gros (~2,5 j), **100 % frontend**
+   (`Rdt_paille` est déjà dans `Stic.rendement`, pas de backend). À traiter **de
+   concert** (même code). Préréquis : ticket 1 (✅) et décision sur l'unité paille
+   (ticket 3, 2.1).
 2. **Bloc simple/rapide** :
    - ticket 9 (réordonner onglets Bilan, ~0,1 j) ;
    - ticket 13 (réordonner Grange, ~0,2 j) ;

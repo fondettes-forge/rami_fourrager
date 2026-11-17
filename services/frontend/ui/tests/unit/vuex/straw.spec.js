@@ -4,7 +4,7 @@
 //
 // Verrouille :
 //   P1 : le code STRAW existe dans barnStockItems (paille distribuable)
-//   P2 : la production paille utilise stic.straw_yield (fallback stic.rendement)
+//   P2 : la production paille somme stic.rendement × surface (Rdt_paille = rendement paille)
 //   P3 : la conso logement est dimensionnée en kg/UGB/j × UGB du lot × jours
 //   P4 : le stock final paille = stock initial + production - consommation
 //   P5 : getStrawStock décline la paille en 2 sous-lignes aliment / logement
@@ -60,11 +60,11 @@ describe('P1 — paille distribuable', () => {
 })
 
 // ---------------------------------------------------------------------------
-// P2 — production paille (straw_yield, fallback rendement)
+// P2 — production paille (stic.rendement = rendement paille, colonne CSV Rdt_paille)
 // ---------------------------------------------------------------------------
 
 describe('P2 — production paille', () => {
-  it('utilise stic.straw_yield (kg/ha × surface / 1000 = t)', () => {
+  it('utilise stic.rendement (rendement paille kg/ha × surface / 1000 = t)', () => {
     const sim = simulation()
     const stic = rootState.referential.stics.find((el) => el.climatic_year_id === sim.climaticYear)
     sim.farm.rotations = [
@@ -73,22 +73,29 @@ describe('P2 — production paille', () => {
     ]
     const getSticMock = () => (climaticYear, name) => {
       if (name === 'rotA') {
-        return { ...stic, straw_yield: '1000' }
+        return { ...stic, rendement: '1000' }
       }
-      // rotB : pas de straw_yield -> 0 (pas de paille produite)
-      return { ...stic, straw_yield: null }
+      // rotB : pas de rendement paille -> 0 (pas de paille produite)
+      return { ...stic, rendement: '' }
     }
     // rotA : 1000 kg/ha × 10 ha = 10 t ; rotB : 0
     expect(setTotalStrawStock(sim, getSticMock())).toBeCloseTo(10, 5)
   })
 
-  it('ne retombe PAS sur stic.rendement (grain) quand straw_yield est vide', () => {
-    // regression P2 : rendement est le rendement GRAIN (ex: Blé 4500), pas la paille.
-    // une rotation de Blé ne doit pas gonfler le stock de paille.
+  it('ne somme que les rotations avec un rendement paille (pas de NaN / 0)', () => {
     const sim = simulation()
-    sim.farm.rotations = [{ name: 'C3 : Blé', surface: 15 }]
-    const getSticMock = () => () => ({ straw_yield: null, rendement: '4500' })
-    expect(setTotalStrawStock(sim, getSticMock())).toBe(0)
+    sim.farm.rotations = [
+      { name: 'C3 : Blé', surface: 15 },
+      { name: 'P1 : Paturage', surface: 30 },
+    ]
+    const getSticMock = () => (climaticYear, name) => {
+      if (name === 'C3 : Blé') {
+        return { rendement: '4500' }
+      }
+      return { rendement: '' }
+    }
+    // Blé : 4500 kg/ha × 15 ha = 67.5 t ; Paturage : 0
+    expect(setTotalStrawStock(sim, getSticMock())).toBeCloseTo(67.5, 5)
   })
 
   it('la production du rapport (stockByPeriod) n a pas de ligne STRAW : elle vient de setTotalStrawStock', () => {

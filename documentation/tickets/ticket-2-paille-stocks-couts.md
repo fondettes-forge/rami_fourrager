@@ -16,6 +16,7 @@
 > STOCKS et COUTS.
 
 Captures :
+
 - `image008.png` — tableau STOCKS ET COUTS, section « La paille » :
   `paille 10000 / 0 / 0 / 23 / -9977 / 9978` — consommation incohérente.
 - `image009.png` — Excel de référence : production de paille selon les cultures
@@ -29,12 +30,12 @@ Captures :
 Les causes racines sont communes et détaillées dans
 [ticket-8-paille-aucune-conso.md](ticket-8-paille-aucune-conso.md) §1.5 :
 
-| # | Cause | Impact sur le ticket 2 |
-|---|-------|------------------------|
-| P1 | Paille non distribuable (pas de code `STRAW` dans `barnStockItems`, pas de carte « Paille ») | la paille **aliment** n'est jamais distribuée → conso aliment = 0 dans STOCKS/COUTS |
-| P2 | Production paille faussée (`setTotalStrawStock` somme `stic.rendement × surface` sans filtrer `Rdt_paille`) | production = 10000 (incohérent) dans STOCKS/COUTS |
-| P3 | Conso logement mal dimensionnée (`straw_requirement × besoinMS` au lieu de `× nb_animaux × UGB × jours`) | conso **logement** incohérente dans STOCKS/COUTS |
-| P4 | Stock final paille ignore le stock initial | bilan paille faux dans STOCKS/COUTS |
+| #   | Cause                                                                                                       | Impact sur le ticket 2                                                              |
+| --- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| P1  | Paille non distribuable (pas de code `STRAW` dans `barnStockItems`, pas de carte « Paille »)                | la paille **aliment** n'est jamais distribuée → conso aliment = 0 dans STOCKS/COUTS |
+| P2  | Production paille faussée (`setTotalStrawStock` somme `stic.rendement × surface` sans filtrer `Rdt_paille`) | production = 10000 (incohérent) dans STOCKS/COUTS                                   |
+| P3  | Conso logement mal dimensionnée (`straw_requirement × besoinMS` au lieu de `× nb_animaux × UGB × jours`)    | conso **logement** incohérente dans STOCKS/COUTS                                    |
+| P4  | Stock final paille ignore le stock initial                                                                  | bilan paille faux dans STOCKS/COUTS                                                 |
 
 **Ce ticket (2) et le ticket 8 doivent être traités de concert** : ils partagent
 l'intégralité des fixes (P1–P4). La seule différence de périmètre :
@@ -48,6 +49,7 @@ l'intégralité des fixes (P1–P4). La seule différence de périmètre :
 ### 1.3 Ce qui est déjà en place (à ne pas refaire)
 
 La structure de comptabilisation paille existe déjà dans `report.js` :
+
 - `getStrawStock` (L159) : ligne `STRAW` (category `3_straw`) avec
   `initialStock`, `production`, `consommation`, `finalStock`, `purchase`, coûts.
 - `getConsumptionForStraw` (mixins L588) : somme conso aliment + conso logement.
@@ -70,10 +72,11 @@ comptabilisation soit lisible (aliment vs logement), comme dans l'Excel de réf�
 1. **P1 — Paille distribuable** : ajouter `STRAW` dans `barnStockItems`
    (`referential.js`) + carte ration « Paille » avec `stock_correspondant = STRAW`
    (`fichier_type_ration.csv`). → la paille aliment est distribuée et comptée.
-2. **P2 — Production paille** : mapper `Rdt_paille` → `Stic.straw_yield` (backend) et
-   faire `setTotalStrawStock` sommer `straw_yield × surface`. → production cohérente.
+2. **P2 — Production paille** : `Rdt_paille` est déjà mappé sur `Stic.rendement`
+   (rendement **paille** — vérifié dans le CSV) ; `setTotalStrawStock` somme
+   `rendement × surface`. → production cohérente, sans changement backend.
 3. **P3 — Conso logement** : formule en UGB (`straw_requirement × nb_animaux ×
-   UGB_animal × jours / 1000`). → conso logement cohérente.
+UGB_animal × jours / 1000`). → conso logement cohérente.
 4. **P4 — Stock final** : `initialStock + production − consommation`. → bilan cohérent.
 5. **P5 — Deux sous-lignes** : dans `report.js` `getStrawStock`, afficher
    `Paille (alimentation)` et `Paille (logement)` séparément. → comptabilisation lisible
@@ -82,7 +85,8 @@ comptabilisation soit lisible (aliment vs logement), comme dans l'Excel de réf�
 
 ### 2.2 Vérification spécifique au ticket 2 (STOCKS ET COUTS)
 
-Après les fixes P1–P5, vérifier dans le tableau *STOCKS ET COUTS* :
+Après les fixes P1–P5, vérifier dans le tableau _STOCKS ET COUTS_ :
+
 - la section « La paille » montre **deux lignes** (aliment + logement) avec des
   consommations **non nulles et cohérentes** quand il y a de la paille distribuée et/ou
   des logements paillés ;
@@ -106,27 +110,26 @@ Après les fixes P1–P5, vérifier dans le tableau *STOCKS ET COUTS* :
 
 Identiques au ticket 8 §3 :
 
-| Fichier | Changement |
-|---------|-----------|
-| `services/frontend/ui/src/store/modules/referential.js` (L42-52) | ajouter `STRAW` dans `barnStockItems` (P1) |
-| `services/backend/referential/fichier_type_ration.csv` | `stock_correspondant = STRAW` sur la ligne « Paille » (P1) |
-| `services/backend/referential/mapping_baguettes_fourrage.json` + `fichier_baguettes_fourrage.csv` | mapper `Rdt_paille` → `Stic.straw_yield` (P2) |
-| `services/backend/project/repository/referentials/models.py` (`Stic`) | ajouter colonne `straw_yield` (P2) |
-| `services/frontend/ui/src/store/modules/mixins.js` | `setTotalStrawStock` (P2), `getConsumptionOfNonFoodStraw` (P3), `getFinalStockByBarnStockItem` (P4) |
-| `services/frontend/ui/src/store/modules/report.js` (`getStrawStock` L159) | deux sous-lignes paille aliment/logement (P5) |
-| `tests/unit/vuex/straw.spec.js` (nouveau) | tests paille (aliment, logement, stock final, production, lignes STOCKS/COUTS) |
+| Fichier                                                                   | Changement                                                                                                                 |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `services/frontend/ui/src/store/modules/referential.js` (L42-52)          | ajouter `STRAW` dans `barnStockItems` (P1)                                                                                 |
+| `services/backend/referential/fichier_type_ration.csv`                    | `stock_correspondant = STRAW` sur la ligne « Paille » (P1)                                                                 |
+| `services/frontend/ui/src/store/modules/mixins.js`                        | `setTotalStrawStock` (P2, `rendement` × surface), `getConsumptionOfNonFoodStraw` (P3), `getFinalStockByBarnStockItem` (P4) |
+| `services/frontend/ui/src/store/modules/report.js` (`getStrawStock` L159) | deux sous-lignes paille aliment/logement (P5)                                                                              |
+| `tests/unit/vuex/straw.spec.js` (nouveau)                                 | tests paille (aliment, logement, stock final, production, lignes STOCKS/COUTS)                                             |
 
-> ⚠️ **Changement backend** (P2) : migration alembic + re-seeding du référentiel `Stic`.
+> ℹ️ **Pas de changement backend** : `Rdt_paille` est déjà dans `Stic.rendement`
+> (ticket 8 §2.2) ; pas de migration, pas de re-seed.
 
 ---
 
 ## 4. Critères d'acceptation
 
-1. La paille **distribuée en alimentation** apparaît dans *STOCKS ET COUTS* (ligne
+1. La paille **distribuée en alimentation** apparaît dans _STOCKS ET COUTS_ (ligne
    « Paille (alimentation) ») avec une consommation cohérente.
-2. La paille **logement (litière)** apparaît dans *STOCKS ET COUTS* (ligne « Paille
+2. La paille **logement (litière)** apparaît dans _STOCKS ET COUTS_ (ligne « Paille
    (logement) ») avec une consommation cohérente (`straw_requirement × présence × nb
-   animaux × UGB`).
+animaux × UGB`).
 3. La **production** paille correspond aux `Rdt_paille` des baguettes (pas aux
    rendements grain).
 4. Le **stock final** paille = stock initial + production − consommation totale.
