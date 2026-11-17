@@ -1,7 +1,7 @@
 # Ticket 9 — Bilan : réordonner les onglets (STOCKS ET COUTS d'abord)
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §9.
-> Statut : **à traiter** · Priorité : **basse** · Type : correction
+> Statut : **✅ Implémenté (2026-11-17)** · Priorité : **basse** · Type : correction
 > Date de l'analyse : 2026-11-16
 
 ---
@@ -40,7 +40,7 @@ cohérent (le bilan global agrège les autres).
 
 ---
 
-## 2. Recommandation (plan de correction)
+## 2. Recommandation (plan de correction) ✅ **Implémenté (2026-11-17)**
 
 **Fichier** : `components/parts/report/modules/Config.js`
 
@@ -60,15 +60,15 @@ Aucun autre changement : `Report.vue` consomme `moduleList` tel quel.
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                         | Changement                                         |
+| ----------------------------------------------- | -------------------------------------------------- |
 | `src/components/parts/report/modules/Config.js` | réordonner `moduleList` (StockNcost, Work, Global) |
 
 ---
 
 ## 4. Critères d'acceptation
 
-1. Dans *Bilan*, l'ordre des onglets est **Stocks et coûts | Travail | Bilan
+1. Dans _Bilan_, l'ordre des onglets est **Stocks et coûts | Travail | Bilan
    Global**.
 2. Les trois onglets chargent et s'affichent correctement (pas de régression).
 
@@ -83,7 +83,7 @@ Aucun autre changement : `Report.vue` consomme `moduleList` tel quel.
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Réordonnancement `moduleList` | ~0,1 j |
-| **Total** | **~0,1 j** |
+| Bloc                          | Effort     |
+| ----------------------------- | ---------- |
+| Réordonnancement `moduleList` | ~0,1 j     |
+| **Total**                     | **~0,1 j** |

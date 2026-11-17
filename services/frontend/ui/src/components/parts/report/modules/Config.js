@@ -1,12 +1,12 @@
 export const moduleList = [
   {
-    name: 'Global',
-    labelKey: 'global.label',
-    descriptionKey: 'global.description',
-    moduleName: 'Global',
+    name: 'StockNcost',
+    labelKey: 'stockNcost.label',
+    descriptionKey: 'stockNcost.description',
+    moduleName: 'StockNcost',
+    requiredState: [],
     component: null,
     data: {},
-    requiredState: ['dimensioning'],
   },
   {
     name: 'Work',
@@ -17,12 +17,12 @@ export const moduleList = [
     data: {},
   },
   {
-    name: 'StockNcost',
-    labelKey: 'stockNcost.label',
-    descriptionKey: 'stockNcost.description',
-    moduleName: 'StockNcost',
-    requiredState: [],
+    name: 'Global',
+    labelKey: 'global.label',
+    descriptionKey: 'global.description',
+    moduleName: 'Global',
     component: null,
     data: {},
+    requiredState: ['dimensioning'],
   },
 ]

@@ -27,7 +27,7 @@
 | 6   | Cartes rations introuvables dans Troupeau                  | Bug         | Haute     | 📄 **Doublon du 1** ✅ | [ticket-6](ticket-6-carte-ration-troupeau.md)         | **= ticket 1** (fusionner)                                |
 | 7   | Décliner une baguette entre années climatiques             | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | bug latent B1 (climatic_year_id)                          |
 | 8   | Aucune paille consommée (logement + alimentation)          | Bug         | Haute     | 📄 Doc écrite          | [ticket-8](ticket-8-paille-aucune-conso.md)           | **= ticket 2** (même bloc) ; dépend du 1 ; 100 % frontend |
-| 9   | Réordonner les onglets du Bilan                            | Correction  | Basse     | 📄 Doc écrite          | [ticket-9](ticket-9-ordre-onglets-bilan.md)           | — (simple réordonnancement)                               |
+| 9   | Réordonner les onglets du Bilan                            | Correction  | Basse     | ✅ Implémenté          | [ticket-9](ticket-9-ordre-onglets-bilan.md)           | — (simple réordonnancement)                               |
 | 10  | Périodes vides (division par zéro ?)                       | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-10](ticket-10-periodes-vides.md)              | affichage 0% vs vide ; lié 14                             |
 | 11  | Compteur de surface Assolement (+ retrait contraintes)     | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-11](ticket-11-compteur-surface-assolement.md) | bonus retrait contraintes à valider                       |
 | 12  | Tourteaux absents de Stocks et Coûts                       | Nouveauté   | **Haute** | 📄 Doc écrite          | [ticket-12](ticket-12-tourteaux-stocks-couts.md)      | **Option 1 (RP) vs Option 2 (RT) à trancher** ; lié 13    |
@@ -38,7 +38,7 @@
 
 ## Synthèse
 
-- **Implémenté** : 4/16 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes]) — le ticket 6 est le doublon du 1.
+- **Implémenté** : 5/16 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 9 [onglets Bilan]) — le ticket 6 est le doublon du 1.
 - **Docs écrites, prêtes à implémenter** : 12/16 (tickets 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 15, 16).
 - **À clarifier (décision requise)** : 1/16 (ticket 14) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales).
 
@@ -49,11 +49,10 @@
    concert** (même code). Préréquis : ticket 1 (✅) et décision sur l'unité paille
    (ticket 3, 2.1).
 2. **Bloc simple/rapide** :
-   - ticket 9 (réordonner onglets Bilan, ~0,1 j) ;
    - ticket 13 (réordonner Grange, ~0,2 j) ;
    - ticket 4 (bouton Présence, à estimer) ;
-   - ticket 3 (✅ paille en tonnes fait ; céréales en ⏳ à valider) ;
    - ticket 11 (compteur surface, ~0,5 j).
+     (ticket 9 ✅ fait)
 3. **Ticket 12 (tourteaux)** — **à trancher** Option 1 (`RP`, rapide, CSV seul)
    vs Option 2 (`RT`, propre mais référentiel + migration). Option 1 est la
    plus rapide pour débloquer.
