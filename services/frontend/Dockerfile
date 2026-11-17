@@ -1,17 +1,18 @@
 # Stage de développement
-FROM node:14 AS development
+FROM node:18 AS development
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
-
+COPY ./ui/package.json ./ui/package-lock.json ./ui/.npmrc ./
+RUN npm ci --legacy-peer-deps --no-engine-strict
 # Copier les fichiers du projet dans le répertoire de travail du conteneur
 COPY ./ui .
 
 # Installer les dépendances, y compris les dépendances de développement
-RUN npm install
+# RUN npm install
 
 # Exposer le port 8080 pour l'accès à l'application en développement
 EXPOSE 8080
@@ -20,19 +21,20 @@ EXPOSE 8080
 CMD ["npm", "run", "serve"]
 
 # Stage de production
-FROM node:14 AS production
+FROM node:18 AS production
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
-
+COPY ./ui/package.json ./ui/package-lock.json ./ui/.npmrc ./
+RUN npm ci --legacy-peer-deps --no-engine-strict
 # Copier les fichiers du projet dans le répertoire de travail du conteneur
 COPY ./ui .
 
-# Installer les dépendances sans les dépendances de développement
-RUN npm install --only=production
+# # Installer les dépendances sans les dépendances de développement
+# RUN npm install --only=production
 
 # Construire l'application
 RUN npm run build
