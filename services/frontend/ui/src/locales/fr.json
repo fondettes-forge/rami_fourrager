@@ -258,7 +258,7 @@
     },
     "straw": {
       "title": "Stock de paille disponible au 1er janvier",
-      "quantity": "quantité (en kg)"
+      "quantity": "quantité (en tonnes)"
     },
     "refusal": {
       "title": "Pourcentage de refus des stocks",

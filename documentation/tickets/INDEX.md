@@ -2,6 +2,7 @@
 
 > Liste de référence : [Rami-liste-tickets.md](Rami-liste-tickets.md).
 > Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
+> Travaux non traités : [BACKLOG.md](BACKLOG.md).
 > Mise à jour : 2026-11-17.
 
 ## Légende statut
@@ -20,7 +21,7 @@
 | --- | ---------------------------------------------------------- | ----------- | --------- | ---------------------- | ----------------------------------------------------- | --------------------------------------------------------- |
 | 1   | Carte ration introuvable (Troupeau/Grange)                 | Bug         | Haute     | ✅ Implémenté          | [ticket-1](ticket-1-carte-ration-introuvable.md)      | — (ticket 6 en dépend)                                    |
 | 2   | Paille non comptabilisée (STOCKS/COUTS)                    | Bug         | Haute     | 📄 Doc écrite          | [ticket-2](ticket-2-paille-stocks-couts.md)           | **= ticket 8** (même bloc paille)                         |
-| 3   | Paille (et céréales) en tonnes                             | Correction  | Moyenne   | 📄 Doc écrite          | [ticket-3](ticket-3-paille-cereales-tonnes.md)        | lié 2/8 (paille) ; 2.2 (céréales) à valider               |
+| 3   | Paille (et céréales) en tonnes                             | Correction  | Moyenne   | ✅ **Partiel** (2.1)   | [ticket-3](ticket-3-paille-cereales-tonnes.md)        | paille ✅ ; 2.2 céréales → [backlog BL-1](BACKLOG.md)     |
 | 4   | Bouton « AJOUTER » Présence inutile                        | Correction  | Basse     | 📄 Doc écrite          | [ticket-4](ticket-4-bouton-ajouter-presence.md)       | —                                                         |
 | 5   | Dupliquer / adapter une carte ration                       | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-5](ticket-5-dupliquer-carte-ration.md)        | dépend du ticket 1 (distribué)                            |
 | 6   | Cartes rations introuvables dans Troupeau                  | Bug         | Haute     | 📄 **Doublon du 1** ✅ | [ticket-6](ticket-6-carte-ration-troupeau.md)         | **= ticket 1** (fusionner)                                |
@@ -37,7 +38,7 @@
 
 ## Synthèse
 
-- **Implémenté** : 1/16 (ticket 1, qui couvre aussi le ticket 6).
+- **Implémenté** : 4/16 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes]) — le ticket 6 est le doublon du 1.
 - **Docs écrites, prêtes à implémenter** : 12/16 (tickets 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 15, 16).
 - **À clarifier (décision requise)** : 1/16 (ticket 14) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales).
 
@@ -51,7 +52,7 @@
    - ticket 9 (réordonner onglets Bilan, ~0,1 j) ;
    - ticket 13 (réordonner Grange, ~0,2 j) ;
    - ticket 4 (bouton Présence, à estimer) ;
-   - ticket 3 (paille en tonnes, ~0,5 j) ;
+   - ticket 3 (✅ paille en tonnes fait ; céréales en ⏳ à valider) ;
    - ticket 11 (compteur surface, ~0,5 j).
 3. **Ticket 12 (tourteaux)** — **à trancher** Option 1 (`RP`, rapide, CSV seul)
    vs Option 2 (`RT`, propre mais référentiel + migration). Option 1 est la
@@ -59,8 +60,12 @@
 4. **Tickets UX** : ticket 5 (dupliquer carte, ~0,5 j), ticket 7 (décliner
    baguette, ~0,75 j), ticket 10 (périodes vides, ~1,5 j).
 5. **Ticket 14** — en attente de réponse INRAE (aucun code avant décision).
-6. **Tickets TODO** : ticket 15 (AnimalProfileModal, ~0,75 j), ticket 16
-   (Export, ~1,5 j).
+
+- **Tickets TODO** : ticket 15 (AnimalProfileModal, ~0,75 j), ticket 16
+  (Export, ~1,5 j).
+
+7. **Backlog** : [BACKLOG.md](BACKLOG.md) — BL-1 (céréales en tonnes, ticket 3 §2.2,
+   ~1 j, conversion 360° à valider).
 
 ## Dépendances clés
 

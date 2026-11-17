@@ -1,10 +1,10 @@
 # Ticket 3 — Paille (et céréales) en tonnes
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §3.
-> Statut : **à traiter** · Priorité : **moyenne** · Type : correction
-> Seche liés : tickets **2** et **8** (paille — la paille aliment n'existe pas encore
-> dans `barnStockItems` ; traiter le bloc paille d'abord ou de concert)
-> Date de l'analyse : 2026-11-16
+> Statut : **partiellement implémenté** (2.1 paille ✅ commité) · 2.2 céréales **à valider**
+> Priorité : **moyenne** · Type : correction
+> Seche liés : tickets **2** et **8** (paille — traités avant ce ticket)
+> Date de l'analyse : 2026-11-16 · Implémentation 2.1 : 2026-11-17
 
 ---
 
@@ -20,17 +20,17 @@
 Les unités de stock sont définies **en dur** dans `barnStockItems`
 (`store/modules/referential.js` L41-51) :
 
-| Code | Nom | `unity` |
-|------|-----|---------|
-| FH | Foin | `tMS` |
-| EH | Ensilage et enrubannage d'herbe | `tMS` |
-| EM | Ensilage de maïs et sorgho | `tMS` |
-| **RC** | **Céréales en grain** | **`qtx`** |
-| **RP** | **Protéagineux en grain** | **`qtx`** |
-| AS | autre stock | `tMS` |
-| EL | Ensilage de légumineuses | `tMS` |
-| FL | Foin de légumineuses | `tMS` |
-| **STRAW** | **Paille** | **pas encore dans `barnStockItems`** (ticket 8) |
+| Code      | Nom                             | `unity`                                         |
+| --------- | ------------------------------- | ----------------------------------------------- |
+| FH        | Foin                            | `tMS`                                           |
+| EH        | Ensilage et enrubannage d'herbe | `tMS`                                           |
+| EM        | Ensilage de maïs et sorgho      | `tMS`                                           |
+| **RC**    | **Céréales en grain**           | **`qtx`**                                       |
+| **RP**    | **Protéagineux en grain**       | **`qtx`**                                       |
+| AS        | autre stock                     | `tMS`                                           |
+| EL        | Ensilage de légumineuses        | `tMS`                                           |
+| FL        | Foin de légumineuses            | `tMS`                                           |
+| **STRAW** | **Paille**                      | **pas encore dans `barnStockItems`** (ticket 8) |
 
 La paille, elle, est saisie **en kg** dans la Grange : le champ
 « Stock de paille disponible au 1er janvier » est libellé
@@ -67,35 +67,41 @@ en t au lieu de qtx). C'est une conversion d'unité à 360°, pas un simple labe
 
 ### 1.4 Résumé des causes racines
 
-| # | Cause | Où | Impact |
-|---|-------|----|--------|
-| U1 | Paille : saisie Grange en **kg**, calcul en **t** (pas de conversion) | `Barn.vue` L248-261, `fr.json` `barn.straw.quantity` | stock initial paille ×1000 faux dans STOCKS/COUTS |
-| U2 | Céréales/protéagineux en `qtx` : unité non tonne partout | `referential.js` L46-47, `mixins.js` L585 (`/100`), production `qtx/ha` | l'utilisateur demande des tonnes |
+| #   | Cause                                                                 | Où                                                                      | Impact                                            |
+| --- | --------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| U1  | Paille : saisie Grange en **kg**, calcul en **t** (pas de conversion) | `Barn.vue` L248-261, `fr.json` `barn.straw.quantity`                    | stock initial paille ×1000 faux dans STOCKS/COUTS |
+| U2  | Céréales/protéagineux en `qtx` : unité non tonne partout              | `referential.js` L46-47, `mixins.js` L585 (`/100`), production `qtx/ha` | l'utilisateur demande des tonnes                  |
 
 ---
 
 ## 2. Recommandations (plan de correction)
 
-### 2.1 Paille en tonnes — **simple, à faire** (corrige U1)
+### 2.1 Paille en tonnes — **simple, à faire** (corrige U1) ✅ **Implémenté (2026-11-17)**
 
 1. **`fr.json`** : `barn.straw.quantity` : « quantité (en kg) » →
    **« quantité (en tonnes) »**.
 2. **`Barn.vue`** : rien à changer côté calcul (le calcul est déjà en t) —
    c'est la **saisie** qui devient cohérente (l'utilisateur saisit désormais en t).
 3. **Migration des workspaces existants** ⚠️ : les `initialStocks[STRAW].quantity`
-   déjà sauvegardées sont **en kg**. Deux options :
-   - **Option A (recommandée)** : ne pas migrer ; documenter que les stocks
-     initiaux paille déjà saisis doivent être re-saisis en t (l'erreur est
-     visible : un stock de 10 000 « t » est absurde). Simple, sans risque.
-   - **Option B** : migration à l'ouverture du workspace : si
-     `initialStocks[STRAW].quantity > 1000` (heuristique), diviser par 1000.
-     Risqué (heuristique), à éviter.
-4. **Vérifier** que `getStrawStock` (`report.js` L159) et `getStockEvolution`
-   affichent bien en t (c'est le cas : tout le calcul paille est en t).
+   déjà sauvegardées sont **en kg**. Implémenté en **Option B** (migration à la
+   charge), point d'entrée unique `simulator/barn/setBarn` (`store/modules/barn.js`) :
+   si `quantity > 1000` ⇒ `/ 1000`. Justification du seuil : un stock de 10 000 t de
+   paille est absurde ; 10 000 kg = 10 t est la valeur type du mail INRAE
+   (capture image008). Les valeurs ≤ 1000 sont considérées déjà en t (inchangées).
+4. **Vérifié** que `getStrawStock` (`report.js`) et `getStockEvolution` affichent
+   bien en t (tout le calcul paille est en t).
 
-### 2.2 Céréales/protéagineux en tonnes — **option demandé, plus coûteux** (corrige U2)
+**Tests** (`straw.spec.js` §U1) : `setBarn` convertit 10000 kg → 10 t ; laisse 5 t
+inchangé ; ne touche pas RC/FH ; `getStrawStock.initialStock` remonte la valeur telle
+quelle (pas de ×1000).
 
-À faire **seulement si validé** (l'option est demandée, pas imposée).
+### 2.2 Céréales/protéagineux en tonnes — **option demandé, plus coûteux** (corrige U2) ⏳ **À valider**
+
+À faire **seulement si validé** (l'option est demandée, pas imposée). **Laisser en
+backlog** (décision du 2026-11-17) — voir [BACKLOG.md](BACKLOG.md) §BL-1.
+Impact chiffré (2026-11-17) : workspace actuel `RC: 216 qtx → 21,6 t`, `RP: -96 qtx → -9,6 t`,
+production P8 `450 qtx → 45 t` ; fixture de tests à re-convertir ; saisie Grange et
+`stockByPeriod` régénérés au prochain `setBarn`. Conversion 360° — **décision attendue**.
 
 1. **`referential.js`** : `RC`/`RP` : `unity: 'qtx'` → `unity: 't'`.
    Idem dans `farming_methods` (L62-63) : `qtx/ha` → `t/ha`.
@@ -128,24 +134,26 @@ stocks** change d'unité. À documenter pour éviter la confusion.
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
-| `src/locales/fr.json` (`barn.straw.quantity`) | kg → tonnes (2.1) |
-| `src/views/simulator/Barn.vue` | (2.1) rien ; (2.2) libellés dynamiques OK |
-| `src/store/modules/referential.js` (L46-47, L62-63) | (2.2) `qtx` → `t` |
-| `src/store/modules/mixins.js` (L585, L1330+) | (2.2) `/100` → `/1000`, production `/10` |
-| `tests/unit/vuex/` | tests d'unité paille + (2.2) céréales |
+| Fichier                                             | Changement                                      |
+| --------------------------------------------------- | ----------------------------------------------- |
+| `src/locales/fr.json` (`barn.straw.quantity`)       | ✅ kg → tonnes (2.1)                            |
+| `src/store/modules/barn.js` (`setBarn`)             | ✅ migration kg→t du stock initial paille (2.1) |
+| `src/views/simulator/Barn.vue`                      | (2.1) rien ; (2.2) libellés dynamiques OK       |
+| `src/store/modules/referential.js` (L46-47, L62-63) | (2.2) `qtx` → `t` ⏳                            |
+| `src/store/modules/mixins.js` (L585, L1330+)        | (2.2) `/100` → `/1000`, production `/10` ⏳     |
+| `tests/unit/vuex/straw.spec.js` (bloc U1)           | ✅ tests d'unité paille (4 tests)               |
 
 ---
 
 ## 4. Critères d'acceptation
 
-1. Le champ « Stock de paille » de la Grange est libellé **en tonnes** ; la valeur
-   saisie remonte **telle quelle** dans STOCKS ET COUTS (pas de ×1000).
+1. ✅ Le champ « Stock de paille » de la Grange est libellé **en tonnes** ; la valeur
+   saisie remonte **telle quelle** dans STOCKS ET COUTS (pas de ×1000) ; les anciens
+   stocks en kg (> 1000) sont convertis à la charge.
 2. (Si 2.2 validé) les lignes « Céréales en grain » / « Protéagineux en grain »
    de STOCKS ET COUTS et de la Grange sont **en tonnes** ; production, conso et
    stock final sont cohérents entre eux.
-3. Les tests d'unité passent.
+3. ✅ Les tests d'unité passent (straw.spec.js §U1, 22/22 avec le bloc paille).
 
 ## 5. Risques / points d'attention
 
@@ -162,9 +170,9 @@ stocks** change d'unité. À documenter pour éviter la confusion.
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Paille en tonnes (U1, libellé + vérif) | ~0,25 j |
-| Céréales/protéagineux en tonnes (U2, si validé) | ~1 j |
-| Tests | ~0,25 j |
-| **Total** | **~0,5 j** (paille seule) / **~1,25 j** (avec céréales) |
+| Bloc                                            | Effort                                                  |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| Paille en tonnes (U1, libellé + vérif)          | ~0,25 j                                                 |
+| Céréales/protéagineux en tonnes (U2, si validé) | ~1 j                                                    |
+| Tests                                           | ~0,25 j                                                 |
+| **Total**                                       | **~0,5 j** (paille seule) / **~1,25 j** (avec céréales) |

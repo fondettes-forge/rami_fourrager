@@ -1,3 +1,15 @@
+// migration unitaire (ticket 3) : le stock initial paille était saisi en kg avant
+// le passage en tonnes ; une valeur > 1000 est considérée comme un ancien stock
+// en kg et convertie en tonnes à la charge de la simulation. (un stock de
+// 10 000 t de paille est absurde ; 10 000 kg = 10 t est la valeur type du mail INRAE)
+function migrateStrawInitialStockToTons(initialStocks) {
+  return (initialStocks || []).map((stock) => {
+    if (stock.code === 'STRAW' && stock.quantity > 1000) {
+      return { ...stock, quantity: stock.quantity / 1000 }
+    }
+    return stock
+  })
+}
 export default {
   namespaced: true,
   state: {
@@ -7,7 +19,7 @@ export default {
   },
   mutations: {
     setBarn(state, { initialStocks, stockByPeriod, refusalRate }) {
-      state.initialStocks = initialStocks
+      state.initialStocks = migrateStrawInitialStockToTons(initialStocks)
       state.stockByPeriod = stockByPeriod
       state.refusalRate = refusalRate
     },

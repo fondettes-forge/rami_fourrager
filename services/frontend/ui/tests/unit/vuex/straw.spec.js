@@ -3,6 +3,7 @@
 // sous-lignes STOCKS ET COUTS.
 //
 // Verrouille :
+//   U1 : le stock initial paille est en tonnes (migration kg→t à la charge)
 //   P1 : le code STRAW existe dans barnStockItems (paille distribuable)
 //   P2 : la production paille somme stic.rendement × surface (Rdt_paille = rendement paille)
 //   P3 : la conso logement est dimensionnée en kg/UGB/j × UGB du lot × jours
@@ -43,6 +44,68 @@ function simulation() {
   // copie profonde pour ne pas polluer le fixture entre les tests
   return JSON.parse(JSON.stringify(rootState.simulator))
 }
+
+// ---------------------------------------------------------------------------
+// U1 — stock initial paille en tonnes (ticket 3 : migration kg→t)
+// ---------------------------------------------------------------------------
+
+describe('U1 — stock initial paille en tonnes', () => {
+  // eslint-disable-next-line global-require
+  const barnModule = require('@/store/modules/barn').default
+
+  it('setBarn convertit un stock initial paille en kg (> 1000) en tonnes', () => {
+    const state = { stockByPeriod: [], refusalRate: 0, initialStocks: [] }
+    barnModule.mutations.setBarn(state, {
+      initialStocks: [{ code: 'STRAW', name: 'paille', quantity: 10000 }],
+      stockByPeriod: [],
+      refusalRate: 10,
+    })
+    expect(state.initialStocks[0].quantity).toBe(10)
+  })
+
+  it('setBarn laisse un stock initial paille déjà en tonnes inchangé', () => {
+    const state = { stockByPeriod: [], refusalRate: 0, initialStocks: [] }
+    barnModule.mutations.setBarn(state, {
+      initialStocks: [{ code: 'STRAW', name: 'paille', quantity: 5 }],
+      stockByPeriod: [],
+      refusalRate: 10,
+    })
+    expect(state.initialStocks[0].quantity).toBe(5)
+  })
+
+  it('setBarn ne touche pas les autres stocks', () => {
+    const state = { stockByPeriod: [], refusalRate: 0, initialStocks: [] }
+    barnModule.mutations.setBarn(state, {
+      initialStocks: [
+        { code: 'STRAW', name: 'paille', quantity: 10000 },
+        { code: 'RC', name: 'Céréales en grain', quantity: 216 },
+        { code: 'FH', name: 'Foin', quantity: 58 },
+      ],
+      stockByPeriod: [],
+      refusalRate: 10,
+    })
+    expect(state.initialStocks[0].quantity).toBe(10) // STRAW : kg → t
+    expect(state.initialStocks[1].quantity).toBe(216) // RC : inchangé
+    expect(state.initialStocks[2].quantity).toBe(58) // FH : inchangé
+  })
+
+  it('getStrawStock remonte le stock initial tel quel (pas de ×1000)', () => {
+    const sim = simulation()
+    sim.barn.initialStocks = [{ code: 'STRAW', name: 'paille', quantity: 12 }]
+    // eslint-disable-next-line global-require
+    const reportModule = require('@/store/modules/report').default
+    const rows = reportModule.getters.getStrawStock(
+      reportModule.state,
+      {},
+      { ...rootState, simulator: sim },
+      {
+        'simulator/barn/getTotalStrawStockProducted': rootState.simulator.barn.totalStrawStockProducted,
+      }
+    )
+    const food = rows.find((r) => r.name === 'Paille (alimentation)')
+    expect(food.initialStock).toBe(12)
+  })
+})
 
 // ---------------------------------------------------------------------------
 // P1 — code STRAW dans barnStockItems
