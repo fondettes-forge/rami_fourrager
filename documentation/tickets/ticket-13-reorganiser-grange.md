@@ -1,9 +1,9 @@
 # Ticket 13 — Grange : réorganiser la liste des stocks
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §13.
-> Statut : **à traiter** · Priorité : **basse** · Type : correction
+> Statut : **✅ Implémenté (2026-11-17)** · Priorité : **basse** · Type : correction
 > Seche lié : ticket **12** (si Option 2 ajoute `RT`, l'ordre est impacté) ·
-> ticket **8** (ajout de `STRAW` dans `barnStockItems`)
+> ticket **8** (ajout de `STRAW` dans `barnStockItems` — STRAW conservé en fin)
 > Date de l'analyse : 2026-11-16
 
 ---
@@ -23,16 +23,16 @@
 La liste des types de stock est **en dur** dans `barnStockItems`
 (`store/modules/referential.js` L41-51), **dans l'ordre** :
 
-| # | Code | Nom |
-|---|------|-----|
-| 1 | FH | Foin |
-| 2 | EH | Ensilage et enrubannage d'herbe |
-| 3 | EM | Ensilage de maïs et sorgho |
-| 4 | RC | Céréales en grain |
-| 5 | RP | Protéagineux en grain |
-| 6 | AS | autre stock |
-| 7 | EL | Ensilage de légumineuses |
-| 8 | FL | Foin de légumineuses |
+| #   | Code | Nom                             |
+| --- | ---- | ------------------------------- |
+| 1   | FH   | Foin                            |
+| 2   | EH   | Ensilage et enrubannage d'herbe |
+| 3   | EM   | Ensilage de maïs et sorgho      |
+| 4   | RC   | Céréales en grain               |
+| 5   | RP   | Protéagineux en grain           |
+| 6   | AS   | autre stock                     |
+| 7   | EL   | Ensilage de légumineuses        |
+| 8   | FL   | Foin de légumineuses            |
 
 C'est **cette liste** qui alimente :
 
@@ -44,16 +44,16 @@ C'est **cette liste** qui alimente :
 
 L'ordre demandé par Antoine :
 
-| # | Nom | Code |
-|---|-----|------|
-| 1 | Foin | FH |
-| 2 | Foin de légumineuses | FL |
-| 3 | ensilage et enrub d'herbe | EH |
-| 4 | ensilage de maïs et sorgho | EM |
-| 5 | ensilage de légumineuse | EL |
-| 6 | céréales en grain | RC |
-| 7 | protéagineux en grain | RP |
-| 8 | autre stock | AS |
+| #   | Nom                        | Code |
+| --- | -------------------------- | ---- |
+| 1   | Foin                       | FH   |
+| 2   | Foin de légumineuses       | FL   |
+| 3   | ensilage et enrub d'herbe  | EH   |
+| 4   | ensilage de maïs et sorgho | EM   |
+| 5   | ensilage de légumineuse    | EL   |
+| 6   | céréales en grain          | RC   |
+| 7   | protéagineux en grain      | RP   |
+| 8   | autre stock                | AS   |
 
 ### 1.3 Point de vigilance : les codes ne doivent **pas** changer
 
@@ -63,7 +63,7 @@ que **réordonner** le tableau, pas renommer.
 
 ---
 
-## 2. Recommandation (plan de correction)
+## 2. Recommandation (plan de correction) ✅ **Implémenté (2026-11-17)**
 
 **Fichier** : `store/modules/referential.js` (L41-51)
 
@@ -79,18 +79,22 @@ barnStockItems: [
   { code: 'RC', name: 'Céréales en grain', unity: 'qtx', concentrated: true, color: '' },
   { code: 'RP', name: 'Protéagineux en grain', unity: 'qtx', concentrated: true, color: '' },
   { code: 'AS', name: 'autre stock', unity: 'tMS', color: '' },
+  // STRAW conservé en fin (géré séparément — champ dédié paille dans la Grange, ticket 8)
+  { code: 'STRAW', name: 'Paille', unity: 't', color: '' },
 ],
 ```
 
 Aucun autre changement : le select Grange, la table, le select `correspondingStock`
-et STOCKS ET COUTS suivront l'ordre du tableau.
+et STOCKS ET COUTS suivront l'ordre du tableau. Vérifié : tous les accès à
+`barnStockItems` sont par `.find(code)` (pas d'index) — l'ordre n'a aucun effet
+sur les calculs.
 
 ---
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                     | Changement                  |
+| ------------------------------------------- | --------------------------- |
 | `src/store/modules/referential.js` (L41-51) | réordonner `barnStockItems` |
 
 ---
@@ -122,8 +126,8 @@ et STOCKS ET COUTS suivront l'ordre du tableau.
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Réordonnancement `barnStockItems` | ~0,1 j |
-| Coordination ticket 8/12 (position STRAW/RT) | ~0,1 j |
-| **Total** | **~0,2 j** |
+| Bloc                                         | Effort     |
+| -------------------------------------------- | ---------- |
+| Réordonnancement `barnStockItems`            | ~0,1 j     |
+| Coordination ticket 8/12 (position STRAW/RT) | ~0,1 j     |
+| **Total**                                    | **~0,2 j** |

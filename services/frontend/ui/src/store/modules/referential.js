@@ -40,14 +40,16 @@ export default {
     animal_profiles: [],
     barnStockItems: [
       // { code: 'P', name: 'Pature', unity: 'kgMS/ha/j' },
+      // ordre demandé par Antoine (ticket 13) : foin / foin légumineuses / ensilages /
+      // céréales / protéagineux / autre stock — STRAW en fin (géré séparément, ticket 8)
       { code: 'FH', name: 'Foin', unity: 'tMS', color: '' },
+      { code: 'FL', name: 'Foin de légumineuses', unity: 'tMS', color: '' },
       { code: 'EH', name: "Ensilage et enrubannage d'herbe", unity: 'tMS', color: '' },
       { code: 'EM', name: 'Ensilage de maïs et sorgho', unity: 'tMS', color: '' },
+      { code: 'EL', name: 'Ensilage de légumineuses', unity: 'tMS', color: '' },
       { code: 'RC', name: 'Céréales en grain', unity: 'qtx', concentrated: true, color: '' },
       { code: 'RP', name: 'Protéagineux en grain', unity: 'qtx', concentrated: true, color: '' },
       { code: 'AS', name: 'autre stock', unity: 'tMS', color: '' },
-      { code: 'EL', name: 'Ensilage de légumineuses', unity: 'tMS', color: '' },
-      { code: 'FL', name: 'Foin de légumineuses', unity: 'tMS', color: '' },
       { code: 'STRAW', name: 'Paille', unity: 't', color: '' },
     ],
     batch_types: [],
