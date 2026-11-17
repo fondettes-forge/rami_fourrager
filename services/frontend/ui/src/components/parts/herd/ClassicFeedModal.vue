@@ -32,6 +32,7 @@
                     :label="$t('herd.classicfeed.modal.feedtype')"
                     return-object
                     :rules="[rules.required]"
+                    :no-data-text="$t('validation.noData')"
                     clearable
                   ></v-select>
                 </v-col>

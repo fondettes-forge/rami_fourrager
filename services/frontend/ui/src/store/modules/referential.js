@@ -25,15 +25,14 @@ async function getLastConnectionDate() {
 }
 
 function mergeLists(dbList, customList) {
-  const lastItem = dbList[dbList.length - 1]
-  if (Object.prototype.hasOwnProperty.call(lastItem, 'id')) {
-    dbList.push(
-      ...customList.map((cl, index) => {
-        return { id: lastItem.id + index + 1, ...deepCopy(cl) }
-      })
-    )
+  if (!dbList.length) {
+    // Pas de liste référentielle (API indisponible, premier chargement en échec…) :
+    // on attribue des ids négatifs aux cartes custom (ids référentiels >= 1,
+    // ids custom < 0) pour éviter toute collision et rester identifiables.
+    return customList.map((cl, index) => ({ id: -(index + 1), ...deepCopy(cl) }))
   }
-  return dbList
+  const lastId = Math.max(...dbList.map((el) => el.id || 0))
+  return [...dbList, ...customList.map((cl, index) => ({ id: lastId + index + 1, ...deepCopy(cl) }))]
 }
 export default {
   namespaced: true,
@@ -165,7 +164,7 @@ export default {
     concentratedFeedList: (state, getters, rootState) => {
       var list = state.concentrated_feeds
       if (rootState.workspace.workspace.concentratedFeeds?.length > 0) {
-        list = mergeLists([...state.feed_types], [...rootState.workspace.workspace.concentratedFeeds])
+        list = mergeLists([...state.concentrated_feeds], [...rootState.workspace.workspace.concentratedFeeds])
       }
       return list
     },

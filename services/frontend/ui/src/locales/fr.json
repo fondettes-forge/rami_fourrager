@@ -976,6 +976,8 @@
     "number": "La valeur doit être numérique",
     "integer": "Ce champ doit être un entier",
     "arraynotempty": "Ce champ est requis",
+    "validStock": "Le stock correspondant doit être un stock existant",
+    "noData": "Aucun aliment disponible — vérifiez votre connexion à l'API ou vos configurations",
     "farm": {
       "dimensioning": {
         "overSAU": "la somme des surfaces contraintes dépasse la SAU",

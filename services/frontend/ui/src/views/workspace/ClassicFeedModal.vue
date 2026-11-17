@@ -49,7 +49,8 @@
               item-text="name"
               item-value="code"
               :label="$t('workspace.content.datatables.classicFeed.create.dialog.correspondingStock')"
-              :rules="[rules.required]"
+              :rules="[rules.required, rules.validStock]"
+              :no-data-text="$t('validation.noData')"
             ></v-select>
 
             <v-subheader>{{
@@ -159,6 +160,8 @@
         rules: {
           required: (value) => !!value || this.$t('validation.required'),
           number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
+          validStock: (value) =>
+            !value || this.barnStockItems.some((stock) => stock.code === value) || this.$t('validation.validStock'),
         },
       }
     },
