@@ -22,7 +22,7 @@
 | 1   | Carte ration introuvable (Troupeau/Grange)                 | Bug         | Haute     | ✅ Implémenté          | [ticket-1](ticket-1-carte-ration-introuvable.md)      | — (ticket 6 en dépend)                                         |
 | 2   | Paille non comptabilisée (STOCKS/COUTS)                    | Bug         | Haute     | 📄 Doc écrite          | [ticket-2](ticket-2-paille-stocks-couts.md)           | **= ticket 8** (même bloc paille)                              |
 | 3   | Paille (et céréales) en tonnes                             | Correction  | Moyenne   | ✅ **Partiel** (2.1)   | [ticket-3](ticket-3-paille-cereales-tonnes.md)        | paille ✅ ; 2.2 céréales → [backlog BL-1](BACKLOG.md)          |
-| 4   | Bouton « AJOUTER » Présence inutile                        | Correction  | Basse     | 📄 Doc écrite          | [ticket-4](ticket-4-bouton-ajouter-presence.md)       | —                                                              |
+| 4   | Bouton « AJOUTER » Présence inutile                        | Correction  | Basse     | ✅ Implémenté          | [ticket-4](ticket-4-bouton-ajouter-presence.md)       | — (prop `showAddButton` sur PeriodLayout)                      |
 | 5   | Dupliquer / adapter une carte ration                       | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-5](ticket-5-dupliquer-carte-ration.md)        | dépend du ticket 1 (distribué)                                 |
 | 6   | Cartes rations introuvables dans Troupeau                  | Bug         | Haute     | 📄 **Doublon du 1** ✅ | [ticket-6](ticket-6-carte-ration-troupeau.md)         | **= ticket 1** (fusionner)                                     |
 | 7   | Décliner une baguette entre années climatiques             | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | bug latent B1 (climatic_year_id)                               |
@@ -38,7 +38,7 @@
 
 ## Synthèse
 
-- **Implémenté** : 7/16 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 9 [onglets Bilan], 13 [Grange]) — le ticket 6 est le doublon du 1.
+- **Implémenté** : 9/16 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 9 [onglets Bilan], 13 [Grange]) — le ticket 6 est le doublon du 1.
 - **Docs écrites, prêtes à implémenter** : 12/16 (tickets 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 15, 16).
 - **À clarifier (décision requise)** : 1/16 (ticket 14) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales).
 
@@ -49,9 +49,8 @@
    concert** (même code). Préréquis : ticket 1 (✅) et décision sur l'unité paille
    (ticket 3, 2.1).
 2. **Bloc simple/rapide** :
-   - ticket 4 (bouton Présence, à estimer) ;
    - ticket 11 (compteur surface, ~0,5 j).
-     (tickets 9 ✅ et 13 ✅ faits)
+     (tickets 4 ✅, 9 ✅, 13 ✅ faits)
 3. **Ticket 12 (tourteaux)** — **à trancher** Option 1 (`RP`, rapide, CSV seul)
    vs Option 2 (`RT`, propre mais référentiel + migration). Option 1 est la
    plus rapide pour débloquer.

@@ -3,6 +3,7 @@
     <base-period-layout
       :pageColor="pageColor"
       toolBarTitleKey="herd.housing.title"
+      :showAddButton="false"
       @selected="periodSelected"
       @duplicate="duplicate"
     >

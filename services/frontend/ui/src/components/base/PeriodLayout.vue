@@ -46,6 +46,7 @@
             @duplicate="duplicate"
           />
           <v-btn
+            v-if="showAddButton !== false"
             :color="pageColor"
             @click="$emit('add-modal')"
             outlined
@@ -67,6 +68,12 @@
       pageColor: { type: String },
       toolBarTitleKey: {
         type: String,
+      },
+      // ticket 4 : le bouton « AJOUTER » n'a pas de sens sur l'onglet Présence
+      // (la présence se gère par case par période) — à masquer via :showAddButton="false"
+      showAddButton: {
+        type: Boolean,
+        default: true,
       },
     },
     computed: {
