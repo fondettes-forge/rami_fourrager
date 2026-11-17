@@ -40,6 +40,7 @@ class Stic(db.Model):
     name = db.Column(db.String(255))
     type = db.Column(db.String(255))
     rendement = db.Column(db.String(255))
+    straw_yield = db.Column(db.String(255))  # Rdt paille (kg/ha) — tickets 2/8
     designation = db.Column(db.String(255))
     RU = db.Column(db.String(255))
     IN = db.Column(db.String(255))

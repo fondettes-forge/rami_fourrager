@@ -257,7 +257,9 @@
 <script>
   import { mapGetters } from 'vuex'
   import { deepCopy, transformToAppCode } from '@/plugins/utils'
-
+  // TODO remettre le select de batch_type à blanc pour la création
+  // attention lorsque je modifie le type d'animaux, le select se recharge avec les profiles correspondants
+  // un problème de réfraichissement de la liste des profiles
   export default {
     name: 'AnimalProfileModal',
     props: {

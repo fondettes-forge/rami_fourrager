@@ -138,7 +138,8 @@
   import { deepCopy } from '@/plugins/utils'
   import MappingModal from './MappingModal.vue'
   import PreviewModal from './previewModal.vue'
-
+  // TODO mettre un controle sur le nom de la simulation qui est obligatoire !
+  // les colonnes n'apparaise ni dans l'apercu ni dans le fichier csv
   export default {
     name: 'export',
     components: {

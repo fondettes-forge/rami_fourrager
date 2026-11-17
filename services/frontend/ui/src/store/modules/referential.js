@@ -48,6 +48,7 @@ export default {
       { code: 'AS', name: 'autre stock', unity: 'tMS', color: '' },
       { code: 'EL', name: 'Ensilage de légumineuses', unity: 'tMS', color: '' },
       { code: 'FL', name: 'Foin de légumineuses', unity: 'tMS', color: '' },
+      { code: 'STRAW', name: 'Paille', unity: 't', color: '' },
     ],
     batch_types: [],
     climatic_years: [],

@@ -312,16 +312,11 @@ export const getPasturesByPeriod = (coverage, batch, period, totalAvailablePastu
     console.error('batch_not_found')
     return
   }
-  if (
-    !totalAvailablePastureByPeriod ||
-    totalAvailablePastureByPeriod['period_id_' + (period + 1)] === undefined
-  ) {
+  if (!totalAvailablePastureByPeriod || totalAvailablePastureByPeriod['period_id_' + (period + 1)] === undefined) {
     return 0
   }
-  const i246 =
-    getGreenPastureConsumption(batch, period, totalAvailablePastureByPeriod, batchs) || 0
-  const i247 =
-    getCarryOverPastureConsumption(batch, period, totalAvailablePastureByPeriod, batchs) || 0
+  const i246 = getGreenPastureConsumption(batch, period, totalAvailablePastureByPeriod, batchs) || 0
+  const i247 = getCarryOverPastureConsumption(batch, period, totalAvailablePastureByPeriod, batchs) || 0
   // =I$246*X29+I$247*W29*0,92
   // (consommation pature verte * x 29 correspondant à la période) + (consommation pature reporté si report * w29 correspondant à la période précédente* 0.92)
   // x29 = totalAvailablePasture[period].energeticTotal
@@ -618,7 +613,12 @@ export function getPastureConsumptionTotal(simulation, periods) {
 // G stock fin
 export function getFinalStockByBarnStockItem(simulation, stockCode, periods, getStic) {
   if (stockCode === 'STRAW') {
-    return simulation.barn.totalStrawStockProducted - getConsumptionForStraw(simulation, periods)
+    // stock final = stock initial + production - consommation (aliment + logement)
+    return (
+      getInitialStockByBarnStockItem(simulation, stockCode) +
+      getSticProductionByBarnStockItem(simulation, stockCode, periods, getStic) -
+      getConsumptionByBarnStockItem(simulation, periods, stockCode)
+    )
   }
   return (
     getInitialStockByBarnStockItem(simulation, stockCode) +
@@ -706,7 +706,9 @@ export function getConsumptionByBarnStockItemByPeriod(simulation, periodId, stoc
   })
   return consumption * (1 + simulation.barn.refusalRate / 100)
 }
-// conso paille non alim V676
+// conso paille logement (litière) V676
+// besoin = straw_requirement (kg/UGB/j) × UGB du lot (tMS ingérées / UGB) × jours de présence
+// UGB du lot = besoinMS × nb_animaux × jours / UGB (même définition que getUGBSystem)
 export function getConsumptionOfNonFoodStraw(simulation, periods) {
   var consumption = 0
   periods.forEach((p, i) => {
@@ -722,12 +724,21 @@ export function getConsumptionOfNonFoodStraw(simulation, periods) {
       const besoin = batch.housing.type ? batch.housing.type.straw_requirement : 0
       const presence = batch.housing.presence[i].days
       const nbAni = batch.housing.presence[i].animalCount
-      const byBatch = (besoin * presence * besoinMS * nbAni) / 13
+      const ugbLot = (besoinMS * nbAni * presence) / UGB // UGB du lot sur la période
+      const byBatch = (besoin * ugbLot * presence) / 1000 // kg → t
       c += byBatch
     })
     consumption += c
   })
-  return consumption / 1000
+  return consumption
+}
+// conso paille alimentation (seule)
+export function getFoodStrawConsumption(simulation, periods) {
+  return getConsumptionForOthers(simulation, periods, 'STRAW')
+}
+// conso paille logement (seule)
+export function getHousingStrawConsumption(simulation, periods) {
+  return getConsumptionOfNonFoodStraw(simulation, periods)
 }
 export function getSticProductionByBarnStockItemByPeriod(simulation, stockCode, period) {
   // // SUM($calcul_interface.H52:T52) la somme de toutes les production des baguettes de même type par periode
@@ -1309,8 +1320,9 @@ export function setTotalStrawStock(simulation, getStic) {
   simulation.farm.rotations.forEach((rotation) => {
     const stic = getStic(simulation.climaticYear, rotation.name)
     // le stock de paille produit en kg car rendement en kg/ha et surface en ha
-    if (stic.rendement) {
-      totalStrawStock += stic.rendement * rotation.surface
+    const strawYield = Number(stic.straw_yield) || Number(stic.rendement) || 0
+    if (strawYield > 0) {
+      totalStrawStock += strawYield * rotation.surface
     }
   })
   return totalStrawStock / 1000
@@ -1321,7 +1333,8 @@ export function getStrawSurface(simulation, getStic) {
   simulation.farm.rotations.forEach((rotation) => {
     const stic = getStic(simulation.climaticYear, rotation.name)
     // le stock de paille produit en kg car rendement en kg/ha et surface en ha
-    if (stic.rendement) {
+    const strawYield = Number(stic.straw_yield) || Number(stic.rendement) || 0
+    if (strawYield > 0) {
       totalSurface += rotation.surface
     }
   })

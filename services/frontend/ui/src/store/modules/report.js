@@ -26,6 +26,8 @@ import {
   getPotential,
   getSticProductionByBarnStockItemByPeriod,
   getConsumptionByBarnStockItemByPeriod,
+  getFoodStrawConsumption,
+  getHousingStrawConsumption,
   getSFP,
   getSAU,
   getStrawSurface,
@@ -163,31 +165,49 @@ export default {
       const stock = []
       const simulation = rootState.simulator
       const periods = rootState.referential.periods
-      const stockCodeList = ['STRAW']
+      const stockCode = 'STRAW'
       const getStic = rootGetters['referential/getSticByName']
-      stockCodeList.forEach((stockCode) => {
-        const stockItem = {
-          name: 'paille',
-          category: '3_straw',
-          code: stockCode,
-          initialStock: replaceNan(getInitialStockByBarnStockItem(simulation, stockCode), 0),
-          // production: replaceNan(getSticProductionByBarnStockItem(simulation, stockCode, periods, getStic), 0),
-          production: replaceNan(rootGetters['simulator/barn/getTotalStrawStockProducted'], 0),
-          consommation: replaceNan(getConsumptionByBarnStockItem(simulation, periods, stockCode), 0),
-          finalStock: replaceNan(getFinalStockByBarnStockItem(simulation, stockCode, periods, getStic), 0),
-          final_initialStock: replaceNan(
-            getFinalMinInitialStockByBarnStockItem(simulation, stockCode, periods, getStic),
-            0
-          ),
-          purchase: replaceNan(getPurchaseValueByBarnStockItem(simulation, stockCode, periods, getStic), 0),
-          purchaseCost: state.soldedStock['STRAW'].purchaseCost,
-          sale: state.soldedStock['STRAW'].sale,
-          costOfSell: state.soldedStock['STRAW'].costOfSell,
-          productionCost: state.soldedStock['STRAW'].productionCost,
-          total: 0,
-        }
-        stock.push(stockItem)
+      const initialStock = replaceNan(getInitialStockByBarnStockItem(simulation, stockCode), 0)
+      const production = replaceNan(rootGetters['simulator/barn/getTotalStrawStockProducted'], 0)
+      // conso aliment et logement séparées (ticket 2/8 : distinguer paille alimentation / paille logement)
+      const foodConsumption = replaceNan(getFoodStrawConsumption(simulation, periods), 0)
+      const housingConsumption = replaceNan(getHousingStrawConsumption(simulation, periods), 0)
+      const consumption = replaceNan(getConsumptionByBarnStockItem(simulation, periods, stockCode), 0)
+      const finalStock = replaceNan(getFinalStockByBarnStockItem(simulation, stockCode, periods, getStic), 0)
+      const final_initialStock = replaceNan(
+        getFinalMinInitialStockByBarnStockItem(simulation, stockCode, periods, getStic),
+        0
+      )
+      const purchase = replaceNan(getPurchaseValueByBarnStockItem(simulation, stockCode, periods, getStic), 0)
+      const base = {
+        category: '3_straw',
+        code: stockCode,
+        initialStock,
+        production,
+        finalStock,
+        final_initialStock,
+        purchase,
+        purchaseCost: state.soldedStock['STRAW'].purchaseCost,
+        sale: state.soldedStock['STRAW'].sale,
+        costOfSell: state.soldedStock['STRAW'].costOfSell,
+        productionCost: state.soldedStock['STRAW'].productionCost,
+        total: 0,
+      }
+      // deux sous-lignes : alimentation / logement
+      // (le stock final est porté par la ligne alimentation pour que le total du groupe reste cohérent)
+      stock.push({ ...base, name: 'Paille (alimentation)', consommation: foodConsumption })
+      stock.push({
+        ...base,
+        name: 'Paille (logement)',
+        consommation: housingConsumption,
+        initialStock: 0,
+        production: 0,
+        finalStock: 0,
+        final_initialStock: 0,
+        purchase: 0,
       })
+      // ligne cachée « paille » (code STRAW) : totaux du groupe, pour les coûts et l'export
+      stock.push({ ...base, name: 'paille', consommation: consumption, hidden: true })
       return stock
     },
     getAutonomy: (state, getters, rootState, rootGetters) => {
@@ -320,8 +340,8 @@ export default {
       const periods = rootState.referential.periods
       const initialStocks = simulation.barn.initialStocks
 
-      // s'il y a de la paille alimentaire, on ajoute la paille ?!
-      const stockCodeList = ['FH', 'EH', 'EM', 'EL', 'FL', 'AS']
+      // la paille (aliment + logement) est suivie dans l'évolution des stocks
+      const stockCodeList = ['FH', 'EH', 'EM', 'EL', 'FL', 'AS', 'STRAW']
 
       stockCodeList.forEach((stockCode) => {
         // Attention décalage d'index pour injecter le stock initial

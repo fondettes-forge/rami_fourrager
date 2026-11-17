@@ -7,6 +7,7 @@ export default {
     name: { type: 'string' },
     type: { type: 'string' },
     rendement: { type: 'string' },
+    straw_yield: { type: ['string', 'null'] },
     designation: { type: 'string' },
     RU: { type: 'string' },
     IN: { type: 'string' },

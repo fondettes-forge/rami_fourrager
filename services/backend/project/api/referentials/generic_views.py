@@ -147,6 +147,7 @@ available_models = {
             "name": fields.String,
             "type": fields.String,
             "rendement": fields.String,
+            "straw_yield": fields.String,
             "designation": fields.String,
             "RU": fields.String,
             "IN": fields.String,

@@ -164,7 +164,10 @@
         return this.getKpis(this.groupedStocks)
       },
       groupedStocks() {
-        const all = [...this.pastureStock, ...this.feedStocks, ...this.concentratedStock, ...this.strawStock]
+        // lignes cachées (synthèse paille) exclues : les lignes aliment/logement portent déjà les mêmes coûts
+        const all = [...this.pastureStock, ...this.feedStocks, ...this.concentratedStock, ...this.strawStock].filter(
+          (item) => !item.hidden
+        )
         return Object.groupBy(all, ({ category }) => category)
       },
       headers() {

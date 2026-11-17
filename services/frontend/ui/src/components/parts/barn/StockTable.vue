@@ -5,7 +5,7 @@
   >
     <v-data-table
       :headers="headers"
-      :items="datas"
+      :items="datas.filter((item) => !item.hidden)"
       item-key="name"
       group-by="category"
       :disable-sort="true"
@@ -190,7 +190,8 @@
         return total
       },
       subTotal(items, column) {
-        return items.reduce((sum, item) => sum + item[column], 0)
+        // on exclut les lignes cachées (lignes de synthèse, ex. « paille ») pour éviter le double comptage
+        return items.filter((item) => !item.hidden).reduce((sum, item) => sum + item[column], 0)
       },
 
       exportToCSV() {

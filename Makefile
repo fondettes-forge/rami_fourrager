@@ -51,9 +51,14 @@ fresh-data:
 	$(DC) exec backend python manage.py seed mapping_animal_profil.json
 	$(DC) exec backend python manage.py seed mapping_baguettes_fourrage.json
 	
-update-stics:
-	$(DC) exec backend python manage.py seed mapping_baguettes_fourrage.json
 
+update-referential:
+	$(DC) exec backend python manage.py seed mapping_all.json	
+update-animal-profil:
+	$(DC) exec backend python manage.py seed mapping_animal_profil.json
+update-baguettes-fourrage:
+	$(DC) exec backend python manage.py seed mapping_baguettes_fourrage.json
+	
 add-admin-dev:
 	$(DC) exec backend python manage.py add_admin_user $(ADMIN_USER_NAME) $(ADMIN_USER_EMAIL) $(ADMIN_USER_PWD)
 

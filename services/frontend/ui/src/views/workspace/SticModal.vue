@@ -232,6 +232,9 @@
   import { deepCopy, transformToAppCode } from '@/plugins/utils'
 
   // TODO premettre la copie de baguette d'une année climatique et d'un site sur d'autre
+  // déplacer le champ type de pature dans détail
+  // faire une popup pour la copie de baguette et ajouter les select pour les sites et les années climatiques dans détail
+  // empêcher la création sans site et année climatique
   export default {
     name: 'SticModal',
     props: {
