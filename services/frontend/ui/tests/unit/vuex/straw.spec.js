@@ -64,7 +64,7 @@ describe('P1 — paille distribuable', () => {
 // ---------------------------------------------------------------------------
 
 describe('P2 — production paille', () => {
-  it('utilise stic.straw_yield (kg/ha × surface / 1000 = t), fallback rendement', () => {
+  it('utilise stic.straw_yield (kg/ha × surface / 1000 = t)', () => {
     const sim = simulation()
     const stic = rootState.referential.stics.find((el) => el.climatic_year_id === sim.climaticYear)
     sim.farm.rotations = [
@@ -75,23 +75,19 @@ describe('P2 — production paille', () => {
       if (name === 'rotA') {
         return { ...stic, straw_yield: '1000' }
       }
-      // rotB : pas de straw_yield -> fallback rendement du stic
+      // rotB : pas de straw_yield -> 0 (pas de paille produite)
       return { ...stic, straw_yield: null }
     }
-    // rotA : 1000 kg/ha × 10 ha = 10 t
-    // rotB : Number(rendement) × 5 ha / 1000
-    const expected = 10 + ((Number(stic.rendement) || 0) * 5) / 1000
-    expect(setTotalStrawStock(sim, getSticMock())).toBeCloseTo(expected, 5)
+    // rotA : 1000 kg/ha × 10 ha = 10 t ; rotB : 0
+    expect(setTotalStrawStock(sim, getSticMock())).toBeCloseTo(10, 5)
   })
 
-  it('ignore les stic sans rendement paille', () => {
+  it('ne retombe PAS sur stic.rendement (grain) quand straw_yield est vide', () => {
+    // regression P2 : rendement est le rendement GRAIN (ex: Blé 4500), pas la paille.
+    // une rotation de Blé ne doit pas gonfler le stock de paille.
     const sim = simulation()
-    const stic = rootState.referential.stics.find((el) => el.climatic_year_id === sim.climaticYear)
-    sim.farm.rotations = [
-      { name: 'rotA', surface: 10 },
-      { name: 'rotB', surface: 5 },
-    ]
-    const getSticMock = () => () => ({ ...stic, straw_yield: null, rendement: '' })
+    sim.farm.rotations = [{ name: 'C3 : Blé', surface: 15 }]
+    const getSticMock = () => () => ({ straw_yield: null, rendement: '4500' })
     expect(setTotalStrawStock(sim, getSticMock())).toBe(0)
   })
 
