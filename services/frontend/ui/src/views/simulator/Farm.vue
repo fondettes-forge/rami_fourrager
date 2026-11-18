@@ -81,6 +81,28 @@
           :class="{ 'opacity-50': climaticYear === null }"
         >
           <rotation-graph :climaticYear="climaticYear" />
+          <v-sheet
+            :color="surfaceCounterColor"
+            class="d-flex align-center pa-3 mb-2"
+            rounded
+            tile
+          >
+            <v-icon
+              :color="surfaceCounterColor"
+              size="28"
+              class="mr-3"
+            >
+              {{ surfaceCounterIcon }}
+            </v-icon>
+            <div class="text-subtitle-1 font-weight-bold">
+              {{ $t('farm.dimensioning.surface_used', [totalSurfaces, dimensioning.SAU]) }}
+            </div>
+            <div
+              :class="`bg--${surfaceCounterColor} white--text px-3 py-1 rounded font-weight-bold text-body-1 ml-auto`"
+            >
+              {{ surfaceCounterText }}
+            </div>
+          </v-sheet>
           <v-data-table
             :headers="headers"
             :items="rotations"
@@ -313,6 +335,8 @@
       ...mapGetters('simulator/farm', {
         dimensioning: 'dimensioning',
         rotations: 'rotations',
+        totalSurfaces: 'totalSurfaces',
+        remainingSurfaces: 'remainingSurfaces',
         validateRotation: 'validateRotation',
         validateSurface: 'validateSurface',
       }),
@@ -359,6 +383,33 @@
         set(val) {
           this.$store.commit('simulator/farm/setReachable', val)
         },
+      },
+      surfaceCounterColor() {
+        if (this.totalSurfaces > this.dimensioning.SAU) {
+          return 'error'
+        }
+        if (this.totalSurfaces > 0 && this.totalSurfaces < this.dimensioning.SAU) {
+          return 'warning'
+        }
+        return 'success'
+      },
+      surfaceCounterIcon() {
+        if (this.totalSurfaces > this.dimensioning.SAU) {
+          return 'mdi-alert-circle'
+        }
+        if (this.totalSurfaces > 0 && this.totalSurfaces < this.dimensioning.SAU) {
+          return 'mdi-minus-circle-outline'
+        }
+        return 'mdi-check-circle'
+      },
+      surfaceCounterText() {
+        if (this.totalSurfaces > this.dimensioning.SAU) {
+          return this.$t('farm.dimensioning.surface_over')
+        }
+        if (this.totalSurfaces > 0 && this.totalSurfaces < this.dimensioning.SAU) {
+          return this.$t('farm.dimensioning.surface_remaining', [this.remainingSurfaces])
+        }
+        return this.$t('farm.dimensioning.surface_full')
       },
     },
     methods: {

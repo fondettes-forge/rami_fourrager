@@ -301,6 +301,10 @@
     "dimensioning": {
       "title": "Dimensionnement de la Ferme",
       "sau": "Surface Agricole Utile (SAU)",
+      "surface_used": "Surface utilisée : {0} ha / {1} ha (SAU)",
+      "surface_remaining": "{0} ha encore disponibles",
+      "surface_full": "Toute la SAU est utilisée",
+      "surface_over": "SAU dépassée — réduction de surface nécessaire",
       "constrainedSurfaces": "Surfaces à Contraintes",
       "irrigable": "Surfaces irrigables",
       "ploughable": "Surfaces labourables",

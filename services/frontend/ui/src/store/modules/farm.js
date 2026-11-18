@@ -84,6 +84,13 @@ export default {
         return acc + (isNaN(intValue) ? 0 : intValue)
       }, 0)
     },
+    remainingSurfaces: (state, getters) => {
+      const sau = parseInt(state.dimensioning.SAU, 10)
+      if (isNaN(sau)) {
+        return 0
+      }
+      return sau - getters.totalSurfaces
+    },
     totalConstrainedSurfaces: (state) => {
       return Object.values(state.dimensioning.constrainedSurfaces).reduce((acc, curr) => {
         const intValue = parseInt(curr, 10)

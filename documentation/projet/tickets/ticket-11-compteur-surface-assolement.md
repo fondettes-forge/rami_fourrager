@@ -1,8 +1,9 @@
 # Ticket 11 — Assolement : compteur de surface utilisée (+ retrait contraintes)
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §11.
-> Statut : **à traiter** · Priorité : **moyenne** · Type : nouveauté
-> Date de l'analyse : 2026-11-16
+> Statut : **✅ 2.1 implémenté** (compteur) · **2.2 en attente de validation** (bonus retrait contraintes)
+> Priorité : **moyenne** · Type : nouveauté
+> Date de l'analyse : 2026-11-16 · Mise à jour : 2026-11-18 (2.1 fait)
 
 ---
 
@@ -55,16 +56,16 @@ rotation (sinon, on ne peut plus attribuer de contrainte) et simplifier
 
 ### 1.4 Résumé
 
-| # | Point | Où | Action |
-|---|-------|----|--------|
-| S1 | Pas de compteur « surface utilisée / SAU » affiché | `Farm.vue` (dimensionnement) | afficher `totalSurfaces` / `SAU` |
-| S2 | « Surfaces à Contraintes » non utilisées (bonus) | `Farm.vue` L36-71, modal rotation L143-152, `farm.js` L100-114 | retirer (bonus, à valider) |
+| #   | Point                                              | Où                                                             | Action                           |
+| --- | -------------------------------------------------- | -------------------------------------------------------------- | -------------------------------- |
+| S1  | Pas de compteur « surface utilisée / SAU » affiché | `Farm.vue` (dimensionnement)                                   | afficher `totalSurfaces` / `SAU` |
+| S2  | « Surfaces à Contraintes » non utilisées (bonus)   | `Farm.vue` L36-71, modal rotation L143-152, `farm.js` L100-114 | retirer (bonus, à valider)       |
 
 ---
 
 ## 2. Recommandations (plan de correction)
 
-### 2.1 Compteur de surface utilisée (S1) — **à faire**
+### 2.1 Compteur de surface utilisée (S1) — **✅ fait (2026-11-18)**
 
 Dans le bloc **Dimensionnement** de `Farm.vue` (après le champ SAU, L33),
 ajouter un **libellé de compteur** :
@@ -115,22 +116,32 @@ dans le workspace** (`rotation.constraint`). À nettoyer (ou ignorer, puisque
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
-| `src/views/simulator/Farm.vue` | compteur surface (2.1) ; retrait contraintes (2.2, bonus) |
-| `src/store/modules/farm.js` | (2.2) simplifier `validateRotation`, retirer `totalConstrainedSurfaces`/`validateSurface` |
-| `src/locales/fr.json` | libellé compteur (2.1) ; retrait clés contraintes (2.2) |
+| Fichier                        | Changement                                                                                |
+| ------------------------------ | ----------------------------------------------------------------------------------------- |
+| `src/views/simulator/Farm.vue` | compteur surface (2.1) ; retrait contraintes (2.2, bonus)                                 |
+| `src/store/modules/farm.js`    | (2.2) simplifier `validateRotation`, retirer `totalConstrainedSurfaces`/`validateSurface` |
+| `src/locales/fr.json`          | libellé compteur (2.1) ; retrait clés contraintes (2.2)                                   |
 
 ---
 
 ## 4. Critères d'acceptation
 
-1. Dans *Assolement*, le formulaire affiche **« Surface utilisée : X ha / Y ha
+1. ✅ Dans _Assolement_, le formulaire affiche **« Surface utilisée : X ha / Y ha
    (SAU) »** avec un code couleur (vert/orange/rouge).
-2. Le compteur est **à jour** en temps réel (ajout/suppression/édition d'une
-   rotation).
-3. (Bonus 2.2) les « Surfaces à Contraintes » et le select de contrainte du
-   modal de rotation sont **retirés** ; `validateRotation` ne vérifie que la SAU.
+2. ✅ Le compteur est **à jour** en temps réel (ajout/suppression/édition d'une
+   rotation) — `totalSurfaces`/`remainingSurfaces` sont des getters réactifs.
+3. ⏳ (Bonus 2.2, **à valider avec Antoine**) les « Surfaces à Contraintes » et
+   le select de contrainte du modal de rotation sont **retirés** ;
+   `validateRotation` ne vérifie que la SAU.
+
+### 4.1 Implémentation 2.1 (réalisée)
+
+- `farm.js` : nouveau getter `remainingSurfaces` = `SAU − totalSurfaces`.
+- `Farm.vue` : bloc compteur sous le champ SAU — `surfaceCounterColor`
+  (error/warning/success) + `surfaceCounterText` (dépassé / reste / complet).
+- `fr.json` : 4 clés `farm.dimensioning.surface_*`.
+- Aucune modification de calcul (le compteur affiche `totalSurfaces` existant).
+- **2.2 non fait** : les contraintes restent en place (bonus à valider).
 
 ## 5. Risques / points d'attention
 
@@ -145,9 +156,9 @@ dans le workspace** (`rotation.constraint`). À nettoyer (ou ignorer, puisque
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Compteur surface (2.1) | ~0,25 j |
-| Retrait contraintes (2.2, bonus) | ~0,5 j |
-| Tests / validation | ~0,25 j |
-| **Total** | **~0,5 j** (2.1 seul) / **~1 j** (avec 2.2) |
+| Bloc                             | Effort                                      |
+| -------------------------------- | ------------------------------------------- |
+| Compteur surface (2.1)           | ~0,25 j                                     |
+| Retrait contraintes (2.2, bonus) | ~0,5 j                                      |
+| Tests / validation               | ~0,25 j                                     |
+| **Total**                        | **~0,5 j** (2.1 seul) / **~1 j** (avec 2.2) |
