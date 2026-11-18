@@ -1,8 +1,19 @@
 # Ticket 18 — Tooltip « nb génisses à garder »
 
 > **Provenance** : Devis 2025 (R11) — `2025081802D_devis_Antoine_Savoie_inrae_correctifs`
-> Statut : **à traiter** · Priorité : **basse** · Type : correction UX
-> Date de l'analyse : 2026-11-18
+> Statut : **✅ Implémenté** · Priorité : **basse** · Type : correction UX
+> Date de l'analyse : 2026-11-18 · Mise à jour : 2026-11-18 (implémenté)
+
+---
+
+## Implémentation (2026-11-18)
+
+- `HerdModal.vue` (création de lot) : `v-tooltip` + icône `mdi-help-circle-outline`
+  sur le champ « Nombre d'animaux ».
+- `BatchDetails.vue` (édition de lot) : idem.
+- `fr.json` : clés `herd.modal.count_tooltip` + `herd.details.count_tooltip`.
+- Le tooltip s'affiche au survol de l'icône d'aide (pas conditionnel au type de
+  lot — le texte est explicite « Pour un lot de génisses : … »).
 
 ---
 
@@ -32,10 +43,10 @@ nombre de génisses **gardées** (mises à la reproduction), pas le nombre total
 
 ## 3. Fichiers impactés
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                            | Changement                                |
+| -------------------------------------------------- | ----------------------------------------- |
 | `src/components/parts/herd/AnimalProfileModal.vue` | Ajouter `v-tooltip` sur le champ génisses |
-| `src/locales/fr.json` | Clé i18n pour le texte du tooltip |
+| `src/locales/fr.json`                              | Clé i18n pour le texte du tooltip         |
 
 ## 4. Critères d'acceptation
 
@@ -46,7 +57,9 @@ nombre de génisses **gardées** (mises à la reproduction), pas le nombre total
 
 ## 5. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Ajouter `v-tooltip` + texte | ~0,1 j |
-| **Total** | **~0,1 j** |
+| Bloc                        | Effort     |
+| --------------------------- | ---------- |
+| Ajouter `v-tooltip` + texte | ~0,1 j     |
+| **Total**                   | **~0,1 j** |
+
+> ✅ Fait le 2026-11-18 (~0,1 j, comme estimé).

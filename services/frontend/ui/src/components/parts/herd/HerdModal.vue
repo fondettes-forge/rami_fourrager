@@ -37,14 +37,29 @@
             :allow-overflow="true"
           >
           </v-autocomplete>
-          <v-text-field
-            v-model.number="lotItem.count"
-            :rules="[rules.required, rules.integer]"
-            :label="$t('herd.modal.count')"
-            type="number"
-            hide-spin-buttons
-            min="0"
-          ></v-text-field>
+          <div class="d-flex align-center">
+            <v-text-field
+              v-model.number="lotItem.count"
+              :rules="[rules.required, rules.integer]"
+              :label="$t('herd.modal.count')"
+              type="number"
+              hide-spin-buttons
+              min="0"
+            ></v-text-field>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  small
+                  class="ml-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  mdi-help-circle-outline
+                </v-icon>
+              </template>
+              <span>{{ $t('herd.modal.count_tooltip') }}</span>
+            </v-tooltip>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

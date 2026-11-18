@@ -25,16 +25,31 @@
       required
     >
     </v-autocomplete>
-    <v-text-field
-      v-model.number="count"
-      :rules="[rules.required, rules.integer]"
-      :label="$t('herd.details.count')"
-      type="number"
-      min="0"
-      :color="pageColor"
-      hide-spin-buttons
-      @focus="confirmUpdate"
-    ></v-text-field>
+    <div class="d-flex align-center">
+      <v-text-field
+        v-model.number="count"
+        :rules="[rules.required, rules.integer]"
+        :label="$t('herd.details.count')"
+        type="number"
+        min="0"
+        :color="pageColor"
+        hide-spin-buttons
+        @focus="confirmUpdate"
+      ></v-text-field>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            small
+            class="ml-2"
+            v-bind="attrs"
+            v-on="on"
+          >
+            mdi-help-circle-outline
+          </v-icon>
+        </template>
+        <span>{{ $t('herd.details.count_tooltip') }}</span>
+      </v-tooltip>
+    </div>
     <v-divider></v-divider>
     <v-select
       v-model="housingType"

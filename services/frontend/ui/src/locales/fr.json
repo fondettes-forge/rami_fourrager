@@ -374,7 +374,8 @@
       "title": "Nouveau lot",
       "profile": "Profil",
       "type": "Type de bétail",
-      "count": "Nombre d'animaux"
+      "count": "Nombre d'animaux",
+      "count_tooltip": "Pour un lot de génisses : saisir le nombre de génisses gardées (mises à la reproduction). Le nombre total de génisses est supérieur (génisses vendues + génisses gardées), c'est pourquoi le nombre d'animaux total du système apparaît supérieur."
     },
     "housing": {
       "title": "Présence en batiment pour la période {id}",
@@ -470,6 +471,7 @@
       "profile": "Profil",
       "type": "Type de bétail",
       "count": "Nombre d'animaux",
+      "count_tooltip": "Pour un lot de génisses : saisir le nombre de génisses gardées (mises à la reproduction). Le nombre total de génisses est supérieur (génisses vendues + génisses gardées), c'est pourquoi le nombre d'animaux total du système apparaît supérieur.",
       "housing_types": "Type de logement"
     },
     "duplication": {
