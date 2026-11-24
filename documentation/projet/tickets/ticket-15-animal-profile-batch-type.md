@@ -1,8 +1,20 @@
 # Ticket 15 — AnimalProfileModal : select batch_type + rafraîchissement des profils
 
 > Source : TODO dans `src/views/workspace/AnimalProfileModal.vue` L260.
-> Statut : **à traiter** · Priorité : **moyenne** · Type : bug / correction
-> Date de l'analyse : 2026-11-17
+> Statut : **✅ Implémenté** · Priorité : **moyenne** · Type : bug / correction
+> Date de l'analyse : 2026-11-17 · Mise à jour : 2026-11-18 (implémenté, groupé avec ticket 17)
+
+---
+
+## Implémentation (2026-11-18)
+
+- **A** : `watch item` — à la création, `batch_type_id = null` + `batch_type = null`
+  (au lieu de `6` résiduel) + `animalProfiles = []` (liste vidée).
+- **B** : `handleBTChange` — recharge `animalProfiles` via
+  `getAnimalProfileList(val.id)`, met à jour `batch_type_id` + `batch_type`, et
+  vide `animalProfileToCopy` (profil copié).
+- **Couplage ticket 17** : le select `batch_type` a maintenant `:rules="[rules.required]"`
+  - `required` (champs obligatoires marqués).
 
 ---
 
@@ -34,14 +46,18 @@ le select des **profils animaux** (`animalProfileList`) doit se **rafraîchir** 
 n'afficher que les profils correspondant au nouveau `batch_type`.
 
 Le getter `animalProfileList` (`referential.js` L148) filtre déjà par `batchTypeId` :
+
 ```js
 animalProfileList: (state, getters, rootState) => (batchTypeId) => {
-  var list = state.animal_profiles
+  var list = state.animal_profiles;
   if (rootState.workspace.workspace.animalProfiles.length > 0) {
-    list = mergeLists([...state.animal_profiles], [...rootState.workspace.workspace.animalProfiles])
+    list = mergeLists(
+      [...state.animal_profiles],
+      [...rootState.workspace.workspace.animalProfiles],
+    );
   }
-  return list.filter((ap) => ap.batch_type_id === batchTypeId)
-}
+  return list.filter((ap) => ap.batch_type_id === batchTypeId);
+};
 ```
 
 ➡️ Le getter est **correct** (filtre par `batchTypeId`). Le problème est côté
@@ -51,10 +67,10 @@ animalProfileList: (state, getters, rootState) => (batchTypeId) => {
 
 ### 1.3 Résumé
 
-| # | Problème | Où | Impact |
-|---|----------|----|--------|
-| A | Select `batch_type` non réinitialisé à la création | `AnimalProfileModal.vue` (watch `item` / `data`) | l'utilisateur voit un `batch_type` résiduel |
-| B | Liste des profils ne se rafraîchit pas quand `batch_type` change | `AnimalProfileModal.vue` (watch / computed) | profils incohérents avec le `batch_type` sélectionné |
+| #   | Problème                                                         | Où                                               | Impact                                               |
+| --- | ---------------------------------------------------------------- | ------------------------------------------------ | ---------------------------------------------------- |
+| A   | Select `batch_type` non réinitialisé à la création               | `AnimalProfileModal.vue` (watch `item` / `data`) | l'utilisateur voit un `batch_type` résiduel          |
+| B   | Liste des profils ne se rafraîchit pas quand `batch_type` change | `AnimalProfileModal.vue` (watch / computed)      | profils incohérents avec le `batch_type` sélectionné |
 
 ---
 
@@ -107,8 +123,8 @@ sans `batch_type`).
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                      | Changement                                                                                                   |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `src/views/workspace/AnimalProfileModal.vue` | réinitialiser `batch_type` à la création (A) ; s'assurer que la liste des profils dépend de `batch_type` (B) |
 
 ---
@@ -134,9 +150,9 @@ sans `batch_type`).
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Réinitialiser `batch_type` à la création (A) | ~0,25 j |
-| Rafraîchissement liste profils (B) | ~0,25 j |
-| Tests / validation | ~0,25 j |
-| **Total** | **~0,75 j** |
+| Bloc                                         | Effort      |
+| -------------------------------------------- | ----------- |
+| Réinitialiser `batch_type` à la création (A) | ~0,25 j     |
+| Rafraîchissement liste profils (B)           | ~0,25 j     |
+| Tests / validation                           | ~0,25 j     |
+| **Total**                                    | **~0,75 j** |

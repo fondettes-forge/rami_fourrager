@@ -98,18 +98,23 @@
                       item-text="name"
                       item-value="id"
                       return-object
-                      @change="handleBTChange"
                       :disabled="copyDisabled"
+                      :rules="[rules.required]"
+                      required
+                      @change="handleBTChange"
                     ></v-select>
 
                     <v-text-field
                       v-model="animalProfile.name"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.name')"
+                      :rules="[rules.required]"
                       required
                     ></v-text-field>
                     <v-text-field
                       v-model="animalProfile.age_mois"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.age_mois')"
+                      :rules="[rules.required]"
+                      required
                     ></v-text-field>
                     <v-text-field
                       v-model="animalProfile.sem_MB"
@@ -278,10 +283,10 @@
             this.animalProfile = newValue
             this.copyDisabled = true
           } else {
-            // create
+            // create — batch_type à blanc (ticket 15 A)
             this.animalProfile = {
-              batch_type_id: 6,
-              batch_type: {},
+              batch_type_id: null,
+              batch_type: null,
               code: '',
               name: '',
               period_MB: 'printemps',
@@ -301,6 +306,7 @@
                 PL: 0,
               })),
             }
+            this.animalProfiles = []
             this.copyDisabled = false
           }
         },
@@ -386,7 +392,11 @@
         }
       },
       handleBTChange(val) {
+        // ticket 15 B : recharger la liste des profils + vider le profil sélectionné
         this.animalProfiles = this.getAnimalProfileList(val.id)
+        this.animalProfile.batch_type_id = val.id
+        this.animalProfile.batch_type = val
+        this.animalProfileToCopy = null // vider le profil copié
       },
     },
   }

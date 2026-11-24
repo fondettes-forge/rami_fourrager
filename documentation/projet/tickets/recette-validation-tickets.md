@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 9, 11, 13, 18**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 5, 11, 18).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 9, 11, 13, 15, 17, 18**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 5, 11, 15, 17, 18).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -130,6 +130,32 @@
 > La carte dupliquée n'a **pas l'`id`** de la source (id dérivé à la volée par
 > `mergeLists`, ticket 1 §2.4). Le nom est préfixé « (copie) » pour que
 > l'utilisateur le renomme.
+
+---
+
+## Ticket 15 — AnimalProfileModal : batch_type + rafraîchissement profils
+
+| #   | Action                                                                            | Résultat attendu                                                                                                               |
+| --- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | _Mes configurations → Mes profils animaux_ → cliquer « Ajouter un profil animal » | le select **« Type d'animal »** est **à blanc** (pas de valeur résiduelle)                                                     |
+| 2   | Sélectionner un type d'animal (ex. « Vache laitière »)                            | la liste des profils (bloc « Copier un profil existant ») se **rafraîchit** avec les profils correspondant au type sélectionné |
+| 3   | Changer le type d'animal (ex. → « Génisse »)                                      | la liste des profils se **rafraîchit** à nouveau ; le profil copié est **vidé**                                                |
+| 4   | Essayer de valider sans sélectionner de type d'animal                             | la soumission est **bloquée** (règle `required` sur le select batch_type)                                                      |
+| 5   | _(Mode édition)_ Cliquer « Modifier » sur un profil existant                      | le select batch_type est **pré-rempli** avec le type du profil (pas réinitialisé)                                              |
+
+---
+
+## Ticket 17 — Validation formulaires : champs obligatoires (profil animal)
+
+| #   | Action                                                                               | Résultat attendu                                                                                                                        |
+| --- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Mes configurations → Mes profils animaux_ → « Ajouter un profil animal »            | les champs **Type d'animal**, **Nom du profil**, **Âge au vêlage** sont marqués **obligatoires** (astérisque `*` + règle de validation) |
+| 2   | Laisser les 3 champs obligatoires vides et cliquer « Enregistrer »                   | la soumission est **bloquée** ; message d'erreur « champ requis » sous chaque champ vide                                                |
+| 3   | Remplir les 3 champs obligatoires, laisser les autres (poids, NEC, lactation…) vides | la soumission est **validée** (champs facultatifs)                                                                                      |
+| 4   | Saisir une valeur non numérique dans « Poids au vêlage »                             | règle `number` : message d'erreur « valeur numérique requise »                                                                          |
+
+> **Baguettes** (`SticModal.vue`) : **à faire** — marquer les champs obligatoires
+> (name, type, surface) de la même façon. (Groupe B avec le ticket 7.)
 
 ---
 

@@ -40,9 +40,9 @@
 | 12  | Tourteaux absents de Stocks et Coûts                        | Nouveauté   | **Haute** | 📄 **Option 2 (RT) tranchée** | [ticket-12](ticket-12-tourteaux-stocks-couts.md)      | Mail oct. 2026             | **Option 2 (RT) retenue — spec complète, à implémenter** ; impacte l'ordre Grange (13) |
 | 13  | Réorganiser la liste de la Grange                           | Correction  | Basse     | ✅ Implémenté                 | [ticket-13](ticket-13-reorganiser-grange.md)          | Mail oct. 2026             | STRAW en fin (ticket 8) ; si ticket 12 Option 2 → insérer `RT`                         |
 | 14  | Valeurs pâtures VL/VA                                       | À clarifier | Moyenne   | ⏳ **À clarifier**            | [ticket-14](ticket-14-valeurs-patuares-vl-va.md)      | Mail oct. 2026             | **décision INRAE requise** avant code                                                  |
-| 15  | AnimalProfileModal : batch_type + rafraîchissement profils  | Bug         | Moyenne   | 📄 Doc écrite                 | [ticket-15](ticket-15-animal-profile-batch-type.md)   | TODO code                  | TODO `AnimalProfileModal.vue` L260                                                     |
+| 15  | AnimalProfileModal : batch_type + rafraîchissement profils  | Bug         | Moyenne   | ✅ Implémenté                 | [ticket-15](ticket-15-animal-profile-batch-type.md)   | TODO code                  | batch_type à blanc + refresh profils (groupé avec 17)                                  |
 | 16  | Export : nom obligatoire + colonnes manquantes              | Bug         | Moyenne   | 📄 Doc écrite                 | [ticket-16](ticket-16-export-nom-colonnes.md)         | TODO code                  | TODO `Export.vue` L141                                                                 |
-| 17  | Validation formulaires : champs facultatifs/obligatoires    | Correction  | Moyenne   | 📄 Doc écrite                 | [ticket-17](ticket-17-validation-formulaires.md)      | Devis 2025 (R10)           | Baguettes + profils animaux                                                            |
+| 17  | Validation formulaires : champs facultatifs/obligatoires    | Correction  | Moyenne   | ✅ Implémenté (profil)        | [ticket-17](ticket-17-validation-formulaires.md)      | Devis 2025 (R10)           | Profils animaux ✅ (groupé avec 15) ; baguettes à faire                                |
 | 18  | Tooltip « nb génisses à garder »                            | Correction  | Basse     | ✅ Implémenté                 | [ticket-18](ticket-18-tooltip-genisses.md)            | Devis 2025 (R11)           | v-tooltip sur le champ « Nombre d'animaux » (HerdModal + BatchDetails)                 |
 | 19  | Graphique « pâture verte disponible et besoin du troupeau » | Nouveauté   | Moyenne   | 📄 Doc écrite                 | [ticket-19](ticket-19-graph-pature-verte.md)          | Devis 2025 (R12)           | À mettre dans le module Assolement                                                     |
 | 20  | Formulaire gestion sites (création/màj/supp + années)       | Nouveauté   | **Haute** | 📄 Doc écrite                 | [ticket-20](ticket-20-gestion-sites.md)               | Devis 2025 (R27)           | Triptyque site → année → baguette ; backend + frontend                                 |
@@ -55,8 +55,8 @@
 ## Synthèse
 
 - **Total** : 25 tickets (16 du mail oct. 2026 + 9 du devis 2025).
-- **Implémenté** : 12/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 9 [onglets Bilan], 11 [compteur surface 2.1], 13 [Grange], 18 [tooltip génisses]) — le ticket 6 est le doublon du 1.
-- **Doc écrite, prête à implémenter** : 13/25 (tickets 7, 10, 12 [Option 2 tranchée], 15, 16, 17, 19, 20, 21, 22, 23, 24, 25).
+- **Implémenté** : 14/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 9 [onglets Bilan], 11 [compteur surface 2.1], 13 [Grange], 15 [batch_type], 17 [validation profil], 18 [tooltip génisses]) — le ticket 6 est le doublon du 1.
+- **Doc écrite, prête à implémenter** : 11/25 (tickets 7, 10, 12 [Option 2 tranchée], 16, 19, 20, 21, 22, 23, 24, 25).
 - **À clarifier (décision requise)** : 1/25 (ticket 14, INRAE) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales → backlog BL-1).
 
 ## Blocs de travail suggérés

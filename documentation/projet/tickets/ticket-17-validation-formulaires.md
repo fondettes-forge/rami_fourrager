@@ -1,8 +1,22 @@
 # Ticket 17 — Validation formulaires : champs facultatifs / obligatoires
 
 > **Provenance** : Devis 2025 (R10) — `2025081802D_devis_Antoine_Savoie_inrae_correctifs`
-> Statut : **à traiter** · Priorité : **moyenne** · Type : correction UX
-> Date de l'analyse : 2026-11-18
+> Statut : **✅ Implémenté (profil animal)** · ⏳ baguettes à faire · Priorité : **moyenne** · Type : correction UX
+> Date de l'analyse : 2026-11-18 · Mise à jour : 2026-11-18 (profil animal fait, groupé avec ticket 15)
+
+---
+
+## Implémentation — Profil animal (2026-11-18)
+
+- `AnimalProfileModal.vue` : champs **obligatoires** marqués `required` +
+  `:rules="[rules.required]"` :
+  - `batch_type` (select)
+  - `name` (nom du profil)
+  - `age_mois` (âge au vêlage)
+- Les autres champs (weight_MB_kg, NEC_MB, lactation_duration, …) restent
+  **facultatifs** (règle `number` uniquement, pas `required`).
+- **Baguettes** (`SticModal.vue`) : **à faire** — marquer les champs obligatoires
+  (name, type, surface) de la même façon. (Groupe B avec le ticket 7.)
 
 ---
 
@@ -34,11 +48,11 @@ obligatoires. L'utilisateur ne sait pas quels champs il peut laisser vides.
 
 ## 3. Fichiers impactés
 
-| Fichier | Changement |
-|---------|-----------|
-| `src/components/parts/herd/SticModal.vue` | Marquer champs obligatoires + `rules` |
-| `src/components/parts/herd/AnimalProfileModal.vue` | Idem |
-| `src/locales/fr.json` | Libellés « (obligatoire) » / « (facultatif) » |
+| Fichier                                            | Changement                                    |
+| -------------------------------------------------- | --------------------------------------------- |
+| `src/components/parts/herd/SticModal.vue`          | Marquer champs obligatoires + `rules`         |
+| `src/components/parts/herd/AnimalProfileModal.vue` | Idem                                          |
+| `src/locales/fr.json`                              | Libellés « (obligatoire) » / « (facultatif) » |
 
 ## 4. Critères d'acceptation
 
@@ -49,8 +63,8 @@ obligatoires. L'utilisateur ne sait pas quels champs il peut laisser vides.
 
 ## 5. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Marquer champs obligatoires (2 formulaires) | ~0,3 j |
-| Ajouter `rules` vee-validate | ~0,2 j |
-| **Total** | **~0,5 j** |
+| Bloc                                        | Effort     |
+| ------------------------------------------- | ---------- |
+| Marquer champs obligatoires (2 formulaires) | ~0,3 j     |
+| Ajouter `rules` vee-validate                | ~0,2 j     |
+| **Total**                                   | **~0,5 j** |
