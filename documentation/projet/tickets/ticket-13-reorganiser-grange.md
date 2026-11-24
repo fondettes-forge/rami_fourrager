@@ -114,9 +114,9 @@ sur les calculs.
   `barnStockItems` (ticket 8), il faut **choisir sa position** dans l'ordre
   (suggestion : après « autre stock » ou en fin, car la paille est gérée
   séparément). Traiter en cohérence.
-- **Coordination avec le ticket 12** : si Option 2 (`RT` tourteau) est choisie,
-  `RT` doit être inséré dans l'ordre (suggestion : après « protéagineux en
-  grain »). Traiter en cohérence.
+- **Coordination avec le ticket 12** : le ticket 12 (Option 2 `RT`) a été
+  implémenté (2026-11-24) — `RT` est inséré **après `RP`**, avant `AS`. L'ordre
+  final de `barnStockItems` est : `FH, FL, EH, EM, EL, RC, RP, RT, AS, STRAW`.
 - **Quasi nul** : c'est un réordonnancement d'un tableau en dur. Vérifier juste
   que l'ordre n'a pas d'effet sur un calcul (il n'y en a pas — les codes sont
   utilisés, pas l'index).

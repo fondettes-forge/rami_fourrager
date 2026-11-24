@@ -49,6 +49,9 @@ export default {
       { code: 'EL', name: 'Ensilage de légumineuses', unity: 'tMS', color: '' },
       { code: 'RC', name: 'Céréales en grain', unity: 'qtx', concentrated: true, color: '' },
       { code: 'RP', name: 'Protéagineux en grain', unity: 'qtx', concentrated: true, color: '' },
+      // ticket 12 — tourteaux : stock dédié RT (même logique que STRAW, ticket 8)
+      // ordre ticket 13 mis à jour : FH, FL, EH, EM, EL, RC, RP, RT, AS, STRAW
+      { code: 'RT', name: 'Tourteaux', unity: 'qtx', concentrated: true, color: '' },
       { code: 'AS', name: 'autre stock', unity: 'tMS', color: '' },
       { code: 'STRAW', name: 'Paille', unity: 't', color: '' },
     ],

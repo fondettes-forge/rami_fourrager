@@ -591,6 +591,7 @@ export function getConsumptionByBarnStockItem(simulation, periods, stockCode) {
   switch (stockCode) {
     case 'RP':
     case 'RC':
+    case 'RT':
       return getConsumptionForConcentrated(simulation, periods, stockCode)
     case 'STRAW':
       return getConsumptionForStraw(simulation, periods)

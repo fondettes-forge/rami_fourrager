@@ -267,7 +267,8 @@
     "concentrated": {
       "title": "Stock de concentrés disponibles au 1er janvier",
       "energeticQuantity": "Quantité de concentrés energétiques (en qtx)",
-      "proteicQuantity": "Quantité de concentrés protéiques (en qtx)"
+      "proteicQuantity": "Quantité de concentrés protéiques (en qtx)",
+      "tourteauxQuantity": "Quantité de tourteaux (en qtx)"
     },
     "modal": {
       "title": "Ajouter à la grange",

@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 11, 13, 18, 22**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 11, 12, 13, 18, 22**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -98,6 +98,24 @@
 
 ---
 
+## Ticket 12 — Tourteaux dans Stocks et Coûts (Option 2 — RT)
+
+| #   | Action                                                                                                       | Résultat attendu                                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Bilan → Stocks et coûts_ → groupe « Les cultures »                                                          | une **ligne « Tourteaux » (RT)** apparaît, en plus de Céréales (RC) et Protéagineux (RP)                                          |
+| 2   | Distribuer un tourteau (ex. « Tourteau de colza » 0,35) à un lot sur une période → _Bilan → Stocks et coûts_ | la consommation de la ligne **RT** est **non nulle** et cohérente ; les lignes RC et RP restent à 0 (pas de mélange)              |
+| 3   | _Grange_ → section « Concentrés »                                                                            | un **3e champ** « Quantité de tourteaux (en qtx) » existe (stock initial RT), en plus des champs RC et RP                         |
+| 4   | Saisir un stock initial RT (ex. 5) → _Bilan → Stocks et coûts_                                               | le stock initial de la ligne **RT** = 5                                                                                           |
+| 5   | Table des stocks de la Grange                                                                                | la ligne **RT n'apparaît pas** dans la table générique des stocks fourragers (saisie uniquement dans le champ dédié, comme RC/RP) |
+| 6   | _Mes configurations → Cartes rations → stock correspondant_                                                  | le select propose **RT (Tourteaux)** (carte ration tourteau pointable vers RT)                                                    |
+| 7   | _(Annexe T4, non traitée)_ : un concentré `RC-RP` (Blé_pois 50-50)                                           | ne remonte nulle part pour l'instant — **à traiter séparément** (à valider avec INRAE : 2a CSV ou 2b parsing)                     |
+
+> **Re-seed** : le CSV `fichier_aliments_concentres.csv` a `stock_correspondant = RT`
+> sur les 4 lignes tourteaux — **re-seed du référentiel `ConcentratedFeed` à faire**
+> en base pour que la remontée fonctionne sur les concentrés du référentiel.
+
+---
+
 ## Ticket 7 — Décliner une baguette entre années climatiques
 
 | #   | Action                                                                                                                           | Résultat attendu                                                                                                                                                                                                    |
@@ -186,10 +204,10 @@
 
 ```bash
 cd services/frontend/ui
-npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential"
+npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated"
 ```
 
-→ **22/22 ✅** (fusion des listes, bloc paille, unités paille).
+→ **30/30 ✅** (fusion des listes, bloc paille, unités paille, tourteaux RT).
 
 ## Build (optionnel)
 

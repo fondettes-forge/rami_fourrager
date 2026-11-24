@@ -46,6 +46,7 @@ export default {
       EM: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
       RC: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
       RP: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+      RT: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
       AS: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
       EL: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
       FL: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
@@ -132,7 +133,7 @@ export default {
       const stock = []
       const simulation = rootState.simulator
       const periods = rootState.referential.periods
-      const stockCodeList = ['RC', 'RP']
+      const stockCodeList = ['RC', 'RP', 'RT']
       const getStic = rootGetters['referential/getSticByName']
       stockCodeList.forEach((stockCode) => {
         const stockItem = {

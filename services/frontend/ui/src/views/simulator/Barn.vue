@@ -45,6 +45,14 @@
                 hide-spin-buttons
                 min="0"
               ></v-text-field>
+              <!-- ticket 12 — stock initial tourteaux (RT) -->
+              <v-text-field
+                v-model.number="tourteauxQuantity"
+                :label="$t('barn.concentrated.tourteauxQuantity')"
+                type="number"
+                hide-spin-buttons
+                min="0"
+              ></v-text-field>
             </div>
             <div>
               <div class="text-h4 font-weight-light">{{ $t('barn.refusal.title') }}</div>
@@ -293,6 +301,20 @@
           this.$store.commit('simulator/barn/setInitialStocks', el)
         },
       },
+      // ticket 12 — stock initial tourteaux (RT), même pattern que RC/RP
+      tourteauxQuantity: {
+        get() {
+          return this.getInitialStockQuantityByCode('RT')
+        },
+        set(val) {
+          const el = {
+            code: 'RT',
+            name: 'Tourteaux',
+            quantity: val,
+          }
+          this.$store.commit('simulator/barn/setInitialStocks', el)
+        },
+      },
       headers() {
         return [
           // {
@@ -320,8 +342,12 @@
         this.oldItem = item
         // Pre-fill selection from referential list by code
         const found = this.barnStockItems.find((el) => el.code === item.code)
-        this.selectedItem =
-          found || { code: item.code, name: item.name, unity: item.unity, concentrated: item.concentrated }
+        this.selectedItem = found || {
+          code: item.code,
+          name: item.name,
+          unity: item.unity,
+          concentrated: item.concentrated,
+        }
         this.quantityInTons = item.quantity
         this.dialog = true
       },

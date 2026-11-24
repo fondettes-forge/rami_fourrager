@@ -52,7 +52,11 @@ export default {
   },
   getters: {
     initialStocks: (state) => {
-      return state.initialStocks.filter((el) => el.code !== 'STRAW' && el.code !== 'RP' && el.code !== 'RC')
+      // STRAW (ticket 8), RC/RP/RT (concentrés, saisis dans leur champ dédié, ticket 12)
+      // sont exclus de la table générique des stocks fourragers
+      return state.initialStocks.filter(
+        (el) => el.code !== 'STRAW' && el.code !== 'RP' && el.code !== 'RC' && el.code !== 'RT'
+      )
     },
     getInitialStockQuantityByCode: (state) => (code) => {
       let quantity = 0

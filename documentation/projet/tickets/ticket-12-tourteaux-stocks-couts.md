@@ -1,12 +1,12 @@
 # Ticket 12 — Concentrés : tourteaux (colza, soja, …) absents de Stocks et Coûts
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §12.
-> Statut : **✅ Option 2 (RT) tranchée — spécification complétée, à implémenter**
+> Statut : **✅ Implémenté (Option 2 — RT)**
 > · Priorité : **haute** · Type : nouveauté
 > Seche lié : ticket **1** (cartes custom distribuable — nécessaire pour que les cartes
 > tourteaux custom remontent aussi) · ticket **13** (ordre des stocks Grange, même source
 > `barnStockItems`)
-> Date de l'analyse : 2026-11-16 · Mise à jour : 2026-11-18 (Option 2 tranchée + spec complète)
+> Date de l'analyse : 2026-11-16 · Implémenté : 2026-11-24
 
 ---
 
@@ -378,3 +378,32 @@ commit Option 2).
 | i18n + tests unitaires                                      | ~0,5 j      |
 | **Total (Option 2)**                                        | **~1,25 j** |
 | Annexe T4 (`RC-RP`, à traiter séparément)                   | ~0,25 j     |
+
+## 7. Implémentation (2026-11-24)
+
+**Option 2 (RT) implémentée** — m'insère dans l'existant (même logique que `STRAW`,
+aucune migration de schéma, aucun nouveau pattern) :
+
+- **Référentiel** : `fichier_aliments_concentres.csv` (gitignored) —
+  `stock_correspondant = RT` sur les 4 lignes tourteaux (colza, colza AB, soja,
+  soja 42 AB). **Re-seed du référentiel `ConcentratedFeed` à faire** en base.
+  > Les autres concentrés à `stock_correspondant` vide (luzerne, lupin, pois, …)
+  > laissés vides (périmètre minimal = tourteaux) — à trancher avec INRAE.
+- **`referential.js`** : `RT` ajouté dans `barnStockItems` (après `RP`, avant `AS` ;
+  `qtx`, `concentrated: true`). Ordre : `FH, FL, EH, EM, EL, RC, RP, RT, AS, STRAW`.
+- **`mixins.js`** : `case 'RT':` ajoutée dans la branche `RC`/`RP` du switch
+  `getConsumptionByBarnStockItem`.
+- **`report.js`** : `soldedStock.RT` initialisé + `stockCodeList = ['RC','RP','RT']`
+  dans `getConcentratedFeedsStock`.
+- **`barn.js`** : filtre `initialStocks` exclut aussi `RT` (comme STRAW/RC/RP).
+- **`Barn.vue`** : 3e champ `tourteauxQuantity` (→ `RT`), même pattern que RC/RP.
+- **`fr.json`** : `barn.concentrated.tourteauxQuantity`.
+- **Tests** : `tests/unit/vuex/concentrated.spec.js` (nouveau) — 8 tests : RT dans
+  `barnStockItems` (position + attributs), consommation RT (mixins), ligne RT dans
+  `getConcentratedFeedsStock`, `soldedStock.RT` initialisé, `case RT` dans
+  `getConsumptionByBarnStockItem`, `initialStocks` exclut RT, régression RC/RP.
+
+**Annexe T4** (`RC-RP`, §2.3) : **non traitée** (à valider avec INRAE — 2a CSV ou
+2b parsing `split('-')`), à traiter séparément.
+
+**Tests** : 8/8 ✅ (`concentrated.spec.js`) ; 30/30 avec referential + straw.
