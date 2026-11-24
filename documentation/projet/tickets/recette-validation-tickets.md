@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 18, 22, 23**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 22, 23**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -217,6 +217,23 @@
 | 3   | Changer le type d'animal (ex. → « Génisse »)                                      | la liste des profils se **rafraîchit** à nouveau ; le profil copié est **vidé**                                                |
 | 4   | Essayer de valider sans sélectionner de type d'animal                             | la soumission est **bloquée** (règle `required` sur le select batch_type)                                                      |
 | 5   | _(Mode édition)_ Cliquer « Modifier » sur un profil existant                      | le select batch_type est **pré-rempli** avec le type du profil (pas réinitialisé)                                              |
+
+---
+
+## Ticket 16 — Export : nom obligatoire + colonnes manquantes
+
+| #   | Action                                                                                            | Résultat attendu                                                                                                                               |
+| --- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Mes configurations → Export_ → créer un mapping → laisser le **nom vide** et ajouter des champs  | le bouton **« Enregistrer » est désactivé** (règle `required` sur le nom du mapping)                                                           |
+| 2   | Saisir un nom + ajouter au moins un champ → cliquer « Enregistrer »                               | le mapping est **enregistré** et listé                                                                                                         |
+| 3   | Sélectionner une simulation **vide** (pas d'assolement ou pas de troupeau) → cliquer « Exporter » | un **toast d'avertissement** s'affiche : « Aucune donnée à exporter. Vérifiez que la simulation sélectionnée a un assolement et un troupeau. » |
+| 4   | Sélectionner une simulation **complète** (assolement + troupeau) → cliquer « Exporter »           | l'aperçu s'ouvre avec les **colonnes et valeurs** du mapping (pas de colonne manquante)                                                        |
+| 5   | Vérifier que les **colonnes** du mapping sont présentes dans l'aperçu **et** le CSV téléchargé    | les colonnes sont **identiques** dans les deux (même mapping)                                                                                  |
+
+> **Note** : le TODO « les colonnes n'apparaissent » est une **méprise** : les
+> colonnes sont bien présentes (générées depuis `state.mapping.fields`), mais les
+> valeurs sont vides si la simulation est vide (pas de rotations ou pas de batchs).
+> Le message d'avertissement (étape 3) clarifie ce point.
 
 ---
 

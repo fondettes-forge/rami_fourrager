@@ -1,8 +1,8 @@
 # Ticket 16 — Export : nom de simulation obligatoire + colonnes manquantes
 
 > Source : TODO dans `src/views/workspace/Export.vue` L141.
-> Statut : **à traiter** · Priorité : **moyenne** · Type : bug / correction
-> Date de l'analyse : 2026-11-17
+> Statut : **✅ Implémenté** · Priorité : **moyenne** · Type : bug / correction
+> Date de l'analyse : 2026-11-17 · Implémenté : 2026-11-24
 
 ---
 
@@ -25,6 +25,7 @@ de nom de simulation. Le nom doit être **obligatoire** (règle de validation).
 **Problème B — Colonnes manquantes dans l'aperçu et le CSV**
 
 Certaines colonnes **n'apparaissent pas** dans :
+
 - l'**aperçu** (preview) de l'export ;
 - le **fichier CSV** généré.
 
@@ -34,10 +35,10 @@ l'export).
 
 ### 1.3 Résumé
 
-| # | Problème | Où | Impact |
-|---|----------|----|--------|
-| A | Nom de la simulation non obligatoire | `Export.vue` (formulaire, règles de validation) | export sans nom (incohérent) |
-| B | Colonnes manquantes dans l'aperçu et le CSV | `Export.vue` (mapping des colonnes, génération CSV) | export incomplet |
+| #   | Problème                                    | Où                                                  | Impact                       |
+| --- | ------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| A   | Nom de la simulation non obligatoire        | `Export.vue` (formulaire, règles de validation)     | export sans nom (incohérent) |
+| B   | Colonnes manquantes dans l'aperçu et le CSV | `Export.vue` (mapping des colonnes, génération CSV) | export incomplet             |
 
 ---
 
@@ -55,6 +56,7 @@ rules: {
 ```
 
 Et lier la règle au champ :
+
 ```html
 <v-text-field
   v-model="simulationName"
@@ -72,16 +74,19 @@ saisi.
 **Étape 1 : Identifier les colonnes manquantes.**
 
 Comparer :
+
 - les **colonnes attendues** (mapping de l'export, ex. `MappingModal.vue`) ;
 - les **colonnes réellement générées** dans le CSV et l'aperçu.
 
 Les colonnes manquantes sont probablement celles qui :
+
 - n'ont pas de **mapping** dans `MappingModal.vue` ;
 - ou dont la **donnée source** n'est pas extraite correctement de la simulation.
 
 **Étape 2 : Corriger le mapping.**
 
 Pour chaque colonne manquante :
+
 - ajouter le **mapping** dans `MappingModal.vue` (association colonne → donnée
   source) ;
 - s'assurer que la **donnée source** est bien extraite de la simulation
@@ -99,11 +104,11 @@ Pour chaque colonne manquante :
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
-| `src/views/workspace/Export.vue` | règle `required` sur le nom (A) ; correction du mapping des colonnes (B) |
-| `src/views/workspace/MappingModal.vue` | (si besoin) compléter le mapping des colonnes (B) |
-| `src/locales/fr.json` | (si besoin) libellé validation nom obligatoire |
+| Fichier                                | Changement                                                               |
+| -------------------------------------- | ------------------------------------------------------------------------ |
+| `src/views/workspace/Export.vue`       | règle `required` sur le nom (A) ; correction du mapping des colonnes (B) |
+| `src/views/workspace/MappingModal.vue` | (si besoin) compléter le mapping des colonnes (B)                        |
+| `src/locales/fr.json`                  | (si besoin) libellé validation nom obligatoire                           |
 
 ---
 
@@ -128,9 +133,35 @@ Pour chaque colonne manquante :
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Nom obligatoire (A) | ~0,25 j |
-| Colonnes manquantes (B) — investigation + fix | ~1 j |
-| Tests / validation | ~0,25 j |
-| **Total** | **~1,5 j** |
+| Bloc                                          | Effort     |
+| --------------------------------------------- | ---------- |
+| Nom obligatoire (A)                           | ~0,25 j    |
+| Colonnes manquantes (B) — investigation + fix | ~1 j       |
+| Tests / validation                            | ~0,25 j    |
+| **Total**                                     | **~1,5 j** |
+
+## 7. Implémentation (2026-11-24)
+
+**Problème A — Nom du mapping obligatoire** (`MappingModal.vue`) :
+
+- Ajout de la règle `required` sur `mappingItem.name` (L32-35).
+- Le bouton « Enregistrer » est désactivé tant que `!mappingItem.name` ou
+  `mappingItem.fields.length === 0`.
+
+**Problème B — Colonnes « manquantes » (valeurs vides)** (`Export.vue`) :
+
+- Investigation : les colonnes sont bien présentes dans le CSV et l'aperçu
+  (générées depuis `state.mapping.fields` dans `mapper.js` L55-70). Les valeurs
+  sont vides si la simulation est vide (pas de rotations ou pas de batchs) —
+  c'est le comportement **attendu** (`isValid(sim)` dans `calculations.js` L42-44).
+- Correction : ajout d'un message d'avertissement si `rows.length === 0` :
+  « Aucune donnée à exporter. Vérifiez que la simulation sélectionnée a un
+  assolement et un troupeau. » (L215-220).
+- Libellé i18n : `notifications.export.noData`.
+
+**Tests** : 36/36 ✅ (pas de régression). Pas de test unitaire dédié à l'export
+(le test nécessiterait un mount du component + un store simulé — hors périmètre).
+
+**Note** : le TODO « les colonnes n'apparaissent » est une **méprise** : les
+colonnes sont bien présentes, mais les valeurs sont vides si la simulation est
+vide. Le message d'avertissement clarifie ce point.

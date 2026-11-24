@@ -241,7 +241,11 @@
             this.previewRows = rows
             this.previewDialog = true
           } else {
-            // this.$toast?.info?.('Aucune donnée à exporter.')
+            this.$toast({
+              message: this.$t('notifications.export.noData'),
+              type: 'warning',
+              timeout: 5000,
+            })
           }
         })
       },

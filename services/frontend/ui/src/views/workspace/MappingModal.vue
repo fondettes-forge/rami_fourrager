@@ -32,6 +32,8 @@
                   <v-text-field
                     v-model="mappingItem.name"
                     :label="$t('workspace.content.datatables.mapping.create.name')"
+                    :rules="[rules.required]"
+                    required
                   ></v-text-field>
                   <v-divider class="my-3"></v-divider>
                   <v-sheet
@@ -123,7 +125,7 @@
               color="primary"
               type="submit"
               outlined
-              :disabled="mappingItem.fields.length === 0"
+              :disabled="!mappingItem.name || mappingItem.fields.length === 0"
             >
               {{ $t('btn.save') }}
             </v-btn>

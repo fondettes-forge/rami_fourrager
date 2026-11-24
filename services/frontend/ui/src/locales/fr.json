@@ -163,6 +163,9 @@
         "simulation_not_valid": "La simulation n'est pas valide, vérifiez l'assolement"
       }
     },
+    "export": {
+      "noData": "Aucune donnée à exporter. Vérifiez que la simulation sélectionnée a un assolement et un troupeau."
+    },
     "download": {
       "success": "Le fichier est en cours de téléchargement",
       "error": "Une erreur s'est produite lors du téléchargement."
