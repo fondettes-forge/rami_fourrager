@@ -10,7 +10,7 @@
 > - Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
 >   Travaux non traités : [BACKLOG.md](BACKLOG.md).
 >   Chaque ticket indique sa **provenance** (mail oct. 2026 / devis 2025 / TODO code).
->   Mise à jour : 2026-11-24 (ticket 12).
+>   Mise à jour : 2026-11-24 (tickets 12, 23).
 
 ## Légende statut
 
@@ -48,16 +48,17 @@
 | 20  | Formulaire gestion sites (création/màj/supp + années)       | Nouveauté   | **Haute** | 📄 Doc écrite          | [ticket-20](ticket-20-gestion-sites.md)               | Devis 2025 (R27)           | Triptyque site → année → baguette ; backend + frontend                                        |
 | 21  | Duplication de simulation (« Enregistrer-sous »)            | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-21](ticket-21-duplication-simulation.md)      | Devis 2025 (R29)           | —                                                                                             |
 | 22  | Colonne « source » pour les baguettes                       | Nouveauté   | Basse     | ✅ Implémenté          | [ticket-22](ticket-22-source-baguettes.md)            | Devis 2025 (R33)           | Backend + frontend ; migration `d3f8a21c9b4e` à exécuter + re-seed                            |
-| 23  | Feedback login (erreur / user inexistant)                   | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-23](ticket-23-feedback-login.md)              | Devis 2025 (R38)           | —                                                                                             |
-| 24  | Métadonnées référentiel (+ résumé, doc, suppression)        | Nouveauté   | **Haute** | 📄 Doc écrite          | [ticket-24](ticket-24-metadata-referentiel.md)        | Devis 2025 (R40, ligne 39) | Champ résumé + suppression + doc injecteur                                                    |
-| 25  | Page des partenaires : mode pop-up logos                    | Correction  | Moyenne   | 📄 Doc écrite          | [ticket-25](ticket-25-page-partenaires.md)            | Devis 2025 (R31, ligne 30) | `PartnersPage.vue` existe déjà ; il manque le **pop-up**                                      |
+| 23  | Feedback login (erreur / user inexistant)                   | Bug         | Moyenne   | ✅ Implémenté          | [ticket-23](ticket-23-feedback-login.md)              | Devis 2025 (R38)           | `v-alert` + state.error + i18n                                                                |
+| 24  | Métadonnées référentiel (résumé baguette + doc injecteur)   | Nouveauté   | **Haute** | 📄 Doc écrite          | [ticket-24](ticket-24-metadata-referentiel.md)        | Devis 2025 (R40, ligne 39) | Résumé + doc injecteur ; **suppression → [BL-2](BACKLOG.md)** (2026-11-23)                    |
+| 25  | Page des partenaires : mode pop-up logos                    | Correction  | Moyenne   | ⏳ **Au backlog**      | [ticket-25](ticket-25-page-partenaires.md)            | Devis 2025 (R31, ligne 30) | **Entièrement au backlog [BL-3](BACKLOG.md)** (2026-11-23) ; devis 04D suspendu               |
 
 ## Synthèse
 
 - **Total** : 25 tickets (16 du mail oct. 2026 + 9 du devis 2025).
-- **Implémenté** : 17/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 7 [décliner baguette B1+B3], 9 [onglets Bilan], 11 [compteur surface 2.1], 12 [tourteaux RT], 13 [Grange], 15 [batch_type], 17 [validation profil], 18 [tooltip génisses], 22 [source baguettes]) — le ticket 6 est le doublon du 1.
-- **Doc écrite, prête à implémenter** : 8/25 (tickets 10, 16, 19, 20, 21, 23, 24, 25).
+- **Implémenté** : 18/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 7 [décliner baguette B1+B3], 9 [onglets Bilan], 11 [compteur surface 2.1], 12 [tourteaux RT], 13 [Grange], 15 [batch_type], 17 [validation profil], 18 [tooltip génisses], 22 [source baguettes], 23 [feedback login]) — le ticket 6 est le doublon du 1.
+- **Doc écrite, prête à implémenter** : 6/25 (tickets 10, 16, 19, 20, 21, 24).
 - **À clarifier (décision requise)** : 1/25 (ticket 14, INRAE) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales → backlog BL-1).
+- **Au backlog** : ticket 25 (BL-3, pop-up partenaires) + suppression référentiel ex-ticket 24 §2.2 (BL-2) — décision 2026-11-23.
 
 ## Blocs de travail suggérés
 

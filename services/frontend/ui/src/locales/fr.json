@@ -112,7 +112,11 @@
     "login": {
       "title": "Connexion",
       "email": "Email",
-      "password": "Mot de passe"
+      "password": "Mot de passe",
+      "error": {
+        "invalid": "Identifiant ou mot de passe incorrect.",
+        "userNotFound": "Utilisateur inexistant."
+      }
     }
   },
   "breadcrumb": {

@@ -1,8 +1,8 @@
 # Ticket 23 — Feedback login (erreur / user inexistant)
 
 > **Provenance** : Devis 2025 (R38) — item hors devis numéroté
-> Statut : **à traiter** · Priorité : **moyenne** · Type : bug UX
-> Date de l'analyse : 2026-11-18
+> Statut : **✅ Implémenté** · Priorité : **moyenne** · Type : bug UX
+> Date de l'analyse : 2026-11-18 · Implémenté : 2026-11-24
 
 ---
 
@@ -33,11 +33,11 @@ silencieux, ce qui est confusing.
 
 ## 3. Fichiers impactés
 
-| Fichier | Changement |
-|---------|-----------|
-| `src/store/modules/auth.js` | Gérer les erreurs de login |
-| `src/views/auth/Login.vue` | Afficher le message d'erreur |
-| `src/locales/fr.json` | Libellés d'erreur |
+| Fichier                     | Changement                   |
+| --------------------------- | ---------------------------- |
+| `src/store/modules/auth.js` | Gérer les erreurs de login   |
+| `src/views/auth/Login.vue`  | Afficher le message d'erreur |
+| `src/locales/fr.json`       | Libellés d'erreur            |
 
 ## 4. Critères d'acceptation
 
@@ -48,9 +48,34 @@ silencieux, ce qui est confusing.
 
 ## 5. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Gérer les erreurs (store) | ~0,2 j |
-| Afficher le message (UI) | ~0,2 j |
-| i18n | ~0,1 j |
-| **Total** | **~0,5 j** |
+| Bloc                      | Effort     |
+| ------------------------- | ---------- |
+| Gérer les erreurs (store) | ~0,2 j     |
+| Afficher le message (UI)  | ~0,2 j     |
+| i18n                      | ~0,1 j     |
+| **Total**                 | **~0,5 j** |
+
+## 6. Implémentation (2026-11-24)
+
+**Store (`auth.js`)** :
+
+- Ajout du champ `error` dans le state.
+- Mutation `auth_error` : stocke le message dans `state.error` + toast (existant).
+- Mutation `clearAuthError` : réinitialise `state.error` et `state.status`.
+- Getter `authError` : expose `state.error`.
+
+**UI (`Login.vue`)** :
+
+- `v-alert` (type `error`, dense, dismissible) affiché si `authError` est défini.
+- `clearError()` : commit `auth/clearAuthError` (appelé à chaque soumission + au dismiss).
+- `login()` : réinitialise l'erreur avant le dispatch.
+
+**i18n (`fr.json`)** :
+
+- `auth.login.error.invalid` : « Identifiant ou mot de passe incorrect. »
+- `auth.login.error.userNotFound` : « Utilisateur inexistant. »
+
+**Note** : le message d'erreur provient du backend (`err.response.data.message`). Si le
+backend ne renvoie pas de message, le fallback est `auth.login.error.invalid`.
+Le `v-alert` est dismissible (l'utilisateur peut le fermer) et se réinitialise à
+chaque nouvelle soumission.

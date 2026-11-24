@@ -16,6 +16,16 @@
               fluid
             >
               <v-form>
+                <v-alert
+                  v-if="authError"
+                  type="error"
+                  dense
+                  dismissible
+                  class="mb-4"
+                  @input="clearError"
+                >
+                  {{ authError }}
+                </v-alert>
                 <v-text-field
                   v-model="email"
                   :label="$t('auth.login.email')"
@@ -53,6 +63,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'Login',
     data() {
@@ -61,14 +73,27 @@
         password: '',
       }
     },
+    computed: {
+      ...mapGetters('auth', {
+        authError: 'authError',
+      }),
+    },
     methods: {
+      clearError() {
+        this.$store.commit('auth/clearAuthError')
+      },
       login() {
+        // réinitialiser l'erreur à chaque soumission
+        this.clearError()
         const email = this.email
         const password = this.password
         this.$store
           .dispatch('auth/login', { email, password })
           .then(() => this.$router.push('/workspace'))
-          .catch((err) => console.error(err))
+          .catch((err) => {
+            // l'erreur est déjà dans le state (auth_error) ; on log aussi
+            console.error(err)
+          })
       },
     },
   }

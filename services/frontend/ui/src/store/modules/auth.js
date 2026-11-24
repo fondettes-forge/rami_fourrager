@@ -12,6 +12,7 @@ export default {
     user: {},
     isAdmin: false,
     logoutCanceled: false,
+    error: null,
   },
   mutations: {
     auth_request(state) {
@@ -33,11 +34,16 @@ export default {
     },
     auth_error(state, message) {
       state.status = 'error'
+      state.error = message || 'Identifiant ou mot de passe incorrect.'
       Vue.prototype.$toast({
-        message: message,
+        message: state.error,
         type: 'error',
         timeout: 5000,
       })
+    },
+    clearAuthError(state) {
+      state.error = null
+      state.status = ''
     },
     status_retry(state) {
       state.status = 'retry'
@@ -142,6 +148,7 @@ export default {
   getters: {
     isLoggedIn: (state) => !!state.token,
     authStatus: (state) => state.status,
+    authError: (state) => state.error,
     isAdmin: (state) => (state.user.authorization !== undefined ? state.user.authorization.name === 'admin' : false),
     getUser: (state) => state.user,
     isLogoutCanceled: (state) => state.logoutCanceled,

@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 11, 12, 13, 18, 22**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 11, 12, 13, 18, 22, 23**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -171,6 +171,22 @@
 > La carte dupliquée n'a **pas l'`id`** de la source (id dérivé à la volée par
 > `mergeLists`, ticket 1 §2.4). Le nom est préfixé « (copie) » pour que
 > l'utilisateur le renomme.
+
+---
+
+## Ticket 23 — Feedback login (erreur / user inexistant)
+
+| #   | Action                                                                                | Résultat attendu                                                                                                                  |
+| --- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Saisir un **email invalide** ou un **mot de passe incorrect** → cliquer « Connexion » | un **message d'erreur** s'affiche dans un `v-alert` rouge : « Identifiant ou mot de passe incorrect. » (ou le message du backend) |
+| 2   | Cliquer sur la croix (✕) du `v-alert`                                                 | l'alerte est **fermée** (dismissible) ; le formulaire reste visible                                                               |
+| 3   | Resoumettre le formulaire avec les **mêmes mauvais identifiants**                     | l'alerte **réapparaît** (l'erreur est réinitialisée à chaque soumission, puis re-déclenchée)                                      |
+| 4   | Saisir les **bons identifiants** → cliquer « Connexion »                              | l'alerte n'apparaît pas ; redirection vers `/workspace`                                                                           |
+| 5   | _(Optionnel)_ Backend sans message d'erreur                                           | le fallback « Identifiant ou mot de passe incorrect. » s'affiche (si `err.response.data.message` est vide)                        |
+
+> Le message d'erreur provient du backend (`err.response.data.message`). Si le backend
+> ne renvoie pas de message, le fallback est `auth.login.error.invalid`. L'alerte est
+> dismissible et se réinitialise à chaque soumission.
 
 ---
 
