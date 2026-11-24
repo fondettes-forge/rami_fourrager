@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 9, 11, 13, 15, 17, 18**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 5, 11, 15, 17, 18).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 11, 13, 18, 22**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -95,6 +95,29 @@
 > Le 2.1 ne change aucun calcul : il affiche le getter `totalSurfaces` (existant).
 > Le **2.2 (retrait des Surfaces à Contraintes)** est un bonus **non fait** —
 > à valider avec Antoine avant implémentation.
+
+---
+
+## Ticket 7 — Décliner une baguette entre années climatiques
+
+| #   | Action                                                                                                                           | Résultat attendu                                                                                                                                                                                                    |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Mes configurations → Baguettes fourrage → Ajouter_                                                                              | le bloc de gauche s'intitule **« Décliner une baguette vers une autre année climatique »** ; le select année s'appelle **« Année climatique de destination »** et l'autocomplete **« Baguette source (à copier) »** |
+| 2   | Choisir un site + une année climatique **sèche**, sélectionner une baguette **source** (année **normale**) et cliquer **Copier** | les champs sont pré-remplis avec les valeurs de la source                                                                                                                                                           |
+| 3   | Vérifier le select « Année climatique de destination » après le Copier                                                           | il affiche bien l'année **sèche** (destination), pas l'année de la source (fix B1)                                                                                                                                  |
+| 4   | Enregistrer → datatable des baguettes du workspace                                                                               | la baguette est créée **sur l'année climatique de destination**                                                                                                                                                     |
+| 5   | _(Option 2.3, à clarifier avec Antoine)_                                                                                         | la déclinaison **depuis l'édition** d'une baguette existante n'est pas encore possible (bloc copier désactivé en édition)                                                                                           |
+
+---
+
+## Ticket 22 — Colonne « source » des baguettes
+
+| #   | Action                                                                     | Résultat attendu                                                                                                                                  |
+| --- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Mes configurations → Baguettes fourrage → Ajouter_ → onglet « Le détail » | un champ **« Source de la baguette »** existe (libellé : ex. INRAE, expérimentation locale, estimation) ; facultatif                              |
+| 2   | Saisir une source (ex. « estimation ») et enregistrer                      | la baguette est créée avec sa source                                                                                                              |
+| 3   | DataTable des baguettes du workspace                                       | une colonne **« Source »** apparaît (entre « Nom » et « Actions ») et affiche la valeur saisie                                                    |
+| 4   | Backend (si référentiel déployé)                                           | après `alembic upgrade head` + re-seed, l'API `stic` renvoie `source` ; les baguettes du référentiel ont `source` vide (colonne vide dans le CSV) |
 
 ---
 

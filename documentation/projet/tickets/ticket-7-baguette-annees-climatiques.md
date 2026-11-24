@@ -1,8 +1,8 @@
 # Ticket 7 — Nouvelle baguette : décliner entre années climatiques
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §7.
-> Statut : **à traiter** · Priorité : **moyenne** · Type : nouveauté
-> Date de l'analyse : 2026-11-16
+> Statut : **✅ Implémenté** (B1 + B3, sans l'option 2.3) · Priorité : **moyenne** · Type : nouveauté
+> Date de l'analyse : 2026-11-16 · Implémenté : 2026-11-24
 
 ---
 
@@ -60,11 +60,11 @@ La demande est donc :
 
 ### 1.4 Résumé
 
-| # | Cause | Où | Impact |
-|---|-------|----|--------|
-| B1 | `copyStic()` recopie `climatic_year_id` de la source au lieu de prendre celui du select destination | `SticModal.vue` L353, L334-338 | la baguette copiée reste sur l'année climatique de **source** |
-| B2 | le bloc copier est `disabled` en mode édition ; le déclinaison doit passer par la création | `SticModal.vue` L254 | peu évident pour l'utilisateur |
-| B3 | pas de sélecteur explicite « année climatique de destination » (le select existant sert à la fois source et destination) | `SticModal.vue` L49-59 | confusion source/destination |
+| #   | Cause                                                                                                                    | Où                             | Impact                                                        |
+| --- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------- |
+| B1  | `copyStic()` recopie `climatic_year_id` de la source au lieu de prendre celui du select destination                      | `SticModal.vue` L353, L334-338 | la baguette copiée reste sur l'année climatique de **source** |
+| B2  | le bloc copier est `disabled` en mode édition ; le déclinaison doit passer par la création                               | `SticModal.vue` L254           | peu évident pour l'utilisateur                                |
+| B3  | pas de sélecteur explicite « année climatique de destination » (le select existant sert à la fois source et destination) | `SticModal.vue` L49-59         | confusion source/destination                                  |
 
 ---
 
@@ -124,11 +124,11 @@ avec Antoine.**
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                                | Changement                                     |
+| ------------------------------------------------------ | ---------------------------------------------- |
 | `src/views/workspace/SticModal.vue` (`copyStic`, L353) | prendre `climatic_year_id` de destination (B1) |
-| `src/locales/fr.json` | libellés source/destination (B3) |
-| `src/views/workspace/SticModal.vue` (+ `Content.vue`) | (option 2.3) déclinaison depuis l'édition |
+| `src/locales/fr.json`                                  | libellés source/destination (B3)               |
+| `src/views/workspace/SticModal.vue` (+ `Content.vue`)  | (option 2.3) déclinaison depuis l'édition      |
 
 ---
 
@@ -156,10 +156,26 @@ avec Antoine.**
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Fix B1 (climatic_year_id destination) | ~0,25 j |
-| B3 (libellés source/destination) | ~0,25 j |
-| (Option 2.3) déclinaison depuis l'édition | ~0,5 j |
-| Tests / validation | ~0,25 j |
-| **Total** | **~0,75 j** (sans 2.3) / **~1,25 j** (avec 2.3) |
+| Bloc                                      | Effort                                          |
+| ----------------------------------------- | ----------------------------------------------- |
+| Fix B1 (climatic_year_id destination)     | ~0,25 j                                         |
+| B3 (libellés source/destination)          | ~0,25 j                                         |
+| (Option 2.3) déclinaison depuis l'édition | ~0,5 j                                          |
+| Tests / validation                        | ~0,25 j                                         |
+| **Total**                                 | **~0,75 j** (sans 2.3) / **~1,25 j** (avec 2.3) |
+
+## 7. Implémentation (2026-11-24)
+
+**Fait** (Groupe B, avec le ticket 22) :
+
+- **B1** : `copyStic()` (`SticModal.vue`) — après le `deepCopy` de la source, la
+  baguette prend l'`climatic_year_id` du **select destination** ; le site et la
+  liste des pâtures sont recalculés sur cette destination (`getSite` +
+  `handleSiteChange`).
+- **B3** : libellés `fr.json` — subheader « Décliner une baguette vers une autre
+  année climatique », `climatic_year` → « Année climatique de destination »,
+  `stic_to_copy` → « Baguette source (à copier) ».
+
+**Non fait** : option 2.3 (déclinaison depuis l'édition d'une baguette existante)
+— à clarifier avec Antoine avant implémentation (le bloc copier reste `disabled`
+en mode édition).

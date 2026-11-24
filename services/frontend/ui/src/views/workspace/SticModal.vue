@@ -157,6 +157,10 @@
                       v-model="stic.detail_ITK"
                       :label="$t('workspace.content.datatables.stic.create.dialog.detail_ITK')"
                     ></v-text-field>
+                    <v-text-field
+                      v-model="stic.source"
+                      :label="$t('workspace.content.datatables.stic.create.dialog.source')"
+                    ></v-text-field>
                   </v-sheet>
                 </v-tab-item>
                 <v-tab-item>
@@ -272,6 +276,7 @@
                 farming_method: '',
               })),
               pasture_type: {},
+              source: '',
             }
             this.copyDisabled = false
           }
@@ -352,6 +357,16 @@
       },
       copyStic() {
         this.stic = deepCopy(this.sticToCopy)
+        // la baguette copiée prend l'année climatique du select destination
+        // (pas celle de la source) — ticket 7, fix B1
+        if (this.stic.climatic_year_id !== this.climaticYear) {
+          this.stic.climatic_year_id = this.climaticYear
+        }
+        // le site et la liste des pâtures suivent l'année climatique de destination
+        const site = this.getSite(this.climaticYear)
+        if (site && site.id) {
+          this.handleSiteChange(site.id)
+        }
       },
 
       cancelModal() {
