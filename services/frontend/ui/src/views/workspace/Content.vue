@@ -260,10 +260,18 @@
                 />
               </v-toolbar>
             </template>
-            <template v-slot:[`item.actions`]="{ item }">
+            <template v-slot:[`item.actions`]="{item}">
+              <v-icon
+                @click="copyItem('classicFeed', item)"
+                small
+                class="mr-2"
+              >
+                mdi-content-copy
+              </v-icon>
               <v-icon
                 @click="deleteItem('classicFeed', item)"
                 small
+                class="mr-2"
               >
                 mdi-delete
               </v-icon>
@@ -500,6 +508,20 @@
       editItem(dialogName, item) {
         this.oldItems[dialogName] = deepCopy(item)
         this.newItems[dialogName] = deepCopy(item)
+        this.dialogs[dialogName] = true
+      },
+
+      copyItem(dialogName, item) {
+        // Mode création (oldItems = null) + pré-remplissage avec les valeurs de la carte source
+        this.oldItems[dialogName] = null
+        const copy = deepCopy(item)
+        // Dérive le nom pour que l'utilisateur le renomme (sans copier l'id)
+        copy.name = item.name + ' (copie)'
+        // Supprime l'id pour qu'il soit recalculé à la volée (ticket 1 §2.4)
+        if (copy.id !== undefined) {
+          delete copy.id
+        }
+        this.newItems[dialogName] = copy
         this.dialogs[dialogName] = true
       },
 

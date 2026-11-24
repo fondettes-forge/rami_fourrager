@@ -1,9 +1,24 @@
 # Ticket 5 — Mes cartes rations : dupliquer / adapter une carte existante
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §5.
-> Statut : **à traiter** · Priorité : **moyenne** · Type : nouveauté
+> Statut : **✅ Implémenté** · Priorité : **moyenne** · Type : nouveauté
 > Seche lié : ticket **1** (la carte dupliquée doit être distribuable — déjà corrigé)
-> Date de l'analyse : 2026-11-16
+> Date de l'analyse : 2026-11-16 · Mise à jour : 2026-11-18 (implémenté)
+
+---
+
+## Implémentation (2026-11-18)
+
+- `Content.vue` (tab `classicFeed`) : icône `mdi-content-copy` ajoutée dans la
+  colonne actions (avant delete/edit) + méthode `copyItem`.
+- **`copyItem`** : mode **création** (`oldItems.classicFeed = null`), pré-remplit
+  `newItems.classicFeed` avec `deepCopy(item)`, dérive le nom (`item.name +
+' (copie)'`), **supprime l'`id`** (recalculé à la volée par `mergeLists`,
+  ticket 1 §2.4). Ouvre le modal en mode création.
+- Le `watch` de `ClassicFeedModal.vue` pré-remplit `feedItem` avec `item` (non-null)
+  → formulaire pré-rempli (nom, stock, 9 valeurs nutritionnelles).
+- `saveItem` fait `workspace/addItem` (ajout, car `oldItems === null`).
+- **Pas de changement** dans `ClassicFeedModal.vue` (le pré-remplissage existe déjà).
 
 ---
 
@@ -87,17 +102,17 @@ confusion. À valider avec l'UX.
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                        | Changement                                             |
+| ---------------------------------------------- | ------------------------------------------------------ |
 | `src/views/workspace/Content.vue` (tab `feed`) | icône « dupliquer » + logique de pré-remplissage (2.1) |
-| `src/locales/fr.json` | libellé bouton/tooltip dupliquer (si besoin) |
-| `src/views/workspace/ClassicFeedModal.vue` | (option 2.2) select « dupliquer depuis » |
+| `src/locales/fr.json`                          | libellé bouton/tooltip dupliquer (si besoin)           |
+| `src/views/workspace/ClassicFeedModal.vue`     | (option 2.2) select « dupliquer depuis »               |
 
 ---
 
 ## 4. Critères d'acceptation
 
-1. Dans *Mes configurations → Mes cartes rations*, chaque ligne a une action
+1. Dans _Mes configurations → Mes cartes rations_, chaque ligne a une action
    **Dupliquer**.
 2. Cliquer sur Dupliquer ouvre le modal **pré-rempli** (nom, stock, 9 valeurs)
    avec un **nom dérivé** (ex. « Foin Luzerne Brenne (copie) »).
@@ -116,9 +131,9 @@ confusion. À valider avec l'UX.
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Icône dupliquer + pré-remplissage (2.1) | ~0,25 j |
-| (Option 2.2) select « dupliquer depuis » | ~0,25 j |
-| Tests / validation | ~0,25 j |
-| **Total** | **~0,5 j** |
+| Bloc                                     | Effort     |
+| ---------------------------------------- | ---------- |
+| Icône dupliquer + pré-remplissage (2.1)  | ~0,25 j    |
+| (Option 2.2) select « dupliquer depuis » | ~0,25 j    |
+| Tests / validation                       | ~0,25 j    |
+| **Total**                                | **~0,5 j** |

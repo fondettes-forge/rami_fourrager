@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 9, 11, 13, 18**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 9, 11, 13, 18**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 5, 11, 18).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -114,6 +114,22 @@
 | 1   | _Troupeau → Ajouter un lot_ (HerdModal) → survoler l'icône d'aide (❓) à droite du champ « Nombre d'animaux » | un **tooltip** s'affiche : « Pour un lot de génisses : saisir le nombre de génisses gardées (mises à la reproduction). Le nombre total de génisses est supérieur (génisses vendues + génisses gardées), c'est pourquoi le nombre d'animaux total du système apparaît supérieur. » |
 | 2   | _Troupeau → un lot → onglet Détails_ (BatchDetails) → survoler l'icône d'aide du champ « Nombre d'animaux »   | le **même tooltip** s'affiche                                                                                                                                                                                                                                                     |
 | 3   | Cliquer dans le champ                                                                                         | le champ reste fonctionnel (saisie du nombre, règles requises/entier) — le tooltip n'interfère pas                                                                                                                                                                                |
+
+---
+
+## Ticket 5 — Dupliquer une carte ration
+
+| #   | Action                                                                                                      | Résultat attendu                                                                                                                     |
+| --- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | _Mes configurations → Mes cartes rations_ → chaque ligne a une icône **copier** (📄) en plus de delete/edit | 3 icônes : copier, delete, edit                                                                                                      |
+| 2   | Cliquer sur l'icône copier d'une carte (ex. « Foin Luzerne Brenne »)                                        | le modal s'ouvre **pré-rempli** : nom = « Foin Luzerne Brenne **(copie)** », stock correspondant + 9 valeurs nutritionnelles copiées |
+| 3   | Changer le nom en « Foin Luzerne Brenne 2 » et valider                                                      | une **nouvelle carte** est créée et listée ; la carte source est **inchangée**                                                       |
+| 4   | _Troupeau → lot → Ajouter un aliment_                                                                       | la carte dupliquée **apparaît** dans le select (ticket 1)                                                                            |
+| 5   | Distribuer la carte dupliquée → _Bilan → Stocks et coûts_                                                   | la consommation du code de stock reflète la distribution                                                                             |
+
+> La carte dupliquée n'a **pas l'`id`** de la source (id dérivé à la volée par
+> `mergeLists`, ticket 1 §2.4). Le nom est préfixé « (copie) » pour que
+> l'utilisateur le renomme.
 
 ---
 

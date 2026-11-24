@@ -2,8 +2,12 @@
 
 > Liste de référence : [Rami-liste-tickets.md](Rami-liste-tickets.md) (mail oct. 2026)
 >
-> - [mapping-devis-tickets.md](mapping-devis-tickets.md) (devis 2025).
->   Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
+> - [mapping-devis-tickets.md](mapping-devis-tickets.md) (devis 2025) — vue
+>   **par ticket** (couverture des items du .ods).
+> - [devis_en_attente/INDEX.md](../devis_en_attente/INDEX.md) — vue
+>   **par devis** (chaque devis 01D–05D avec ses tâches, son total, son statut
+>   de facturation, et les tickets associés).
+> - Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
 >   Travaux non traités : [BACKLOG.md](BACKLOG.md).
 >   Chaque ticket indique sa **provenance** (mail oct. 2026 / devis 2025 / TODO code).
 >   Mise à jour : 2026-11-18.
@@ -26,7 +30,7 @@
 | 2   | Paille non comptabilisée (STOCKS/COUTS)                     | Bug         | Haute     | ✅ Implémenté                 | [ticket-2](ticket-2-paille-stocks-couts.md)           | Mail oct. 2026             | **= ticket 8** (même bloc paille, traité de concert)                                   |
 | 3   | Paille (et céréales) en tonnes                              | Correction  | Moyenne   | ✅ **Partiel** (2.1)          | [ticket-3](ticket-3-paille-cereales-tonnes.md)        | Mail oct. 2026             | paille ✅ ; 2.2 céréales → [backlog BL-1](BACKLOG.md)                                  |
 | 4   | Bouton « AJOUTER » Présence inutile                         | Correction  | Basse     | ✅ Implémenté                 | [ticket-4](ticket-4-bouton-ajouter-presence.md)       | Mail oct. 2026             | — (prop `showAddButton` sur PeriodLayout)                                              |
-| 5   | Dupliquer / adapter une carte ration                        | Nouveauté   | Moyenne   | 📄 Doc écrite                 | [ticket-5](ticket-5-dupliquer-carte-ration.md)        | Mail oct. 2026             | dépend du ticket 1 (distribué)                                                         |
+| 5   | Dupliquer / adapter une carte ration                        | Nouveauté   | Moyenne   | ✅ Implémenté                 | [ticket-5](ticket-5-dupliquer-carte-ration.md)        | Mail oct. 2026             | icône copier + pré-remplissage (dépend ticket 1)                                       |
 | 6   | Cartes rations introuvables dans Troupeau                   | Bug         | Haute     | 📄 **Doublon du 1** ✅        | [ticket-6](ticket-6-carte-ration-troupeau.md)         | Mail oct. 2026             | **= ticket 1** (fusionner)                                                             |
 | 7   | Décliner une baguette entre années climatiques              | Nouveauté   | Moyenne   | 📄 Doc écrite                 | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | Mail oct. 2026             | bug latent B1 (climatic_year_id)                                                       |
 | 8   | Aucune paille consommée (logement + alimentation)           | Bug         | Haute     | ✅ Implémenté                 | [ticket-8](ticket-8-paille-aucune-conso.md)           | Mail oct. 2026             | **= ticket 2** (même bloc) ; dépend du 1 ; 100 % frontend                              |
@@ -51,8 +55,8 @@
 ## Synthèse
 
 - **Total** : 25 tickets (16 du mail oct. 2026 + 9 du devis 2025).
-- **Implémenté** : 11/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 9 [onglets Bilan], 11 [compteur surface 2.1], 13 [Grange], 18 [tooltip génisses]) — le ticket 6 est le doublon du 1.
-- **Doc écrite, prête à implémenter** : 14/25 (tickets 5, 7, 10, 12, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25).
+- **Implémenté** : 12/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 9 [onglets Bilan], 11 [compteur surface 2.1], 13 [Grange], 18 [tooltip génisses]) — le ticket 6 est le doublon du 1.
+- **Doc écrite, prête à implémenter** : 13/25 (tickets 7, 10, 12 [Option 2 tranchée], 15, 16, 17, 19, 20, 21, 22, 23, 24, 25).
 - **À clarifier (décision requise)** : 1/25 (ticket 14, INRAE) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales → backlog BL-1).
 
 ## Blocs de travail suggérés
