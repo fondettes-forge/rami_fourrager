@@ -70,18 +70,8 @@ function buildGetters(state) {
   // eslint-disable-next-line global-require
   const referentialModule = require('@/store/modules/referential').default
   return {
-    classicFeedList: referentialModule.getters.classicFeedList(
-      state.referential,
-      {},
-      state,
-      {}
-    ),
-    concentratedFeedList: referentialModule.getters.concentratedFeedList(
-      state.referential,
-      {},
-      state,
-      {}
-    ),
+    classicFeedList: referentialModule.getters.classicFeedList(state.referential, {}, state, {}),
+    concentratedFeedList: referentialModule.getters.concentratedFeedList(state.referential, {}, state, {}),
   }
 }
 
@@ -139,7 +129,9 @@ describe('referential — classicFeedList (fusion référentiel + cartes custom)
     const feedTypes = [{ id: 1, name: 'Foin bonne qualité', correspondingStock: 'FH' }]
     const state = buildReferentialState({ feedTypes })
     const before = JSON.parse(JSON.stringify(feedTypes))
-    buildGetters(state).classicFeedList
+    // le getter doit retourner la liste fusionnée sans muter l'originale
+    const list = buildGetters(state).classicFeedList
+    expect(list.length).toBeGreaterThan(0)
 
     expect(state.referential.feed_types).toEqual(before)
   })
