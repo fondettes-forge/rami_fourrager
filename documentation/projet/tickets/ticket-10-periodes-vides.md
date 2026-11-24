@@ -1,8 +1,8 @@
 # Ticket 10 — Périodes « vides » (couverture grisée / division par zéro ?)
 
 > Ticket source : [Rami-liste-tickets.md](Rami-liste-tickets.md) §10.
-> Statut : **à traiter** · Priorité : **moyenne** · Type : bug
-> Date de l'analyse : 2026-11-16
+> Statut : **✅ Implémenté** · Priorité : **moyenne** · Type : bug
+> Date de l'analyse : 2026-11-16 · Implémenté : 2026-11-24
 
 ---
 
@@ -21,8 +21,8 @@ Le graphique « Couverture des besoins » (`components/parts/herd/GraphCoverage.
 construit ses cellules avec :
 
 ```js
-dataEnergeticCoverage.push([i, 1, energeticCoverage[i] || '-'])  // L97
-dataProteicCoverage.push([i, 0, proteicCoverage[i] || '-'])      // L98
+dataEnergeticCoverage.push([i, 1, energeticCoverage[i] || "-"]); // L97
+dataProteicCoverage.push([i, 0, proteicCoverage[i] || "-"]); // L98
 ```
 
 Une cellule est **grisée/vide** quand `energeticCoverage[i]` (ou
@@ -80,11 +80,11 @@ redevient > 0.
 
 ### 1.4 Cause racine
 
-| # | Cause | Où | Impact |
-|---|-------|----|--------|
-| V1 | Quand 100 % de la ration est en pâture **et que la production de pâture de la période est nulle**, `h274` (UF apporté) = 0 → couverture = 0 → cellule `0` → affichée `'-'` (grise) | `mixins.js` `getPasturesByPeriod` L309, `getFinalEnergeticCoverage` L438, `GraphCoverage.vue` L97 | période « vide » alors que des animaux sont présents |
-| V2 | Pas de distinction entre « couverture = 0 (calculée) » et « période non applicable » — les deux s'affichent en gris | `GraphCoverage.vue` L97-98 | ambiguïté pour l'utilisateur |
-| V3 | (secondaire) si le besoin `h234` est 0, `h276 = h274/0 = Infinity` (pas « vide » mais anormal) | `mixins.js` L462, L530 | valeur anormale possible |
+| #   | Cause                                                                                                                                                                              | Où                                                                                                | Impact                                               |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| V1  | Quand 100 % de la ration est en pâture **et que la production de pâture de la période est nulle**, `h274` (UF apporté) = 0 → couverture = 0 → cellule `0` → affichée `'-'` (grise) | `mixins.js` `getPasturesByPeriod` L309, `getFinalEnergeticCoverage` L438, `GraphCoverage.vue` L97 | période « vide » alors que des animaux sont présents |
+| V2  | Pas de distinction entre « couverture = 0 (calculée) » et « période non applicable » — les deux s'affichent en gris                                                                | `GraphCoverage.vue` L97-98                                                                        | ambiguïté pour l'utilisateur                         |
+| V3  | (secondaire) si le besoin `h234` est 0, `h276 = h274/0 = Infinity` (pas « vide » mais anormal)                                                                                     | `mixins.js` L462, L530                                                                            | valeur anormale possible                             |
 
 > ⚠️ **Ce n'est PAS (ou pas seulement) une simple « division par zéro »** au sens
 > d'une exception : le calcul ne lève pas d'erreur, il **produit 0** (ou
@@ -106,11 +106,11 @@ Concrètement, dans `GraphCoverage.vue` :
 
 ```js
 // aujourd'hui :
-dataEnergeticCoverage.push([i, 1, energeticCoverage[i] || '-'])
+dataEnergeticCoverage.push([i, 1, energeticCoverage[i] || "-"]);
 // proposé :
 // si animaux présents → afficher la valeur (même 0) ; sinon '-' (vraiment vide)
-const hasAnimals = this.selectedLot.housing.presence[i].animalCount > 0
-dataEnergeticCoverage.push([i, 1, hasAnimals ? energeticCoverage[i] : '-'])
+const hasAnimals = this.selectedLot.housing.presence[i].animalCount > 0;
+dataEnergeticCoverage.push([i, 1, hasAnimals ? energeticCoverage[i] : "-"]);
 ```
 
 ➡️ **À valider** : `getFinalEnergeticCoverage` renvoie déjà **0** quand
@@ -129,7 +129,7 @@ Options :
 - **A (recommandé)** : garder le calcul, améliorer l'affichage (2.1) + ajouter
   un **tooltip** sur la cellule : « Couverture 0 % : aucune pâture produite sur
   cette période » (détecte `totalAvailablePastureByPeriod[period].production_total === 0`
-  + proportion pâture = 100 %).
+  - proportion pâture = 100 %).
 - **B** : avertir l'utilisateur **à la saisie** (Troupeau) : « attention, 100 %
   de la ration est en pâture mais la production de la période P7 est nulle ».
   Plus de code (validation à la saisie).
@@ -140,7 +140,7 @@ Dans `getFinalEnergeticCoverage` / `getFinalProteicCoverage`, ajouter une garde
 sur `h234` :
 
 ```js
-const h276 = h234 > 0 ? h274 / h234 : 0
+const h276 = h234 > 0 ? h274 / h234 : 0;
 ```
 
 ➡️ Évite `Infinity` si un profil a UFL/PDI = 0.
@@ -149,11 +149,11 @@ const h276 = h234 > 0 ? h274 / h234 : 0
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                                | Changement                                                            |
+| ------------------------------------------------------ | --------------------------------------------------------------------- |
 | `src/components/parts/herd/GraphCoverage.vue` (L97-98) | distinguer « 0 calculé » de « non applicable » (2.1) + tooltip (2.2A) |
-| `src/store/modules/mixins.js` (L462, L530) | garde `h234 > 0` (2.3) |
-| (option 2.2B) `components/parts/herd/ClassicFeed.vue` | avertissement à la saisie |
+| `src/store/modules/mixins.js` (L462, L530)             | garde `h234 > 0` (2.3)                                                |
+| (option 2.2B) `components/parts/herd/ClassicFeed.vue`  | avertissement à la saisie                                             |
 
 ---
 
@@ -180,10 +180,47 @@ const h276 = h234 > 0 ? h274 / h234 : 0
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Affichage : distinguer 0 calculé / non applicable (2.1) | ~0,5 j |
-| Tooltip explicatif (2.2A) | ~0,5 j |
-| Garde anti-`Infinity` (2.3) | ~0,1 j |
-| Tests | ~0,5 j |
-| **Total** | **~1,5 j** (hors option 2.2B avertissement à la saisie) |
+| Bloc                                                    | Effort                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------- |
+| Affichage : distinguer 0 calculé / non applicable (2.1) | ~0,5 j                                                  |
+| Tooltip explicatif (2.2A)                               | ~0,5 j                                                  |
+| Garde anti-`Infinity` (2.3)                             | ~0,1 j                                                  |
+| Tests                                                   | ~0,5 j                                                  |
+| **Total**                                               | **~1,5 j** (hors option 2.2B avertissement à la saisie) |
+
+## 7. Implémentation (2026-11-24)
+
+**V3 — Garde anti-division par zéro** (`mixins.js`) :
+
+- `getFinalEnergeticCoverage` (L457) : `const h276 = h234 > 0 ? h274 / h234 : 0`
+- `getFinalProteicCoverage` (L525) : `const h276 = h234 > 0 ? h274 / h234 : 0`
+  → plus de `Infinity` si le besoin (UFL/PDI) est 0.
+
+**V2 — Affichage** (`GraphCoverage.vue`) :
+
+- Distinguer « couverture = 0 (animaux présents) » de « période non applicable » :
+  ```js
+  const hasAnimals =
+    this.selectedLot.housing.presence[i] &&
+    this.selectedLot.housing.presence[i].animalCount > 0;
+  dataEnergeticCoverage.push([i, 1, hasAnimals ? energeticCoverage[i] : "-"]);
+  dataProteicCoverage.push([i, 0, hasAnimals ? proteicCoverage[i] : "-"]);
+  ```
+  → si des animaux sont présents, la valeur est affichée (même 0) ; sinon `'-'` (gris).
+
+**Non fait** :
+
+- **V1 (tooltip explicatif)** : le tooltip « Couverture 0 % : aucune pâture produite »
+  n'a pas été implémenté (nécessite de lire `totalAvailablePastureByPeriod` dans
+  le component — plus de code). À faire si la sémantique est validée par INRAE.
+- **Option 2.2B** (avertissement à la saisie) : non fait (hors périmètre).
+
+**Tests** : `coverage.spec.js` (nouveau) — 6 tests :
+
+- V3 : `h234 = 0` → couverture 0 (pas Infinity) pour énergétique + protéique ;
+  couverture normale (`h234 > 0`) → valeur finie.
+- V2 : logique d'affichage (animaux présents → valeur, pas d'animaux → `'-'`,
+  mélange).
+
+**Tests** : 6/6 ✅ (`coverage.spec.js`) ; 36/36 au total (straw + referential +
+concentrated + coverage).

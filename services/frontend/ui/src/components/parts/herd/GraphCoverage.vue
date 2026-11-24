@@ -94,8 +94,13 @@
         const dataEnergeticCoverage = []
         const dataProteicCoverage = []
         for (let i = 0; i < energeticCoverage.length; i++) {
-          dataEnergeticCoverage.push([i, 1, energeticCoverage[i] || '-'])
-          dataProteicCoverage.push([i, 0, proteicCoverage[i] || '-'])
+          // ticket 10, V2 : distinguer « couverture = 0 (animaux présents) » de
+          // « période non applicable (pas d'animaux) ». Si des animaux sont
+          // présents, on affiche la valeur (même 0) ; sinon '-' (gris).
+          const hasAnimals =
+            this.selectedLot.housing.presence[i] && this.selectedLot.housing.presence[i].animalCount > 0
+          dataEnergeticCoverage.push([i, 1, hasAnimals ? energeticCoverage[i] : '-'])
+          dataProteicCoverage.push([i, 0, hasAnimals ? proteicCoverage[i] : '-'])
         }
         const options = {
           grid: {

@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 11, 12, 13, 18, 22, 23**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 18, 22, 23**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -116,6 +116,22 @@
 
 ---
 
+## Ticket 10 — Périodes « vides » (couverture grisée / division par zéro ?)
+
+| #   | Action                                                                                                                                                  | Résultat attendu                                                                                         |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1   | _Troupeau → lot → Couverture des besoins_ : une période avec des **animaux présents** et **100 % de ration en pâture** mais **production pâture nulle** | la cellule s'affiche en **0 %** (valeur affichée), **pas** en gris « vide »                              |
+| 2   | Une période **sans animaux** (animalCount = 0)                                                                                                          | la cellule s'affiche en **gris / `'-'`** (vraiment vide)                                                 |
+| 3   | _(Cas limite)_ Un profil avec **UFL = 0** (besoin énergétique = 0)                                                                                      | la couverture s'affiche en **0** (pas `Infinity`, pas de valeur anormale) — garde anti-division par zéro |
+| 4   | _(Cas limite)_ Un profil avec **PDI = 0** (besoin protéique = 0)                                                                                        | la couverture protéique s'affiche en **0** (pas `Infinity`)                                              |
+| 5   | Mélange : certaines périodes avec animaux, d'autres sans                                                                                                | les périodes avec animaux affichent la valeur (même 0), les autres en gris `'-'`                         |
+
+> **Non fait** : le tooltip explicatif « Couverture 0 % : aucune pâture produite » (V1) —
+> à faire si la sémantique est validée par INRAE. L'option 2.2B (avertissement à la
+> saisie) est hors périmètre.
+
+---
+
 ## Ticket 7 — Décliner une baguette entre années climatiques
 
 | #   | Action                                                                                                                           | Résultat attendu                                                                                                                                                                                                    |
@@ -220,10 +236,10 @@
 
 ```bash
 cd services/frontend/ui
-npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated"
+npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage"
 ```
 
-→ **30/30 ✅** (fusion des listes, bloc paille, unités paille, tourteaux RT).
+→ **36/36 ✅** (fusion des listes, bloc paille, unités paille, tourteaux RT, périodes vides).
 
 ## Build (optionnel)
 

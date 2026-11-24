@@ -453,8 +453,8 @@ export const getFinalEnergeticCoverage = function (batch, simulation, periods, t
 
     const h274 = fixFloatingPoint(h272[index] + h267[index] + h249, 12)
     const h234 = fixFloatingPoint(calculateEnergeticBesoin(ufl, toModerate, potential), 12)
-    // H276 = H274 / H234 couverture UF
-    const h276 = h274 / h234
+    // H276 = H274 / H234 couverture UF — garde anti-division par zéro (ticket 10, V3)
+    const h276 = h234 > 0 ? h274 / h234 : 0
 
     finalEnergeticCoverage[index] = _.round(h276 * 100)
   })
@@ -521,8 +521,8 @@ export const getFinalProteicCoverage = function (batch, simulation, periods, tot
     const h274 = fixFloatingPoint(h272[index] + h267[index] + h249, 12)
     const h234 = fixFloatingPoint(calculateProteicBesoin(pdi, toModerate, potential), 12)
 
-    // H276 = H274 / H234 couverture UF
-    const h276 = h274 / h234
+    // H276 = H274 / H234 couverture UF — garde anti-division par zéro (ticket 10, V3)
+    const h276 = h234 > 0 ? h274 / h234 : 0
 
     finalProteicCoverage[index] = _.round(h276 * 100)
   })

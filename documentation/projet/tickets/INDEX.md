@@ -10,7 +10,7 @@
 > - Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
 >   Travaux non traités : [BACKLOG.md](BACKLOG.md).
 >   Chaque ticket indique sa **provenance** (mail oct. 2026 / devis 2025 / TODO code).
->   Mise à jour : 2026-11-24 (tickets 12, 23).
+>   Mise à jour : 2026-11-24 (tickets 12, 23, 10).
 
 ## Légende statut
 
@@ -35,7 +35,7 @@
 | 7   | Décliner une baguette entre années climatiques              | Nouveauté   | Moyenne   | ✅ Implémenté (B1+B3)  | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | Mail oct. 2026             | fix B1 (climatic_year_id destination) ; option 2.3 (depuis l'édition) à clarifier             |
 | 8   | Aucune paille consommée (logement + alimentation)           | Bug         | Haute     | ✅ Implémenté          | [ticket-8](ticket-8-paille-aucune-conso.md)           | Mail oct. 2026             | **= ticket 2** (même bloc) ; dépend du 1 ; 100 % frontend                                     |
 | 9   | Réordonner les onglets du Bilan                             | Correction  | Basse     | ✅ Implémenté          | [ticket-9](ticket-9-ordre-onglets-bilan.md)           | Mail oct. 2026             | — (simple réordonnancement)                                                                   |
-| 10  | Périodes vides (division par zéro ?)                        | Bug         | Moyenne   | 📄 Doc écrite          | [ticket-10](ticket-10-periodes-vides.md)              | Mail oct. 2026             | affichage 0% vs vide ; lié 14                                                                 |
+| 10  | Périodes vides (division par zéro ?)                        | Bug         | Moyenne   | ✅ Implémenté          | [ticket-10](ticket-10-periodes-vides.md)              | Mail oct. 2026             | V3 (garde anti-`Infinity`) + V2 (affichage) ; V1 (tooltip) à faire si validé INRAE            |
 | 11  | Compteur de surface Assolement (+ retrait contraintes)      | Nouveauté   | Moyenne   | ✅ Implémenté (2.1)    | [ticket-11](ticket-11-compteur-surface-assolement.md) | Mail oct. 2026             | 2.1 compteur ✅ ; 2.2 retrait contraintes = bonus à valider (pas fait)                        |
 | 12  | Tourteaux absents de Stocks et Coûts                        | Nouveauté   | **Haute** | ✅ Implémenté (RT)     | [ticket-12](ticket-12-tourteaux-stocks-couts.md)      | Mail oct. 2026             | **Option 2 (RT) implémentée** ; re-seed CSV à faire ; annexe T4 (RC-RP) séparé                |
 | 13  | Réorganiser la liste de la Grange                           | Correction  | Basse     | ✅ Implémenté          | [ticket-13](ticket-13-reorganiser-grange.md)          | Mail oct. 2026             | STRAW en fin (ticket 8) ; **RT inséré après RP** (ticket 12) — ordre `…RC, RP, RT, AS, STRAW` |
@@ -55,8 +55,8 @@
 ## Synthèse
 
 - **Total** : 25 tickets (16 du mail oct. 2026 + 9 du devis 2025).
-- **Implémenté** : 18/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 7 [décliner baguette B1+B3], 9 [onglets Bilan], 11 [compteur surface 2.1], 12 [tourteaux RT], 13 [Grange], 15 [batch_type], 17 [validation profil], 18 [tooltip génisses], 22 [source baguettes], 23 [feedback login]) — le ticket 6 est le doublon du 1.
-- **Doc écrite, prête à implémenter** : 6/25 (tickets 10, 16, 19, 20, 21, 24).
+- **Implémenté** : 19/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 7 [décliner baguette B1+B3], 9 [onglets Bilan], 10 [périodes vides V2+V3], 11 [compteur surface 2.1], 12 [tourteaux RT], 13 [Grange], 15 [batch_type], 17 [validation profil], 18 [tooltip génisses], 22 [source baguettes], 23 [feedback login]) — le ticket 6 est le doublon du 1.
+- **Doc écrite, prête à implémenter** : 6/25 (tickets 16, 19, 20, 21, 24, 25).
 - **À clarifier (décision requise)** : 1/25 (ticket 14, INRAE) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales → backlog BL-1).
 - **Au backlog** : ticket 25 (BL-3, pop-up partenaires) + suppression référentiel ex-ticket 24 §2.2 (BL-2) — décision 2026-11-23.
 
@@ -81,7 +81,8 @@
    20 (~2 j), 21 (~1 j), 23 (~0,5 j), 24 (~2 j), 25 (~0,5 j) — 22 ✅ fait.
 
 8. **Backlog** : [BACKLOG.md](BACKLOG.md) — BL-1 (céréales en tonnes, ticket 3 §2.2,
-   ~1 j, conversion 360° à valider).
+   ~1 j), BL-2 (suppression référentiel, ex-ticket 24 §2.2, ~1 j),
+   BL-3 (ticket 25, pop-up partenaires, ~0,5 j).
 
 ## Dépendances clés
 
