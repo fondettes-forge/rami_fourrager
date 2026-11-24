@@ -152,6 +152,7 @@ available_models = {
             "IN": fields.String,
             "ITK": fields.String,
             "detail_ITK": fields.String,
+            "source": fields.String,
             "stic_periods": fields.List(fields.Nested(stic_period_fields)),
             "pasture_type": fields.Nested(pasture_type),
         }

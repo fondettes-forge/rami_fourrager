@@ -213,6 +213,10 @@
                   <!-- Replace with appropriate data -->
                 </td>
                 <td>
+                  {{ item.source }}
+                  <!-- Source de la baguette (ticket 22) -->
+                </td>
+                <td>
                   <!-- <template v-slot:[`item.actions`]="{ item }"> -->
                   <v-icon
                     @click="deleteItem('stic', item)"
@@ -260,7 +264,7 @@
                 />
               </v-toolbar>
             </template>
-            <template v-slot:[`item.actions`]="{item}">
+            <template v-slot:[`item.actions`]="{ item }">
               <v-icon
                 @click="copyItem('classicFeed', item)"
                 small
@@ -398,6 +402,7 @@
           { text: this.$t('workspace.content.datatables.stic.header.site'), value: 'site' },
           { text: this.$t('workspace.content.datatables.stic.header.climatic_year'), value: 'climaticYear' },
           { text: this.$t('workspace.content.datatables.stic.header.name'), value: 'name' },
+          { text: this.$t('workspace.content.datatables.stic.header.source'), value: 'source' },
           { text: this.$t('workspace.content.datatables.stic.header.actions'), value: 'actions', sortable: false },
         ]
       },

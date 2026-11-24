@@ -12,6 +12,7 @@ export default {
     IN: { type: 'string' },
     ITK: { type: 'string' },
     detail_ITK: { type: 'string' },
+    source: { type: 'string' },
     stic_periods: {
       type: 'array',
       items: {

@@ -45,6 +45,7 @@ class Stic(db.Model):
     IN = db.Column(db.String(255))
     ITK = db.Column(db.String(255))
     detail_ITK = db.Column(db.String(255))
+    source = db.Column(db.String(255))
     stic_periods = db.relationship('SticPeriod', backref='stic', lazy=True)
 
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
