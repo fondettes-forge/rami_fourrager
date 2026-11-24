@@ -10,7 +10,7 @@
 > - Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
 >   Travaux non traités : [BACKLOG.md](BACKLOG.md).
 >   Chaque ticket indique sa **provenance** (mail oct. 2026 / devis 2025 / TODO code).
->   Mise à jour : 2026-11-18.
+>   Mise à jour : 2026-11-24.
 
 ## Légende statut
 
@@ -32,7 +32,7 @@
 | 4   | Bouton « AJOUTER » Présence inutile                         | Correction  | Basse     | ✅ Implémenté                 | [ticket-4](ticket-4-bouton-ajouter-presence.md)       | Mail oct. 2026             | — (prop `showAddButton` sur PeriodLayout)                                              |
 | 5   | Dupliquer / adapter une carte ration                        | Nouveauté   | Moyenne   | ✅ Implémenté                 | [ticket-5](ticket-5-dupliquer-carte-ration.md)        | Mail oct. 2026             | icône copier + pré-remplissage (dépend ticket 1)                                       |
 | 6   | Cartes rations introuvables dans Troupeau                   | Bug         | Haute     | 📄 **Doublon du 1** ✅        | [ticket-6](ticket-6-carte-ration-troupeau.md)         | Mail oct. 2026             | **= ticket 1** (fusionner)                                                             |
-| 7   | Décliner une baguette entre années climatiques              | Nouveauté   | Moyenne   | 📄 Doc écrite                 | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | Mail oct. 2026             | bug latent B1 (climatic_year_id)                                                       |
+| 7   | Décliner une baguette entre années climatiques              | Nouveauté   | Moyenne   | ✅ Implémenté (B1+B3)         | [ticket-7](ticket-7-baguette-annees-climatiques.md)   | Mail oct. 2026             | fix B1 (climatic_year_id destination) ; option 2.3 (depuis l'édition) à clarifier      |
 | 8   | Aucune paille consommée (logement + alimentation)           | Bug         | Haute     | ✅ Implémenté                 | [ticket-8](ticket-8-paille-aucune-conso.md)           | Mail oct. 2026             | **= ticket 2** (même bloc) ; dépend du 1 ; 100 % frontend                              |
 | 9   | Réordonner les onglets du Bilan                             | Correction  | Basse     | ✅ Implémenté                 | [ticket-9](ticket-9-ordre-onglets-bilan.md)           | Mail oct. 2026             | — (simple réordonnancement)                                                            |
 | 10  | Périodes vides (division par zéro ?)                        | Bug         | Moyenne   | 📄 Doc écrite                 | [ticket-10](ticket-10-periodes-vides.md)              | Mail oct. 2026             | affichage 0% vs vide ; lié 14                                                          |
@@ -47,7 +47,7 @@
 | 19  | Graphique « pâture verte disponible et besoin du troupeau » | Nouveauté   | Moyenne   | 📄 Doc écrite                 | [ticket-19](ticket-19-graph-pature-verte.md)          | Devis 2025 (R12)           | À mettre dans le module Assolement                                                     |
 | 20  | Formulaire gestion sites (création/màj/supp + années)       | Nouveauté   | **Haute** | 📄 Doc écrite                 | [ticket-20](ticket-20-gestion-sites.md)               | Devis 2025 (R27)           | Triptyque site → année → baguette ; backend + frontend                                 |
 | 21  | Duplication de simulation (« Enregistrer-sous »)            | Nouveauté   | Moyenne   | 📄 Doc écrite                 | [ticket-21](ticket-21-duplication-simulation.md)      | Devis 2025 (R29)           | —                                                                                      |
-| 22  | Colonne « source » pour les baguettes                       | Nouveauté   | Basse     | 📄 Doc écrite                 | [ticket-22](ticket-22-source-baguettes.md)            | Devis 2025 (R33)           | Backend + frontend                                                                     |
+| 22  | Colonne « source » pour les baguettes                       | Nouveauté   | Basse     | ✅ Implémenté                 | [ticket-22](ticket-22-source-baguettes.md)            | Devis 2025 (R33)           | Backend + frontend ; migration `d3f8a21c9b4e` à exécuter + re-seed                     |
 | 23  | Feedback login (erreur / user inexistant)                   | Bug         | Moyenne   | 📄 Doc écrite                 | [ticket-23](ticket-23-feedback-login.md)              | Devis 2025 (R38)           | —                                                                                      |
 | 24  | Métadonnées référentiel (+ résumé, doc, suppression)        | Nouveauté   | **Haute** | 📄 Doc écrite                 | [ticket-24](ticket-24-metadata-referentiel.md)        | Devis 2025 (R40, ligne 39) | Champ résumé + suppression + doc injecteur                                             |
 | 25  | Page des partenaires : mode pop-up logos                    | Correction  | Moyenne   | 📄 Doc écrite                 | [ticket-25](ticket-25-page-partenaires.md)            | Devis 2025 (R31, ligne 30) | `PartnersPage.vue` existe déjà ; il manque le **pop-up**                               |
@@ -55,8 +55,8 @@
 ## Synthèse
 
 - **Total** : 25 tickets (16 du mail oct. 2026 + 9 du devis 2025).
-- **Implémenté** : 14/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 9 [onglets Bilan], 11 [compteur surface 2.1], 13 [Grange], 15 [batch_type], 17 [validation profil], 18 [tooltip génisses]) — le ticket 6 est le doublon du 1.
-- **Doc écrite, prête à implémenter** : 11/25 (tickets 7, 10, 12 [Option 2 tranchée], 16, 19, 20, 21, 22, 23, 24, 25).
+- **Implémenté** : 16/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 7 [décliner baguette B1+B3], 9 [onglets Bilan], 11 [compteur surface 2.1], 13 [Grange], 15 [batch_type], 17 [validation profil], 18 [tooltip génisses], 22 [source baguettes]) — le ticket 6 est le doublon du 1.
+- **Doc écrite, prête à implémenter** : 9/25 (tickets 10, 12 [Option 2 tranchée], 16, 19, 20, 21, 23, 24, 25).
 - **À clarifier (décision requise)** : 1/25 (ticket 14, INRAE) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales → backlog BL-1).
 
 ## Blocs de travail suggérés
@@ -69,15 +69,15 @@
    complète (§2.2) : nouveau code de stock `RT` (tourteaux), traçabilité dédiée,
    4 points de contact store + UI Grange + CSV/re-seed. **À implémenter** (~1,25 j).
    Impacte l'ordre du ticket 13 (`…RC, RP, RT, AS, STRAW`).
-4. **Tickets UX** : ticket 5 (dupliquer carte, ~0,5 j), ticket 7 (décliner
-   baguette, ~0,75 j), ticket 10 (périodes vides, ~1,5 j).
+4. **Tickets UX** : ticket 5 (dupliquer carte ✅), ticket 7 (décliner
+   baguette ✅ B1+B3, option 2.3 à clarifier), ticket 10 (périodes vides, ~1,5 j).
 5. **Ticket 14** — en attente de réponse INRAE (aucun code avant décision).
 
 6. **Tickets TODO code** : ticket 15 (AnimalProfileModal, ~0,75 j), ticket 16
    (Export, ~1,5 j).
 
 7. **Tickets devis 2025 restants** : 17 (~0,5 j), 18 (~0,1 j), 19 (~1 j),
-   20 (~2 j), 21 (~1 j), 22 (~0,5 j), 23 (~0,5 j), 24 (~2 j), 25 (~0,5 j).
+   20 (~2 j), 21 (~1 j), 23 (~0,5 j), 24 (~2 j), 25 (~0,5 j) — 22 ✅ fait.
 
 8. **Backlog** : [BACKLOG.md](BACKLOG.md) — BL-1 (céréales en tonnes, ticket 3 §2.2,
    ~1 j, conversion 360° à valider).
