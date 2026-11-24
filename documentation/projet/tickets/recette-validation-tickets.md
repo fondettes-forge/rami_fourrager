@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 22, 23**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 22, 23, 24**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -251,14 +251,37 @@
 
 ---
 
+## Ticket 24 — Métadonnées référentiel (résumé baguette + tooltip consolidé)
+
+> **Prérequis spécifique** : `alembic upgrade head` (migration `7c4b9e12f0a3`) +
+> re-seed du référentiel (les colonnes `resume` / `description` sont vides dans
+> les CSV tant qu'INRAE ne les remplit pas — les tooltips ne s'affichent que si
+> au moins une métadonnée est renseignée).
+
+| #   | Action                                                                                        | Résultat attendu                                                                                                                                          |
+| --- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Mes configurations → Baguettes fourrage → Ajouter_ → onglet « Le détail »                    | un champ **« Résumé de la baguette »** existe (textarea, facultatif)                                                                                      |
+| 2   | Saisir un résumé + une source, enregistrer → datatable des baguettes du workspace             | au **survol** du nom de la baguette, un **tooltip** s'affiche avec le résumé + « Source : … » + « Dernière mise à jour : … » (lignes vides non affichées) |
+| 3   | _Mes configurations → Baguettes fourrage → Ajouter_ → selects « Site » / « Année climatique » | au **survol** des options du select, le tooltip consolidé du site / de l'année climatique s'affiche (description + date MAJ)                              |
+| 4   | _Troupeau → lot → onglets Aliments / Concentrés_                                              | au **survol** du libellé de l'aliment dans la table, le tooltip consolidé du type de ration / concentré s'affiche (description + source + date MAJ)       |
+| 5   | Baguette / site / type de ration **sans aucune métadonnée** (CSV vides)                       | **aucun tooltip** (fallback simple, pas de tooltip vide) ; l'affichage du libellé est inchangé                                                            |
+| 6   | Tests unitaires : `metadata.spec.js`                                                          | **9/9** (métadonnées conservées par la fusion, robustesse legacy, computed du tooltip)                                                                    |
+
+> La `source` des types de ration / aliments concentrés est lue sur
+> `nutritional_values.source` (mapping existant, inchangé) ; la `source` des
+> baguettes / sites / années climatiques est lue sur l'entité.
+
+---
+
 ## Tests unitaires (en une commande)
 
 ```bash
 cd services/frontend/ui
-npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage"
+npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata"
 ```
 
-→ **36/36 ✅** (fusion des listes, bloc paille, unités paille, tourteaux RT, périodes vides).
+→ **45/45 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
+metadata 9).
 
 ## Build (optionnel)
 

@@ -1,8 +1,8 @@
 <template>
   <div>
     <base-period-layout
-      :pageColor="pageColor"
-      toolBarTitleKey="herd.concentratedfeed.tabs.table.title"
+      :page-color="pageColor"
+      tool-bar-title-key="herd.concentratedfeed.tabs.table.title"
       @selected="periodSelected"
       @duplicate="duplicate"
       @add-modal="openModal(selectedPeriodIndex)"
@@ -24,18 +24,27 @@
           sort-by="type"
           hide-default-footer
         >
+          <template v-slot:[`item.type.name`]="{ item }">
+            <base-metadata-tooltip
+              :description="item.type.description"
+              :source="item.type.source || item.type.nutritional_values?.source"
+              :updated-at="item.type.updated_at"
+            >
+              {{ item.type.name }}
+            </base-metadata-tooltip>
+          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-icon
-              @click="deleteItem(item)"
               small
+              @click="deleteItem(item)"
             >
               mdi-delete
             </v-icon>
             <v-icon
-              @click="editItem(item)"
               medium
               color="green"
               background-color="green"
+              @click="editItem(item)"
             >
               mdi-square-edit-outline
             </v-icon>
@@ -44,10 +53,10 @@
       </template>
     </base-period-layout>
     <concentrated-feed-modal
-      :pageColor="pageColor"
+      :page-color="pageColor"
       :item="feedItem"
-      :forceOpen="dialogs[selectedPeriodIndex]"
-      :selectedPeriodIndex="selectedPeriodIndex"
+      :force-open="dialogs[selectedPeriodIndex]"
+      :selected-period-index="selectedPeriodIndex"
       @add-item="saveItem"
       @cancel-modal="closeModal"
     />
@@ -60,6 +69,10 @@
 
   export default {
     name: 'ConcentratedFeed',
+    components: {
+      ConcentratedFeedModal,
+      GraphCoverage,
+    },
 
     props: {
       selectedLot: {
@@ -70,10 +83,6 @@
         type: String,
         required: true,
       },
-    },
-    components: {
-      ConcentratedFeedModal,
-      GraphCoverage,
     },
     data() {
       return {

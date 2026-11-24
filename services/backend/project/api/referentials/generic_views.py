@@ -1,62 +1,89 @@
-from flask_restplus import Resource, fields, Namespace, marshal_with, reqparse
+from flask_restplus import Namespace, Resource, fields, marshal_with, reqparse
 from project.repository.referentials.services import get_all, get_by_id
 
 generic_namespace = Namespace("generic")
 
-nutritional_values_fields = generic_namespace.model("Nutritional_values", {
-    "UEL": fields.Float,
-    "UEB": fields.Float,
-    "UEM": fields.Float,
-    "UFL": fields.Float,
-    "PDI_inf": fields.Float,
-    "UFV": fields.Float,
-    "PDIN": fields.Float,
-    "PDIE": fields.Float,
-    "rejection": fields.Float
-    # "source": fields.String,
-})
+nutritional_values_fields = generic_namespace.model(
+    "Nutritional_values",
+    {
+        "UEL": fields.Float,
+        "UEB": fields.Float,
+        "UEM": fields.Float,
+        "UFL": fields.Float,
+        "PDI_inf": fields.Float,
+        "UFV": fields.Float,
+        "PDIN": fields.Float,
+        "PDIE": fields.Float,
+        "rejection": fields.Float,
+        # "source": fields.String,
+    },
+)
 
-batch_type = generic_namespace.model('BatchType', {
-    "id": fields.Integer,
-    "code": fields.String,
-    "name": fields.String,
-    "UE_value_considered": fields.String,
-    "UF_value_considered": fields.String,
-    "UF_concentrated_value_considered": fields.String,
-})
+batch_type = generic_namespace.model(
+    "BatchType",
+    {
+        "id": fields.Integer,
+        "code": fields.String,
+        "name": fields.String,
+        "UE_value_considered": fields.String,
+        "UF_value_considered": fields.String,
+        "UF_concentrated_value_considered": fields.String,
+    },
+)
 
-animal_profile_period = generic_namespace.model("AnimalProfilePeriod", {
-    "period_id": fields.Integer,
-    "CI": fields.Float,
-    "UFL": fields.Float,
-    "PDI": fields.Float,
-    "PL": fields.Float,
-})
-stic_period_fields = generic_namespace.model("Stic_period", {
-    "id": fields.Integer,
-    "period_id": fields.Integer,
-    "production": fields.Float,
-    "farming_method": fields.String,
-})
+animal_profile_period = generic_namespace.model(
+    "AnimalProfilePeriod",
+    {
+        "period_id": fields.Integer,
+        "CI": fields.Float,
+        "UFL": fields.Float,
+        "PDI": fields.Float,
+        "PL": fields.Float,
+    },
+)
+stic_period_fields = generic_namespace.model(
+    "Stic_period",
+    {
+        "id": fields.Integer,
+        "period_id": fields.Integer,
+        "production": fields.Float,
+        "farming_method": fields.String,
+    },
+)
 
-site = generic_namespace.model("Site", {
-    "id": fields.Integer,
-    "name": fields.String,
-    "code": fields.String,
-})
+site = generic_namespace.model(
+    "Site",
+    {
+        "id": fields.Integer,
+        "name": fields.String,
+        "code": fields.String,
+        "description": fields.String,
+        "updated_at": fields.DateTime,
+        "created_at": fields.DateTime,
+    },
+)
 
-climatic_year = generic_namespace.model("ClimaticYear", {
-    "id": fields.Integer,
-    "name": fields.String,
-    "code": fields.String,
-})
+climatic_year = generic_namespace.model(
+    "ClimaticYear",
+    {
+        "id": fields.Integer,
+        "name": fields.String,
+        "code": fields.String,
+        "description": fields.String,
+        "updated_at": fields.DateTime,
+        "created_at": fields.DateTime,
+    },
+)
 
-pasture_type = generic_namespace.model("PastureType", {
-    "id": fields.Integer,
-    "name": fields.String,
-    "code": fields.String,
-    "nutritional_values": fields.Nested(nutritional_values_fields),
-})
+pasture_type = generic_namespace.model(
+    "PastureType",
+    {
+        "id": fields.Integer,
+        "name": fields.String,
+        "code": fields.String,
+        "nutritional_values": fields.Nested(nutritional_values_fields),
+    },
+)
 
 
 # Définition des modèles disponibles
@@ -66,7 +93,10 @@ available_models = {
         "fields": {
             "id": fields.Integer,
             "name": fields.String,
-        }
+            "description": fields.String,
+            "updated_at": fields.DateTime,
+            "created_at": fields.DateTime,
+        },
     },
     "feed_type": {
         "model_name": "FeedType",
@@ -74,8 +104,11 @@ available_models = {
             "id": fields.Integer,
             "name": fields.String,
             "correspondingStock": fields.String,
-            "nutritional_values": fields.Nested(nutritional_values_fields)
-        }
+            "description": fields.String,
+            "updated_at": fields.DateTime,
+            "created_at": fields.DateTime,
+            "nutritional_values": fields.Nested(nutritional_values_fields),
+        },
     },
     "concentrated_feed": {
         "model_name": "ConcentratedFeed",
@@ -83,23 +116,25 @@ available_models = {
             "id": fields.Integer,
             "name": fields.String,
             "correspondingStock": fields.String,
-            "nutritional_values": fields.Nested(nutritional_values_fields)
-
-        }
+            "description": fields.String,
+            "updated_at": fields.DateTime,
+            "created_at": fields.DateTime,
+            "nutritional_values": fields.Nested(nutritional_values_fields),
+        },
     },
     "period": {
         "model_name": "period",
         "fields": {
             "id": fields.Integer,
             "name": fields.String,
-        }
+        },
     },
     "batch_type": {
         "model_name": "BatchType",
         "fields": {
             "id": fields.Integer,
             "name": fields.String,
-        }
+        },
     },
     "housing_type": {
         "model_name": "HousingType",
@@ -107,7 +142,7 @@ available_models = {
             "id": fields.Integer,
             "name": fields.String,
             "straw_requirement": fields.Float,
-        }
+        },
     },
     "climatic_year": {
         "model_name": "ClimaticYear",
@@ -115,7 +150,10 @@ available_models = {
             "id": fields.Integer,
             "name": fields.String,
             "site_id": fields.Integer,
-        }
+            "description": fields.String,
+            "updated_at": fields.DateTime,
+            "created_at": fields.DateTime,
+        },
     },
     "animal_profile": {
         "model_name": "AnimalProfile",
@@ -135,7 +173,7 @@ available_models = {
             "TR": fields.Float,
             "batch_type": fields.Nested(batch_type),
             "animal_profile_periods": fields.List(fields.Nested(animal_profile_period)),
-        }
+        },
     },
     "stic": {
         "model_name": "Stic",
@@ -153,9 +191,12 @@ available_models = {
             "ITK": fields.String,
             "detail_ITK": fields.String,
             "source": fields.String,
+            "resume": fields.String,
             "stic_periods": fields.List(fields.Nested(stic_period_fields)),
             "pasture_type": fields.Nested(pasture_type),
-        }
+            "updated_at": fields.DateTime,
+            "created_at": fields.DateTime,
+        },
     },
     "pasture_type": {
         "model_name": "PastureType",
@@ -163,8 +204,8 @@ available_models = {
             "id": fields.Integer,
             "name": fields.String,
             # "nutritional_values": fields.Nested(nutritional_values_fields)
-        }
-    }
+        },
+    },
     # Ajoutez d'autres modèles avec leurs champs correspondants si nécessaire
 }
 
@@ -172,7 +213,8 @@ available_models = {
 models = {}
 for model_name, model_data in available_models.items():
     models[model_name] = generic_namespace.model(
-        model_data['model_name'], model_data["fields"])
+        model_data["model_name"], model_data["fields"]
+    )
 
 
 class GenericModelList(Resource):
@@ -181,17 +223,16 @@ class GenericModelList(Resource):
     def get(self, modelName):
         """Returns all instances of a given model."""
         parser = reqparse.RequestParser()
-        parser.add_argument('lastConnectionDate', type=str)
+        parser.add_argument("lastConnectionDate", type=str)
         args = parser.parse_args(strict=True)
 
-        lastConnectionDate = args['lastConnectionDate']
+        lastConnectionDate = args["lastConnectionDate"]
 
         if modelName not in available_models:
             generic_namespace.abort(404, f"Model {modelName} not found")
 
         model = models[modelName]
-        data = get_all(available_models[modelName]['model_name'],
-                       lastConnectionDate)
+        data = get_all(available_models[modelName]["model_name"], lastConnectionDate)
         # if not data:
         #     generic_namespace.abort(404, f"Models not found for {modelName}")
 
@@ -225,5 +266,4 @@ class GenericModelDetail(Resource):
 
 
 generic_namespace.add_resource(GenericModelList, "/<string:modelName>")
-generic_namespace.add_resource(
-    GenericModelDetail, "/<string:modelName>/<int:id>")
+generic_namespace.add_resource(GenericModelDetail, "/<string:modelName>/<int:id>")

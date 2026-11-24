@@ -119,6 +119,10 @@
       }
     }
   },
+  "metadata": {
+    "source": "Source",
+    "updatedAt": "Dernière mise à jour"
+  },
   "breadcrumb": {
     "workspace": "Espace de travail",
     "simulation": "Simulation",
@@ -898,6 +902,7 @@
               "ITK": "ITK",
               "detail_ITK": "Détail ITK",
               "source": "Source de la baguette (ex. INRAE, expérimentation locale, estimation)",
+              "resume": "Résumé de la baguette (affiché au survol du nom)",
               "period": "Numéro de période",
               "production": "Production",
               "farming_method": "type de production"

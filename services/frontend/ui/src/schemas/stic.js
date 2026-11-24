@@ -13,6 +13,7 @@ export default {
     ITK: { type: 'string' },
     detail_ITK: { type: 'string' },
     source: { type: 'string' },
+    resume: { type: 'string' },
     stic_periods: {
       type: 'array',
       items: {

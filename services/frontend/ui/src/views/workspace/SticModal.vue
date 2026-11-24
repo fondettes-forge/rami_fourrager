@@ -21,9 +21,9 @@
       </v-card-title>
       <v-form
         ref="sticForm"
-        @submit.prevent="saveItem"
         v-model="valid"
         lazy-validation
+        @submit.prevent="saveItem"
       >
         <v-card-text>
           <v-row>
@@ -42,9 +42,18 @@
                       item-text="name"
                       item-value="id"
                       clearable
-                      @change="handleSiteChange"
                       :disabled="copyDisabled"
+                      @change="handleSiteChange"
                     >
+                      <template v-slot:item="{ item }">
+                        <base-metadata-tooltip
+                          :description="item.description"
+                          :source="item.source"
+                          :updated-at="item.updated_at"
+                        >
+                          {{ item.name }}
+                        </base-metadata-tooltip>
+                      </template>
                     </v-select>
                     <v-select
                       v-model="climaticYear"
@@ -53,9 +62,17 @@
                       item-text="name"
                       item-value="id"
                       clearable
-                      @change="handleCYchange"
                       :disabled="copyDisabled"
+                      @change="handleCYchange"
                     >
+                      <template v-slot:item="{ item }">
+                        <base-metadata-tooltip
+                          :description="item.description"
+                          :updated-at="item.updated_at"
+                        >
+                          {{ item.name }}
+                        </base-metadata-tooltip>
+                      </template>
                     </v-select>
 
                     <v-autocomplete
@@ -69,25 +86,26 @@
                       return-object
                       class="autocomplet-transparent-background"
                       :disabled="copyDisabled"
-                    >
-                    </v-autocomplete>
+                    />
                   </v-col>
                 </v-row>
                 <v-row justify="end">
                   <v-btn
                     color="primary"
                     outlined
-                    @click="copyStic"
                     :disabled="copyDisabled"
+                    @click="copyStic"
                   >
                     {{ $t('btn.copy') }}
                   </v-btn>
                 </v-row>
               </v-sheet>
-              <v-divider class="mt-5"></v-divider>
-              <v-subheader>{{
-                $t('workspace.content.datatables.stic.create.dialog.subheader.pasture_type')
-              }}</v-subheader>
+              <v-divider class="mt-5" />
+              <v-subheader>
+                {{
+                  $t('workspace.content.datatables.stic.create.dialog.subheader.pasture_type')
+                }}
+              </v-subheader>
               <v-sheet
                 elevation="2"
                 class="pa-6"
@@ -101,8 +119,7 @@
                   item-value="id"
                   return-object
                   clearable
-                >
-                </v-select>
+                />
               </v-sheet>
             </v-col>
             <v-col>
@@ -126,41 +143,46 @@
                       v-model="stic.name"
                       :label="$t('workspace.content.datatables.stic.create.dialog.name')"
                       required
-                    ></v-text-field>
+                    />
 
                     <v-text-field
                       v-model="stic.type"
                       :label="$t('workspace.content.datatables.stic.create.dialog.type')"
                       required
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="stic.rendement"
                       :label="$t('workspace.content.datatables.stic.create.dialog.rendement')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="stic.designation"
                       :label="$t('workspace.content.datatables.stic.create.dialog.designation')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="stic.RU"
                       :label="$t('workspace.content.datatables.stic.create.dialog.RU')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="stic.IN"
                       :label="$t('workspace.content.datatables.stic.create.dialog.IN')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="stic.ITK"
                       :label="$t('workspace.content.datatables.stic.create.dialog.ITK')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="stic.detail_ITK"
                       :label="$t('workspace.content.datatables.stic.create.dialog.detail_ITK')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="stic.source"
                       :label="$t('workspace.content.datatables.stic.create.dialog.source')"
-                    ></v-text-field>
+                    />
+                    <v-textarea
+                      v-model="stic.resume"
+                      :label="$t('workspace.content.datatables.stic.create.dialog.resume')"
+                      rows="3"
+                    />
                   </v-sheet>
                 </v-tab-item>
                 <v-tab-item>
@@ -185,7 +207,7 @@
                           type="number"
                           min="0"
                           hide-spin-buttons
-                        ></v-text-field>
+                        />
                       </template>
                       <template v-slot:[`item.farming_method`]="{ item }">
                         <v-select
@@ -198,7 +220,7 @@
                           clearable
                           single-line
                           dense
-                        ></v-select>
+                        />
                       </template>
                     </v-data-table>
                   </v-sheet>
@@ -209,11 +231,11 @@
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
-            @click="cancelModal"
             color="grey"
             text
+            @click="cancelModal"
           >
             {{ $t('btn.cancel') }}
           </v-btn>
@@ -248,6 +270,29 @@
       },
       dialog: Boolean,
     },
+    data() {
+      return {
+        sticList: [],
+        climaticYears: [],
+        sticToCopy: null,
+        copyDisabled: false,
+        stic: {},
+        periodHeaders: [
+          {
+            text: this.$t('workspace.content.datatables.stic.create.dialog.period'),
+            value: 'period_id',
+            align: 'start',
+          },
+          { text: this.$t('workspace.content.datatables.stic.create.dialog.production'), value: 'production' },
+          { text: this.$t('workspace.content.datatables.stic.create.dialog.farming_method'), value: 'farming_method' },
+        ],
+        valid: true,
+        rules: {
+          required: (value) => !!value || this.$t('validation.required'),
+          number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
+        },
+      }
+    },
     watch: {
       item: {
         immediate: true,
@@ -277,34 +322,12 @@
               })),
               pasture_type: {},
               source: '',
+              resume: '',
             }
             this.copyDisabled = false
           }
         },
       },
-    },
-    data() {
-      return {
-        sticList: [],
-        climaticYears: [],
-        sticToCopy: null,
-        copyDisabled: false,
-        stic: {},
-        periodHeaders: [
-          {
-            text: this.$t('workspace.content.datatables.stic.create.dialog.period'),
-            value: 'period_id',
-            align: 'start',
-          },
-          { text: this.$t('workspace.content.datatables.stic.create.dialog.production'), value: 'production' },
-          { text: this.$t('workspace.content.datatables.stic.create.dialog.farming_method'), value: 'farming_method' },
-        ],
-        valid: true,
-        rules: {
-          required: (value) => !!value || this.$t('validation.required'),
-          number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
-        },
-      }
     },
     computed: {
       ...mapGetters('referential', {

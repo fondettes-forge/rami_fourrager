@@ -27,26 +27,26 @@
                 color="white"
                 flat
               >
-                <v-toolbar-title> </v-toolbar-title>
+                <v-toolbar-title />
                 <v-divider
                   class="mx-4"
                   inset
                   vertical
                 />
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn
                   outlined
                   color="primary"
-                  @click="dialogs.simulation = true"
                   class="text-h6"
+                  @click="dialogs.simulation = true"
                 >
                   {{ $t('workspace.content.datatables.simulation.create.btn') }}
                 </v-btn>
                 <simulation-modal
                   :dialog.sync="dialogs.simulation"
+                  :item="newItems.simulation"
                   @add-item="saveItem"
                   @cancel-modal="closeModal"
-                  :item="newItems.simulation"
                 />
               </v-toolbar>
             </template>
@@ -67,18 +67,18 @@
                 </td>
                 <td>
                   <v-tooltip
+                    v-if="!item.loaded"
                     left
                     open-delay="500"
                     color="grey"
-                    v-if="!item.loaded"
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
-                        @click="loadSimulation(item)"
                         small
                         outlined
                         color="primary"
                         v-bind="attrs"
+                        @click="loadSimulation(item)"
                         v-on="on"
                       >
                         {{ $t('workspace.content.datatables.simulation.actions.load_btn') }}
@@ -88,17 +88,17 @@
                   </v-tooltip>
 
                   <v-icon
-                    @click="editItem('simulation', item)"
                     medium
                     color="green"
                     background-color="green"
+                    @click="editItem('simulation', item)"
                   >
                     mdi-square-edit-outline
                   </v-icon>
                   <v-icon
                     v-if="!item.loaded"
-                    @click="deleteSimulation(item)"
                     small
+                    @click="deleteSimulation(item)"
                   >
                     mdi-delete
                   </v-icon>
@@ -120,41 +120,41 @@
                 color="white"
                 flat
               >
-                <v-toolbar-title> </v-toolbar-title>
+                <v-toolbar-title />
                 <v-divider
                   class="mx-4"
                   inset
                   vertical
                 />
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn
                   outlined
                   color="primary"
-                  @click="dialogs.animalProfile = true"
                   class="text-h6"
+                  @click="dialogs.animalProfile = true"
                 >
                   {{ $t('workspace.content.datatables.animalProfile.create.btn') }}
                 </v-btn>
                 <animal-profile-modal
                   :dialog.sync="dialogs.animalProfile"
+                  :item="newItems.animalProfile"
                   @add-item="saveItem"
                   @cancel-modal="closeModal"
-                  :item="newItems.animalProfile"
                 />
               </v-toolbar>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon
-                @click="deleteItem('animalProfile', item)"
                 small
+                @click="deleteItem('animalProfile', item)"
               >
                 mdi-delete
               </v-icon>
               <v-icon
-                @click="editItem('animalProfile', item)"
                 medium
                 color="green"
                 background-color="green"
+                @click="editItem('animalProfile', item)"
               >
                 mdi-square-edit-outline
               </v-icon>
@@ -174,26 +174,26 @@
                 color="white"
                 flat
               >
-                <v-toolbar-title> </v-toolbar-title>
+                <v-toolbar-title />
                 <v-divider
                   class="mx-4"
                   inset
                   vertical
                 />
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn
                   outlined
                   color="primary"
-                  @click="dialogs.stic = true"
                   class="text-h6"
+                  @click="dialogs.stic = true"
                 >
                   {{ $t('workspace.content.datatables.stic.create.btn') }}
                 </v-btn>
                 <stic-modal
                   :dialog.sync="dialogs.stic"
+                  :item="newItems.stic"
                   @add-item="saveItem"
                   @cancel-modal="closeModal"
-                  :item="newItems.stic"
                 />
               </v-toolbar>
             </template>
@@ -209,8 +209,13 @@
                   <!-- Replace with appropriate data -->
                 </td>
                 <td>
-                  {{ item.name }}
-                  <!-- Replace with appropriate data -->
+                  <base-metadata-tooltip
+                    :description="item.resume"
+                    :source="item.source"
+                    :updated-at="item.updated_at"
+                  >
+                    {{ item.name }}
+                  </base-metadata-tooltip>
                 </td>
                 <td>
                   {{ item.source }}
@@ -219,16 +224,16 @@
                 <td>
                   <!-- <template v-slot:[`item.actions`]="{ item }"> -->
                   <v-icon
-                    @click="deleteItem('stic', item)"
                     small
+                    @click="deleteItem('stic', item)"
                   >
                     mdi-delete
                   </v-icon>
                   <v-icon
-                    @click="editItem('stic', item)"
                     medium
                     color="green"
                     background-color="green"
+                    @click="editItem('stic', item)"
                   >
                     mdi-square-edit-outline
                   </v-icon>
@@ -249,15 +254,15 @@
                 color="white"
                 flat
               >
-                <v-toolbar-title> </v-toolbar-title>
+                <v-toolbar-title />
                 <v-divider
                   class="mx-4"
                   inset
                   vertical
                 />
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <classic-feed-modal
-                  :forceOpen="dialogs.classicFeed"
+                  :force-open="dialogs.classicFeed"
                   :item="newItems.classicFeed"
                   @add-item="saveItem"
                   @cancel-modal="closeModal"
@@ -266,24 +271,24 @@
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon
-                @click="copyItem('classicFeed', item)"
                 small
                 class="mr-2"
+                @click="copyItem('classicFeed', item)"
               >
                 mdi-content-copy
               </v-icon>
               <v-icon
-                @click="deleteItem('classicFeed', item)"
                 small
                 class="mr-2"
+                @click="deleteItem('classicFeed', item)"
               >
                 mdi-delete
               </v-icon>
               <v-icon
-                @click="editItem('classicFeed', item)"
                 medium
                 color="green"
                 background-color="green"
+                @click="editItem('classicFeed', item)"
               >
                 mdi-square-edit-outline
               </v-icon>

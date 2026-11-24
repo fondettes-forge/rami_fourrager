@@ -1,15 +1,15 @@
 <template>
   <div>
     <base-period-layout
-      :pageColor="pageColor"
-      toolBarTitleKey="herd.classicfeed.tabs.table.title"
+      :page-color="pageColor"
+      tool-bar-title-key="herd.classicfeed.tabs.table.title"
       @selected="periodSelected"
       @duplicate="duplicate"
       @add-modal="openModal(selectedPeriodIndex)"
     >
       <template v-slot:graph>
         <classic-feed-graph
-          :selectedLot="selectedLot"
+          :selected-lot="selectedLot"
           :selection="selectedPeriodIndex"
         />
       </template>
@@ -28,18 +28,27 @@
               :data-feeds="feeds"
             />
           </template>
+          <template v-slot:[`item.type.name`]="{ item }">
+            <base-metadata-tooltip
+              :description="item.type.description"
+              :source="item.type.source || item.type.nutritional_values?.source"
+              :updated-at="item.type.updated_at"
+            >
+              {{ item.type.name }}
+            </base-metadata-tooltip>
+          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-icon
-              @click="deleteItem(item)"
               small
+              @click="deleteItem(item)"
             >
               mdi-delete
             </v-icon>
             <v-icon
-              @click="editItem(item)"
               medium
               color="green"
               background-color="green"
+              @click="editItem(item)"
             >
               mdi-square-edit-outline
             </v-icon>
@@ -48,10 +57,10 @@
       </template>
     </base-period-layout>
     <classic-feed-modal
-      :pageColor="pageColor"
+      :page-color="pageColor"
       :item="feedItem"
-      :forceOpen="dialogs[selectedPeriodIndex]"
-      :selectedPeriodIndex="selectedPeriodIndex"
+      :force-open="dialogs[selectedPeriodIndex]"
+      :selected-period-index="selectedPeriodIndex"
       @add-item="saveItem"
       @cancel-modal="closeModal"
     />
@@ -65,6 +74,11 @@
 
   export default {
     name: 'ClassicFeed',
+    components: {
+      RationGauge,
+      ClassicFeedModal,
+      ClassicFeedGraph,
+    },
 
     props: {
       selectedLot: {
@@ -75,11 +89,6 @@
         type: String,
         required: true,
       },
-    },
-    components: {
-      RationGauge,
-      ClassicFeedModal,
-      ClassicFeedGraph,
     },
     data() {
       return {
