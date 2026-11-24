@@ -118,17 +118,19 @@
 
 ## Ticket 10 — Périodes « vides » (couverture grisée / division par zéro ?)
 
-| #   | Action                                                                                                                                                  | Résultat attendu                                                                                         |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| 1   | _Troupeau → lot → Couverture des besoins_ : une période avec des **animaux présents** et **100 % de ration en pâture** mais **production pâture nulle** | la cellule s'affiche en **0 %** (valeur affichée), **pas** en gris « vide »                              |
-| 2   | Une période **sans animaux** (animalCount = 0)                                                                                                          | la cellule s'affiche en **gris / `'-'`** (vraiment vide)                                                 |
-| 3   | _(Cas limite)_ Un profil avec **UFL = 0** (besoin énergétique = 0)                                                                                      | la couverture s'affiche en **0** (pas `Infinity`, pas de valeur anormale) — garde anti-division par zéro |
-| 4   | _(Cas limite)_ Un profil avec **PDI = 0** (besoin protéique = 0)                                                                                        | la couverture protéique s'affiche en **0** (pas `Infinity`)                                              |
-| 5   | Mélange : certaines périodes avec animaux, d'autres sans                                                                                                | les périodes avec animaux affichent la valeur (même 0), les autres en gris `'-'`                         |
+| #   | Action                                                                                                                                                  | Résultat attendu                                                                                             |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 1   | _Troupeau → lot → Couverture des besoins_ : une période avec des **animaux présents** et **100 % de ration en pâture** mais **production pâture nulle** | la cellule s'affiche en **0 %** (valeur affichée), **pas** en gris « vide »                                  |
+| 2   | Une période **sans animaux** (animalCount = 0)                                                                                                          | la cellule s'affiche en **gris / `'-'`** (vraiment vide)                                                     |
+| 3   | _(Cas limite)_ Un profil avec **UFL = 0** (besoin énergétique = 0)                                                                                      | la couverture s'affiche en **0** (pas `Infinity`, pas de valeur anormale) — garde anti-division par zéro     |
+| 4   | _(Cas limite)_ Un profil avec **PDI = 0** (besoin protéique = 0)                                                                                        | la couverture protéique s'affiche en **0** (pas `Infinity`)                                                  |
+| 5   | Mélange : certaines périodes avec animaux, d'autres sans                                                                                                | les périodes avec animaux affichent la valeur (même 0), les autres en gris `'-'`                             |
+| 6   | _(V1)_ Survoler une cellule à **0 %** (animaux présents, aucun apport)                                                                                  | un **tooltip** s'affiche : « Couverture 0 % : aucun apport (pâture, fourrage, concentré) sur cette période » |
+| 7   | _(V1)_ Survoler une cellule à **50 %** (ou autre valeur > 0)                                                                                            | un **tooltip** s'affiche : « Couverture : 50 % »                                                             |
 
-> **Non fait** : le tooltip explicatif « Couverture 0 % : aucune pâture produite » (V1) —
-> à faire si la sémantique est validée par INRAE. L'option 2.2B (avertissement à la
-> saisie) est hors périmètre.
+> **Fait** : V1 (tooltip explicatif) — au survol d'une cellule à 0 %, le message
+> « Couverture 0 % : aucun apport (pâture, fourrage, concentré) sur cette période »
+> s'affiche. L'option 2.2B (avertissement à la saisie) est hors périmètre.
 
 ---
 

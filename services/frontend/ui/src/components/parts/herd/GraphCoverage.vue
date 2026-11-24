@@ -110,8 +110,16 @@
             right: '10%',
           },
           tooltip: {
-            show: false,
+            show: true,
             position: 'top',
+            formatter: (params) => {
+              // ticket 10, V1 : tooltip explicatif sur les cellules à 0 %
+              const value = params.data[2]
+              if (value === 0) {
+                return `${params.name}<br/>Couverture 0 % : aucun apport (pâture, fourrage, concentré) sur cette période`
+              }
+              return `${params.name}<br/>Couverture : ${value} %`
+            },
           },
           xAxis: {
             type: 'category',

@@ -208,11 +208,22 @@ const h276 = h234 > 0 ? h274 / h234 : 0;
   ```
   → si des animaux sont présents, la valeur est affichée (même 0) ; sinon `'-'` (gris).
 
+**V1 — Tooltip explicatif** (`GraphCoverage.vue`) :
+
+- Activation du tooltip (`show: true`) + `formatter` :
+  ```js
+  formatter: (params) => {
+    const value = params.data[2]
+    if (value === 0) {
+      return `${params.name}<br/>Couverture 0 % : aucun apport (pâture, fourrage, concentré) sur cette période`
+    }
+    return `${params.name}<br/>Couverture : ${value} %`
+  },
+  ```
+  → au survol d'une cellule à 0 %, le message explicatif s'affiche.
+
 **Non fait** :
 
-- **V1 (tooltip explicatif)** : le tooltip « Couverture 0 % : aucune pâture produite »
-  n'a pas été implémenté (nécessite de lire `totalAvailablePastureByPeriod` dans
-  le component — plus de code). À faire si la sémantique est validée par INRAE.
 - **Option 2.2B** (avertissement à la saisie) : non fait (hors périmètre).
 
 **Tests** : `coverage.spec.js` (nouveau) — 6 tests :
