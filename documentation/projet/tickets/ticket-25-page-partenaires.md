@@ -3,8 +3,19 @@
 > Ticket source : [mapping-devis-tickets.md](../mapping-devis-tickets.md) —
 > devis 2025, ligne 30 (`2025081805D_devis_Antoine_Savoie_inrae_evolution_partenaires`).
 > Provenance : **Devis 2025** (page des partenaires).
-> Statut : **à traiter** · Priorité : **moyenne** · Type : correction / UX
+> **Provenance** : Devis 2025 (R31, ligne 30) — `2025081805D_devis_Antoine_Savoie_inrae_evolution_partenaires`
+> Statut : **⏳ au backlog** (partiellement traité — à améliorer si demandé) · Priorité : **moyenne** · Type : correction / UX
 > Date de l'analyse : 2026-11-18
+>
+> **2026-11-23** : le ticket est **entièrement déplacé au backlog**
+> ([BL-3](BACKLOG.md)) — à traiter séparément. Le devis
+> [#2026111904D](../devis_en_attente/2026111904D_devis_Antoine_Savoie_inrae_evolution_partenaires_tickets.docx)
+> est conservé mais son exécution est suspendue en attendant la décision.
+>
+> **2026-11-25** : confirmé **au backlog** — `PartnersPage.vue` est déjà
+> implémentée (page route, 12 logos en 5 blocs, i18n). Le **mode pop-up**
+> (modal + déclencheur) reste à faire si la demande revient. **Non traité
+> maintenant** — à améliorer uniquement si demandé.
 
 ---
 
@@ -67,13 +78,13 @@ actuellement une **page route à part entière**. À vérifier dans le code :
 
 ## 3. Fichiers impactés (récap)
 
-| Fichier | Changement |
-|---------|-----------|
+| Fichier                                                                    | Changement                                 |
+| -------------------------------------------------------------------------- | ------------------------------------------ |
 | `services/frontend/ui/src/components/partners/PartnersLogos.vue` (nouveau) | contenu logos extrait (partagé page/modal) |
-| `services/frontend/ui/src/components/partners/PartnersModal.vue` (nouveau) | `v-dialog` + `PartnersLogos` |
-| `services/frontend/ui/src/views/PartnersPage.vue` | utiliser `PartnersLogos` (refacto) |
-| layout principal (footer/menu, à identifier) | bouton déclencheur du modal |
-| `src/locales/fr.json` | libellé bouton « Partenaires » si absent |
+| `services/frontend/ui/src/components/partners/PartnersModal.vue` (nouveau) | `v-dialog` + `PartnersLogos`               |
+| `services/frontend/ui/src/views/PartnersPage.vue`                          | utiliser `PartnersLogos` (refacto)         |
+| layout principal (footer/menu, à identifier)                               | bouton déclencheur du modal                |
+| `src/locales/fr.json`                                                      | libellé bouton « Partenaires » si absent   |
 
 ---
 
@@ -95,8 +106,8 @@ actuellement une **page route à part entière**. À vérifier dans le code :
 
 ## 6. Estimation
 
-| Bloc | Effort |
-|------|--------|
-| Composant modal + extraction logos | ~0,25 j |
-| Déclencheur dans le layout + i18n | ~0,25 j |
-| **Total** | **~0,5 j** (le devis prévoyait 1 j) |
+| Bloc                               | Effort                              |
+| ---------------------------------- | ----------------------------------- |
+| Composant modal + extraction logos | ~0,25 j                             |
+| Déclencheur dans le layout + i18n  | ~0,25 j                             |
+| **Total**                          | **~0,5 j** (le devis prévoyait 1 j) |

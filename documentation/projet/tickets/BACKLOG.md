@@ -50,3 +50,59 @@ les stocks change d'unité. À documenter dans l'UI pour éviter la confusion.
 - indépendant du ticket 3 §2.1 (paille, ✅ fait) ;
 - lié au ticket 12 (tourteaux, `Stock_correspondant`) : si l'Option 2 (`RT`) est
   retenue, la nouvelle ligne RT aura la même question d'unité — trancher ensemble.
+
+---
+
+## BL-2 — Ticket 24 §2.2 : Suppression des éléments du référentiel
+
+> Source : [ticket-24](ticket-24-metadata-referentiel.md) §2.2.
+> Ajouté au backlog : 2026-11-23 (décision utilisateur : retirer la suppression
+> du périmètre du ticket 24 → devis 05D passé de 16 h à 8 h).
+> Statut : **⏳ à traiter** · Type : nouvelle fonctionnalité · Effort : ~1 j
+
+**Périmètre** (détail dans la doc ticket 24 §2.2) :
+
+1. **Backend** :
+   - Endpoints `DELETE` pour les modèles du référentiel (Stic, Site,
+     ClimaticYear, FeedType, etc.).
+   - Contraintes de suppression : ne pas supprimer un élément utilisé par une
+     simulation (ou « suppression douce » / soft delete).
+2. **Frontend** :
+   - Bouton « Supprimer » dans les UI de gestion (intégrer dans
+     `SiteManager.vue` si le ticket 20 est fait).
+   - Modal de confirmation (« Êtes-vous sûr ? »).
+
+**Lien** : dépend du ticket 20 (gestion des sites) pour la partie UI — à
+trancher ensemble.
+
+---
+
+## BL-3 — Ticket 25 : Page des partenaires — mode pop-up logos
+
+> Source : [ticket-25](ticket-25-page-partenaires.md) (devis 2025 `05D`,
+> [devis 2026 `#2026111904D`](../devis_en_attente/2026111904D_devis_Antoine_Savoie_inrae_evolution_partenaires_tickets.docx)).
+> Ajouté au backlog : 2026-11-23 (décision utilisateur : ticket 25 entièrement
+> au backlog).
+> **2026-11-25** : confirmé au backlog — **partiellement traité** (la page
+> existe déjà), à améliorer **uniquement si demandé**.
+> Statut : **⏳ à traiter si demandé** · Type : correction / UX · Effort : ~0,5 j
+
+**Nature** : `PartnersPage.vue` est **déjà implémentée** (page route, 12 logos
+en 5 blocs, i18n `partners.*`). Il manque le **mode pop-up** : un déclencheur
+discret (footer/menu, à valider) qui ouvre un `v-dialog` avec les logos, sans
+quitter la page.
+
+**Périmètre** (détail dans la doc ticket 25) :
+
+1. Extraire le bloc logos dans `components/partners/PartnersLogos.vue` (partagé
+   page/modal).
+2. Créer `components/partners/PartnersModal.vue` (`v-dialog` large, scrollable).
+3. Ajouter le déclencheur dans le layout principal (footer ou menu — **à
+   trancher avec Antoine** ; accessible avant login ?).
+4. Décider du sort de la route `PartnersPage` (garder si des liens externes
+   pointent dessus).
+
+**Points à trancher avant implémentation** :
+
+- localisation du déclencheur (footer / menu / page login) ;
+- conserver ou supprimer la route `PartnersPage`.
