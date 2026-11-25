@@ -48,6 +48,12 @@
                   @add-item="saveItem"
                   @cancel-modal="closeModal"
                 />
+                <simulation-duplicate-modal
+                  :dialog.sync="dialogs.duplicateSimulation"
+                  :item="duplicateItemSource"
+                  @add-item="duplicateSimulation"
+                  @cancel-modal="closeModal"
+                />
               </v-toolbar>
             </template>
             <template v-slot:item="{ item }">
@@ -94,6 +100,13 @@
                     @click="editItem('simulation', item)"
                   >
                     mdi-square-edit-outline
+                  </v-icon>
+                  <v-icon
+                    medium
+                    color="grey"
+                    @click="duplicateItem(item)"
+                  >
+                    mdi-content-copy
                   </v-icon>
                   <v-icon
                     v-if="!item.loaded"
@@ -308,16 +321,25 @@
   import ClassicFeedModal from './ClassicFeedModal.vue'
   import SticModal from './SticModal.vue'
   import SimulationModal from './SimulationModal.vue'
+  import SimulationDuplicateModal from './SimulationDuplicateModal.vue'
   import AnimalProfileModal from './AnimalProfileModal.vue'
   import Export from './Export.vue'
 
   export default {
     name: 'WorkspaceContent',
-    components: { ClassicFeedModal, SticModal, SimulationModal, AnimalProfileModal, Export },
+    components: {
+      ClassicFeedModal,
+      SticModal,
+      SimulationModal,
+      SimulationDuplicateModal,
+      AnimalProfileModal,
+      Export,
+    },
     data() {
       return {
         dialogs: {
           simulation: false,
+          duplicateSimulation: false,
           classicFeed: false,
           stic: false,
           animalProfile: false,
@@ -334,16 +356,12 @@
           stic: null,
           animalProfile: null,
         },
+        // ticket 21 — simulation source à dupliquer
+        duplicateItemSource: null,
         rules: {
           required: (val) => !!val || 'Ce champ est requis',
           integer: (val) => /^\d+$/.test(val) || 'Ce champ doit être un entier',
         },
-      }
-    },
-    created() {
-      const sim = this.getActivatedSimulation
-      if (sim) {
-        this.loadSimulation(sim)
       }
     },
     computed: {
@@ -426,6 +444,12 @@
         ]
       },
     },
+    created() {
+      const sim = this.getActivatedSimulation
+      if (sim) {
+        this.loadSimulation(sim)
+      }
+    },
     methods: {
       ...mapActions('workspace', { loadSimulator: 'loadSimulator' }),
 
@@ -467,6 +491,15 @@
             timeout: 3000,
           })
         }
+      },
+      // ticket 21 — dupliquer une simulation (« enregistrer-sous »)
+      duplicateItem(simulation) {
+        this.duplicateItemSource = simulation
+        this.dialogs.duplicateSimulation = true
+      },
+      duplicateSimulation({ item, name }) {
+        this.$store.commit('workspace/duplicateSimulation', { simulation: item, name })
+        this.duplicateItemSource = null
       },
       exportSimulation(simulation) {
         const data = {

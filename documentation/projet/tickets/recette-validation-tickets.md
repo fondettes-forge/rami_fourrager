@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 19, 22, 23, 24**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24 ; maj 2026-11-25 : ajout ticket 19).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 19, 21, 22, 23, 24**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24 ; maj 2026-11-25 : ajout tickets 19, 21).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -16,9 +16,9 @@
   npm run serve        # Node 18 requis
   ```
 - Charger le **workspace de démo** (celui qui contient des lots, une grange, un assolement).
-- Les tests unitaires (`straw.spec.js` + `referential.spec.js` + `pastureGreen.spec.js` =
-  **30/30**) couvrent déjà la logique ; cette recette est la **validation visuelle**
-  des critères d'acceptation.
+- Les tests unitaires (`straw.spec.js` + `referential.spec.js` + `pastureGreen.spec.js` +
+  `duplicateSimulation.spec.js` = **34/34**) couvrent déjà la logique ; cette recette est
+  la **validation visuelle** des critères d'acceptation.
 
 > **Point de vigilance** : les 4 autres suites unitaires (farm, workspace, herd,
 > report) échouaient **déjà sur master avant ces tickets** — ce ne sont pas des
@@ -291,15 +291,33 @@
 
 ---
 
+## Ticket 21 — Duplication de simulation (« Enregistrer-sous »)
+
+| #   | Action                                                                  | Résultat attendu                                                                                                             |
+| --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Espace de travail → Mes Simulations_                                   | chaque ligne a une icône **copie** (📄 grise) dans la colonne Actions (entre edit et delete)                                 |
+| 2   | Cliquer sur l'icône copie d'une simulation                              | un **modal** s'ouvre : « Dupliquer la simulation », champ « Nom de la copie » **pré-rempli** avec `« Nom original » (copie)` |
+| 3   | Renommer en « Scénario B » et valider                                   | une **nouvelle simulation** apparaît dans la liste avec le nom saisi ; toast de succès                                       |
+| 4   | Charger la **copie** → vérifier _Assolement_ / _Grange_ / _Troupeau_    | **mêmes données** que l'originale (rotations, stocks, lots) — copie profonde                                                 |
+| 5   | Modifier la copie (ex. changer une surface) → recharger l'**originale** | l'originale est **inchangée** (pas de partage de référence)                                                                  |
+| 6   | Vérifier la ligne de la copie dans la liste                             | **non chargée** (pas de surlignage) ; l'originale reste bien chargée si elle l'était (pas de « vol » du `loaded`)            |
+| 7   | **Cas limite** : laisser le nom de la copie vide et valider             | la soumission est **bloquée** (règle `required`)                                                                             |
+| 8   | Tests unitaires : `duplicateSimulation.spec.js`                         | **4/4** (copie profonde, source non modifiée, loaded=false, date)                                                            |
+
+> La duplication est **locale au workspace** (pas de backend) — cohérent avec
+> l'architecture verrouillée. La copie est référencée par objet (pas d'`id`).
+
+---
+
 ## Tests unitaires (en une commande)
 
 ```bash
 cd services/frontend/ui
-npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata|pastureGreen"
+npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata|pastureGreen|duplicateSimulation"
 ```
 
-→ **53/53 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
-metadata 9 + pastureGreen 8).
+→ **57/57 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
+metadata 9 + pastureGreen 8 + duplicateSimulation 4).
 
 ## Build (optionnel)
 

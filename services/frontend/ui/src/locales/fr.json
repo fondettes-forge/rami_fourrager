@@ -834,6 +834,14 @@
               "add_error": "La simulation n'a pas été créée"
             }
           },
+          "duplicate": {
+            "dialog": {
+              "title": "Dupliquer la simulation",
+              "name": "Nom de la copie",
+              "add_success": "La simulation est dupliquée",
+              "add_error": "La simulation n'a pas été dupliquée"
+            }
+          },
           "delete_success": "La simulation est supprimée"
         },
         "animalProfile": {

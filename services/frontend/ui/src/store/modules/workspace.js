@@ -40,6 +40,17 @@ export default {
       const finded = state.workspace.simulations.indexOf(simulation)
       state.workspace.simulations.splice(finded, 1)
     },
+    // ticket 21 — duplication de simulation (« enregistrer-sous »)
+    // copie profonde de la simulation, nom de la copie fourni, loaded à false
+    // (la simulation d'origine est conservée telle quelle)
+    duplicateSimulation(state, { simulation, name }) {
+      const copy = deepCopy(simulation)
+      copy.name = name
+      copy.description = simulation.description
+      copy.loaded = false
+      copy.lastModifiedDate = new Date().toLocaleDateString('fr-FR')
+      state.workspace.simulations.push(copy)
+    },
     activateSimulation(state, simulation) {
       const finded = state.workspace.simulations.indexOf(simulation)
       const sims = state.workspace.simulations.map((sim, index) => {
