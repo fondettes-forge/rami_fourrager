@@ -810,6 +810,7 @@
         "animalProfile": "Mes Profils Animaux",
         "stic": "Mes Baguettes fourrages",
         "feed": " Mes Cartes rations",
+        "site": "Mes Sites & Années",
         "export": "Exporter"
       },
       "datatables": {
@@ -939,6 +940,47 @@
               "correspondingStock": "Stock correspondant",
               "name": "Nom de la ration",
               "nutritional_values": "Valeurs nutritionnelles de la ration"
+            }
+          }
+        },
+        "site": {
+          "title": "Mes Sites",
+          "header": {
+            "name": "Nom",
+            "code": "Code",
+            "description": "Description",
+            "actions": "Actions"
+          },
+          "create": {
+            "btn": "Créer un site",
+            "dialog": {
+              "title": "Créer un site",
+              "update_title": "Modifier le site",
+              "name": "Nom du site",
+              "code": "Code",
+              "description": "Description",
+              "add_success": "Le site est enregistré"
+            }
+          }
+        },
+        "climaticYear": {
+          "title": "Mes Années climatiques",
+          "header": {
+            "site": "Site",
+            "name": "Nom",
+            "code": "Code",
+            "actions": "Actions"
+          },
+          "create": {
+            "btn": "Créer une année climatique",
+            "dialog": {
+              "title": "Créer une année climatique",
+              "update_title": "Modifier l'année climatique",
+              "site": "Site",
+              "name": "Nom de l'année climatique",
+              "code": "Code",
+              "description": "Description",
+              "add_success": "L'année climatique est enregistrée"
             }
           }
         },

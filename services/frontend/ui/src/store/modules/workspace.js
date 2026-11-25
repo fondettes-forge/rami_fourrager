@@ -6,6 +6,13 @@ export default {
   modules: { mapper },
   state: {
     workspace: {},
+    // ticket 20 — gestion sites / années climatiques (custom, workspace local)
+    // les sites/années créés par l'utilisateur vivent ici (pas de backend, option A).
+    // Les getters de fusion (referential.js) concatènent référentiel + custom.
+    // sites: [{ name, code, description }]
+    // climaticYears: [{ name, code, description, site_id }]
+    sites: [],
+    climaticYears: [],
   },
   mutations: {
     // workspace

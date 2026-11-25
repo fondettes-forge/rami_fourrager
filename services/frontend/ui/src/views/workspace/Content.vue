@@ -7,7 +7,7 @@
         fixed-tabs
       >
         <v-tab
-          v-for="(tab, tabIndex) in ['simulation', 'animalProfile', 'stic', 'feed', 'export']"
+          v-for="(tab, tabIndex) in ['simulation', 'animalProfile', 'stic', 'feed', 'site', 'export']"
           :key="tabIndex"
           class="text-h6"
           @click="$store.dispatch('workspace/deactivateAllMapping')"
@@ -309,6 +309,148 @@
           </v-data-table>
         </v-tab-item>
         <v-tab-item>
+          <!-- ticket 20 — gestion sites / années climatiques (workspace local, option A) -->
+          <v-row>
+            <v-col cols="6">
+              <v-card>
+                <v-data-table
+                  :items="workspace.sites"
+                  :headers="siteHeaders"
+                  :options="dataTableOptions"
+                >
+                  <template v-slot:top>
+                    <v-toolbar
+                      color="white"
+                      flat
+                    >
+                      <v-toolbar-title class="text-h4 font-weight-light">
+                        {{ $t('workspace.content.datatables.site.title') }}
+                      </v-toolbar-title>
+                      <v-divider
+                        class="mx-4"
+                        inset
+                        vertical
+                      />
+                      <v-spacer />
+                      <v-btn
+                        outlined
+                        color="primary"
+                        class="text-h6"
+                        @click="openSiteModal()"
+                      >
+                        {{ $t('workspace.content.datatables.site.create.btn') }}
+                      </v-btn>
+                      <site-modal
+                        :dialog.sync="dialogs.site"
+                        :item="newItems.site"
+                        @add-item="saveItem"
+                        @cancel-modal="closeModal"
+                      />
+                    </v-toolbar>
+                  </template>
+                  <template v-slot:item="{ item }">
+                    <tr>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.code }}</td>
+                      <td>{{ item.description }}</td>
+                      <td>
+                        <v-icon
+                          small
+                          class="mr-2"
+                          @click="openClimaticYearModal(null, item)"
+                        >
+                          mdi-calendar-plus
+                        </v-icon>
+                        <v-icon
+                          small
+                          class="mr-2"
+                          @click="deleteItem('site', item)"
+                        >
+                          mdi-delete
+                        </v-icon>
+                        <v-icon
+                          medium
+                          color="green"
+                          background-color="green"
+                          @click="editItem('site', item)"
+                        >
+                          mdi-square-edit-outline
+                        </v-icon>
+                      </td>
+                    </tr>
+                  </template>
+                </v-data-table>
+              </v-card>
+            </v-col>
+            <v-col cols="6">
+              <v-card>
+                <v-data-table
+                  :items="workspace.climaticYears"
+                  :headers="climaticYearHeaders"
+                  :options="dataTableOptions"
+                >
+                  <template v-slot:top>
+                    <v-toolbar
+                      color="white"
+                      flat
+                    >
+                      <v-toolbar-title class="text-h4 font-weight-light">
+                        {{ $t('workspace.content.datatables.climaticYear.title') }}
+                      </v-toolbar-title>
+                      <v-divider
+                        class="mx-4"
+                        inset
+                        vertical
+                      />
+                      <v-spacer />
+                      <v-btn
+                        outlined
+                        color="primary"
+                        class="text-h6"
+                        :disabled="!selectedSite"
+                        @click="openClimaticYearModal(null, selectedSite)"
+                      >
+                        {{ $t('workspace.content.datatables.climaticYear.create.btn') }}
+                      </v-btn>
+                      <climatic-year-modal
+                        :dialog.sync="dialogs.climaticYear"
+                        :item="newItems.climaticYear"
+                        :site="selectedSite"
+                        @add-item="saveItem"
+                        @cancel-modal="closeModal"
+                      />
+                    </v-toolbar>
+                  </template>
+                  <template v-slot:item="{ item }">
+                    <tr>
+                      <td>{{ siteNameById(item.site_id) }}</td>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.code }}</td>
+                      <td>
+                        <v-icon
+                          small
+                          class="mr-2"
+                          @click="deleteItem('climaticYear', item)"
+                        >
+                          mdi-delete
+                        </v-icon>
+                        <v-icon
+                          medium
+                          color="green"
+                          background-color="green"
+                          @click="editItem('climaticYear', item)"
+                        >
+                          mdi-square-edit-outline
+                        </v-icon>
+                      </td>
+                    </tr>
+                  </template>
+                </v-data-table>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-tab-item>
+        <v-tab-item>
           <export />
         </v-tab-item>
       </v-tabs>
@@ -323,6 +465,8 @@
   import SimulationModal from './SimulationModal.vue'
   import SimulationDuplicateModal from './SimulationDuplicateModal.vue'
   import AnimalProfileModal from './AnimalProfileModal.vue'
+  import SiteModal from './SiteModal.vue'
+  import ClimaticYearModal from './ClimaticYearModal.vue'
   import Export from './Export.vue'
 
   export default {
@@ -333,6 +477,8 @@
       SimulationModal,
       SimulationDuplicateModal,
       AnimalProfileModal,
+      SiteModal,
+      ClimaticYearModal,
       Export,
     },
     data() {
@@ -343,21 +489,29 @@
           classicFeed: false,
           stic: false,
           animalProfile: false,
+          site: false,
+          climaticYear: false,
         },
         newItems: {
           simulation: null,
           classicFeed: null,
           stic: null,
           animalProfile: null,
+          site: null,
+          climaticYear: null,
         },
         oldItems: {
           simulation: null,
           classicFeed: null,
           stic: null,
           animalProfile: null,
+          site: null,
+          climaticYear: null,
         },
         // ticket 21 — simulation source à dupliquer
         duplicateItemSource: null,
+        // ticket 20 — site sélectionné (pour pré-remplir le modal année climatique)
+        selectedSite: null,
         rules: {
           required: (val) => !!val || 'Ce champ est requis',
           integer: (val) => /^\d+$/.test(val) || 'Ce champ doit être un entier',
@@ -438,6 +592,26 @@
           },
           {
             text: this.$t('workspace.content.datatables.classicFeed.header.actions'),
+            value: 'actions',
+            sortable: false,
+          },
+        ]
+      },
+      siteHeaders() {
+        return [
+          { text: this.$t('workspace.content.datatables.site.header.name'), value: 'name' },
+          { text: this.$t('workspace.content.datatables.site.header.code'), value: 'code' },
+          { text: this.$t('workspace.content.datatables.site.header.description'), value: 'description' },
+          { text: this.$t('workspace.content.datatables.site.header.actions'), value: 'actions', sortable: false },
+        ]
+      },
+      climaticYearHeaders() {
+        return [
+          { text: this.$t('workspace.content.datatables.climaticYear.header.site'), value: 'site' },
+          { text: this.$t('workspace.content.datatables.climaticYear.header.name'), value: 'name' },
+          { text: this.$t('workspace.content.datatables.climaticYear.header.code'), value: 'code' },
+          {
+            text: this.$t('workspace.content.datatables.climaticYear.header.actions'),
             value: 'actions',
             sortable: false,
           },
@@ -527,6 +701,27 @@
         this.newItems[dialogName] = null
       },
 
+      // ticket 20 — gestion sites / années climatiques
+      openSiteModal() {
+        this.selectedSite = null
+        this.oldItems.site = null
+        this.newItems.site = { name: '', code: '', description: '' }
+        this.dialogs.site = true
+      },
+      openClimaticYearModal(climaticYear, site) {
+        this.selectedSite = site
+        this.oldItems.climaticYear = climaticYear
+        this.newItems.climaticYear = climaticYear
+          ? { ...climaticYear }
+          : { name: '', code: '', description: '', site_id: site ? site.id : null }
+        this.dialogs.climaticYear = true
+      },
+      siteNameById(siteId) {
+        // cherche le site (base + custom) par id
+        const allSites = [...this.$store.state.referential.sites, ...(this.workspace.sites || [])]
+        const site = allSites.find((s) => s.id === siteId)
+        return site ? site.name : ''
+      },
       // datatables
       saveItem({ dialogName, item }) {
         if (this.oldItems[dialogName] !== null && this.oldItems[dialogName] !== undefined) {

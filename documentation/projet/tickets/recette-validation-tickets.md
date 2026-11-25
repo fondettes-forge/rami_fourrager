@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 19, 21, 22, 23, 24**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24 ; maj 2026-11-25 : ajout tickets 19, 21).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 19, 20, 21, 22, 23, 24**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24 ; maj 2026-11-25 : ajout tickets 19, 21, 20).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -17,8 +17,8 @@
   ```
 - Charger le **workspace de démo** (celui qui contient des lots, une grange, un assolement).
 - Les tests unitaires (`straw.spec.js` + `referential.spec.js` + `pastureGreen.spec.js` +
-  `duplicateSimulation.spec.js` = **34/34**) couvrent déjà la logique ; cette recette est
-  la **validation visuelle** des critères d'acceptation.
+  `duplicateSimulation.spec.js` + `site.spec.js` = **46/46**) couvrent déjà la logique ;
+  cette recette est la **validation visuelle** des critères d'acceptation.
 
 > **Point de vigilance** : les 4 autres suites unitaires (farm, workspace, herd,
 > report) échouaient **déjà sur master avant ces tickets** — ce ne sont pas des
@@ -309,15 +309,36 @@
 
 ---
 
+## Ticket 20 — Gestion sites / années climatiques (workspace local, option A)
+
+| #   | Action                                                                          | Résultat attendu                                                                                                                                         |
+| --- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Espace de travail → Mes Sites & Années_ (nouvel onglet)                        | 2 datatables côte à côte : **« Mes Sites »** (gauche) + **« Mes Années climatiques »** (droite)                                                          |
+| 2   | Cliquer « Créer un site » → saisir nom/code/description → valider               | le site est créé et listé à gauche ; toast de succès                                                                                                     |
+| 3   | Cliquer l'icône calendrier (📅) d'un site → « Créer une année climatique »      | le modal s'ouvre avec le **site pré-sélectionné** ; saisir nom → valider → l'année climatique est listée à droite                                        |
+| 4   | Cliquer « Créer une année climatique » (bouton global, sans site sélectionné)   | le bouton est **désactivé** (il faut sélectionner un site d'abord)                                                                                       |
+| 5   | **Triptyque** : créer un site → une année climatique → une baguette (SticModal) | dans le formulaire baguette, le select « Site » propose **base + custom** ; le select « Année climatique » propose **base + custom** du site sélectionné |
+| 6   | Édition : cliquer l'icône edit d'un site / d'une année climatique               | le modal s'ouvre **pré-rempli** ; les modifications sont enregistrées                                                                                    |
+| 7   | Suppression : cliquer l'icône delete d'un site / d'une année climatique         | confirmation → l'item est supprimé de la liste                                                                                                           |
+| 8   | Tests unitaires : `site.spec.js`                                                | **12/12** (fusion siteList, climaticYearList, getSiteByClimaticYearId, getClimaticYearById)                                                              |
+
+> **Option A (workspace local)** : les sites/années créés vivent dans `workspace.sites` /
+> `workspace.climaticYears` (pas de backend, pas de migration, pas d'endpoint). Les ids
+> custom sont dérivés à la volée (pattern `mergeListsById`, ticket 1 §2.4). La référence
+> des baguettes custom vers une année climatique custom reste cohérente via
+> `getClimaticYearById` / `getSiteByClimaticYearId` (base + custom).
+
+---
+
 ## Tests unitaires (en une commande)
 
 ```bash
 cd services/frontend/ui
-npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata|pastureGreen|duplicateSimulation"
+npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata|pastureGreen|duplicateSimulation|site"
 ```
 
-→ **57/57 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
-metadata 9 + pastureGreen 8 + duplicateSimulation 4).
+→ **69/69 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
+metadata 9 + pastureGreen 8 + duplicateSimulation 4 + site 12).
 
 ## Build (optionnel)
 

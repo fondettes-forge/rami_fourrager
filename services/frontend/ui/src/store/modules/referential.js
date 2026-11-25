@@ -34,6 +34,18 @@ function mergeLists(dbList, customList) {
   const lastId = Math.max(...dbList.map((el) => el.id || 0))
   return [...dbList, ...customList.map((cl, index) => ({ id: lastId + index + 1, ...deepCopy(cl) }))]
 }
+// ticket 20 — fusion référentiel + custom sur une liste déjà filtrée (ex. climatic_years
+// par site_id, ou sites sans filtre). Le dbList est la partie référentielle du sous-ensemble,
+// le customList la partie workspace du même sous-ensemble. Les ids custom sont dérivés
+// à la volée (même logique que mergeLists) pour rester cohérents avec les ids référentiels.
+function mergeListsById(dbList, customList) {
+  if (!dbList.length && !customList.length) return []
+  if (!dbList.length) {
+    return customList.map((cl, index) => ({ id: -(index + 1), ...deepCopy(cl) }))
+  }
+  const lastId = Math.max(...dbList.map((el) => el.id || 0))
+  return [...dbList, ...customList.map((cl, index) => ({ id: lastId + index + 1, ...deepCopy(cl) }))]
+}
 export default {
   namespaced: true,
   state: {
@@ -162,10 +174,13 @@ export default {
     },
     barnStockItemList: (state) => state.barnStockItems,
     batchTypeList: (state) => state.batch_types,
-    climaticYearList: (state) => (siteId) => {
-      return state.climatic_years.filter((cy) => {
-        return cy.site_id === siteId
-      })
+    climaticYearList: (state, getters, rootState) => (siteId) => {
+      const dbList = state.climatic_years.filter((cy) => cy.site_id === siteId)
+      const customList = (rootState.workspace.workspace.climaticYears || []).filter((cy) => cy.site_id === siteId)
+      if (customList.length > 0) {
+        return mergeListsById([...dbList], [...customList])
+      }
+      return dbList
     },
     concentratedFeedList: (state, getters, rootState) => {
       var list = state.concentrated_feeds
@@ -185,15 +200,31 @@ export default {
     housingTypeList: (state) => state.housing_types,
     pastureTypeList: (state) => state.pasture_types,
     periodList: (state) => state.periods,
-    siteList: (state) => state.sites,
-    getSiteByClimaticYearId: (state) => (climaticYearId) => {
-      const cy = state.climatic_years.find((el) => el.id === climaticYearId)
+    siteList: (state, getters, rootState) => {
+      const dbList = state.sites
+      const customList = rootState.workspace.workspace.sites || []
+      if (customList.length > 0) {
+        return mergeListsById([...dbList], [...customList])
+      }
+      return dbList
+    },
+    getSiteByClimaticYearId: (state, getters, rootState) => (climaticYearId) => {
+      // ticket 20 — cherche l'année climatique (base + custom) puis son site (base + custom)
+      const cy =
+        state.climatic_years.find((el) => el.id === climaticYearId) ||
+        (rootState.workspace.workspace.climaticYears || []).find((el) => el.id === climaticYearId)
       if (cy) {
-        return state.sites.find((el) => el.id === cy.site_id)
+        return (
+          state.sites.find((el) => el.id === cy.site_id) ||
+          (rootState.workspace.workspace.sites || []).find((el) => el.id === cy.site_id)
+        )
       }
     },
-    getClimaticYearById: (state) => (id) => {
-      return state.climatic_years.find((el) => el.id === id)
+    getClimaticYearById: (state, getters, rootState) => (id) => {
+      return (
+        state.climatic_years.find((el) => el.id === id) ||
+        (rootState.workspace.workspace.climaticYears || []).find((el) => el.id === id)
+      )
     },
 
     sticList: (state, getters, rootState) => (climaticYearId) => {
