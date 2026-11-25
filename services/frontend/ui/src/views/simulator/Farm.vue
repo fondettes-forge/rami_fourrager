@@ -29,10 +29,10 @@
                     type="number"
                     hide-spin-buttons
                     min="0"
-                  ></v-text-field>
+                  />
                 </v-col>
                 <v-col cols="12">
-                  <v-divider></v-divider>
+                  <v-divider />
                   <v-subheader>{{ $t('farm.dimensioning.constrainedSurfaces') }}</v-subheader>
                 </v-col>
                 <!-- Constrained Surfaces inputs -->
@@ -44,7 +44,7 @@
                     type="number"
                     hide-spin-buttons
                     min="0"
-                  ></v-text-field>
+                  />
                   <v-text-field
                     v-model.number="ploughable"
                     :label="$t('farm.dimensioning.ploughable')"
@@ -52,14 +52,14 @@
                     type="number"
                     hide-spin-buttons
                     min="0"
-                  ></v-text-field>
+                  />
                   <v-text-field
                     v-model.number="superficial"
                     :label="$t('farm.dimensioning.superficial')"
                     :rules="constraintRules"
                     type="number"
                     min="0"
-                  ></v-text-field>
+                  />
                   <v-text-field
                     v-model.number="reachable"
                     :label="$t('farm.dimensioning.reachable')"
@@ -67,7 +67,7 @@
                     type="number"
                     min="0"
                     hide-spin-buttons
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
             </v-form>
@@ -80,7 +80,8 @@
           class="pt-0 pb-0"
           :class="{ 'opacity-50': climaticYear === null }"
         >
-          <rotation-graph :climaticYear="climaticYear" />
+          <rotation-graph :climatic-year="climaticYear" />
+          <pasture-green-chart :climatic-year="climaticYear" />
           <v-sheet
             :color="surfaceCounterColor"
             class="d-flex align-center pa-3 mb-2"
@@ -121,14 +122,14 @@
                   class="mx-4"
                   inset
                   vertical
-                ></v-divider>
-                <v-spacer></v-spacer>
+                />
+                <v-spacer />
                 <v-btn
                   :color="pageColor"
                   dark
-                  @click="showRotationItemDialog = true"
                   outlined
                   :disabled="climaticYear === null"
+                  @click="showRotationItemDialog = true"
                 >
                   {{ $t('farm.rotations.table.btn_add') }}
                 </v-btn>
@@ -138,9 +139,9 @@
                 >
                   <v-form
                     ref="rotationForm"
-                    @submit.prevent="saveRotationItem"
                     v-model="valid"
                     lazy-validation
+                    @submit.prevent="saveRotationItem"
                   >
                     <v-card>
                       <v-card-title> {{ $t('farm.rotations.modal.title') }} </v-card-title>
@@ -158,8 +159,7 @@
                                 filled
                                 class="autocomplet-transparent-background"
                                 :rules="required"
-                              >
-                              </v-autocomplete>
+                              />
                             </v-col>
                             <v-col cols="12">
                               <v-select
@@ -170,8 +170,7 @@
                                 item-value="id"
                                 return-object
                                 clearable
-                              >
-                              </v-select>
+                              />
                             </v-col>
                             <v-col cols="12">
                               <v-text-field
@@ -180,13 +179,13 @@
                                 :rules="[...required, ...rotationRules]"
                                 type="number"
                                 hide-spin-buttons
-                              ></v-text-field>
+                              />
                             </v-col>
                           </v-row>
                         </v-container>
                       </v-card-text>
                       <v-card-actions>
-                        <v-spacer></v-spacer>
+                        <v-spacer />
                         <v-btn
                           text
                           color="grey"
@@ -229,16 +228,16 @@
                 </td>
                 <td>
                   <v-icon
-                    @click="deleteRotationItem(item)"
                     small
+                    @click="deleteRotationItem(item)"
                   >
                     mdi-delete
                   </v-icon>
                   <v-icon
-                    @click="editRotationItem(item)"
                     medium
                     color="green"
                     background-color="green"
+                    @click="editRotationItem(item)"
                   >
                     mdi-square-edit-outline
                   </v-icon>
@@ -256,14 +255,16 @@
   import { mapGetters } from 'vuex'
   import navigationGuard from '@/mixins/navigationGuard'
   import RotationGraph from '@/components/parts/farm/RotationGraph.vue'
+  import PastureGreenChart from '@/components/parts/farm/PastureGreenChart.vue'
   export default {
     name: 'Farm',
+    components: {
+      RotationGraph,
+      PastureGreenChart,
+    },
     mixins: [navigationGuard],
     confirmNavigation(callback) {
       this.$confirmNavigation(callback)
-    },
-    components: {
-      RotationGraph,
     },
     data() {
       return {

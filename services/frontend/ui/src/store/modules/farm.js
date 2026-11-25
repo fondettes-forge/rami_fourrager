@@ -5,6 +5,7 @@ import {
   setTotalStrawStock,
   getRotationSurfaceHarvestedByPeriod,
   getPastureSurplusesByPeriod,
+  getPastureConsumptionByPeriod,
 } from './mixins'
 export default {
   namespaced: true,
@@ -187,6 +188,22 @@ export default {
         ),
         0
       )
+    },
+    // ticket 19 — pâture verte disponible vs besoin du troupeau, par période
+    // (kgMS/période — mêmes unités que production_total)
+    getPastureGreenComparison: (state, getters, rootState) => {
+      const periods = rootState.referential.periods
+      // disponibilité : production totale par période (kgMS)
+      const arr = state.totalAvailablePastureByPeriod
+      const disponible = periods.map((p) => {
+        const el = arr ? arr['period_id_' + p.id] : null
+        return el ? _.round(el.production_total, 0) : 0
+      })
+      // besoin : consommation pâturée agrégée sur les lots (kgMS/période)
+      const besoin = periods.map((p, index) =>
+        _.round(getPastureConsumptionByPeriod(rootState.simulator, index, state.totalAvailablePastureByPeriod), 0)
+      )
+      return { disponible, besoin }
     },
   },
   actions: {

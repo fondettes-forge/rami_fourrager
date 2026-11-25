@@ -611,6 +611,19 @@ export function getPastureConsumptionTotal(simulation, periods) {
   })
   return (cons * 28) / 1000
 }
+// ticket 19 — consommation pâturée agrégée sur les lots, par index de période (kgMS/période)
+export function getPastureConsumptionByPeriod(simulation, periodIndex, totalAvailablePastureByPeriod) {
+  const batchs = simulation.herd.batchs
+  if (!batchs || batchs.length === 0) return 0
+  if (!totalAvailablePastureByPeriod) return 0
+  let cons = 0
+  batchs.forEach((batch) => {
+    cons +=
+      getTotalPastureConsumption(batch, periodIndex, totalAvailablePastureByPeriod, batchs) *
+      (batch.housing.presence[periodIndex]?.animalCount ?? 0)
+  })
+  return cons
+}
 // G stock fin
 export function getFinalStockByBarnStockItem(simulation, stockCode, periods, getStic) {
   if (stockCode === 'STRAW') {

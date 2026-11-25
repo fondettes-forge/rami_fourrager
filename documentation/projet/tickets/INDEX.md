@@ -10,7 +10,7 @@
 > - Chaque ticket a une doc d'analyse/préco dédiée (`ticket-N-slug.md`).
 >   Travaux non traités : [BACKLOG.md](BACKLOG.md).
 >   Chaque ticket indique sa **provenance** (mail oct. 2026 / devis 2025 / TODO code).
->   Mise à jour : 2026-11-24 (tickets 12, 23, 10, 16, 24).
+>   Mise à jour : 2026-11-25 (ticket 19).
 
 ## Légende statut
 
@@ -44,7 +44,7 @@
 | 16  | Export : nom obligatoire + colonnes manquantes              | Bug         | Moyenne   | ✅ Implémenté          | [ticket-16](ticket-16-export-nom-colonnes.md)         | TODO code                  | A (nom obligatoire) + B (message si simulation vide)                                                |
 | 17  | Validation formulaires : champs facultatifs/obligatoires    | Correction  | Moyenne   | ✅ Implémenté (profil) | [ticket-17](ticket-17-validation-formulaires.md)      | Devis 2025 (R10)           | Profils animaux ✅ (groupé avec 15) ; baguettes à faire                                             |
 | 18  | Tooltip « nb génisses à garder »                            | Correction  | Basse     | ✅ Implémenté          | [ticket-18](ticket-18-tooltip-genisses.md)            | Devis 2025 (R11)           | v-tooltip sur le champ « Nombre d'animaux » (HerdModal + BatchDetails)                              |
-| 19  | Graphique « pâture verte disponible et besoin du troupeau » | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-19](ticket-19-graph-pature-verte.md)          | Devis 2025 (R12)           | À mettre dans le module Assolement                                                                  |
+| 19  | Graphique « pâture verte disponible et besoin du troupeau » | Nouveauté   | Moyenne   | ✅ Implémenté          | [ticket-19](ticket-19-graph-pature-verte.md)          | Devis 2025 (R12)           | Graphique barres 2 séries (kgMS/période) sous le RotationGraph — implémenté 2026-11-25              |
 | 20  | Formulaire gestion sites (création/màj/supp + années)       | Nouveauté   | **Haute** | 📄 Doc écrite          | [ticket-20](ticket-20-gestion-sites.md)               | Devis 2025 (R27)           | Triptyque site → année → baguette ; backend + frontend                                              |
 | 21  | Duplication de simulation (« Enregistrer-sous »)            | Nouveauté   | Moyenne   | 📄 Doc écrite          | [ticket-21](ticket-21-duplication-simulation.md)      | Devis 2025 (R29)           | —                                                                                                   |
 | 22  | Colonne « source » pour les baguettes                       | Nouveauté   | Basse     | ✅ Implémenté          | [ticket-22](ticket-22-source-baguettes.md)            | Devis 2025 (R33)           | Backend + frontend ; migration `d3f8a21c9b4e` à exécuter + re-seed                                  |
@@ -55,8 +55,8 @@
 ## Synthèse
 
 - **Total** : 25 tickets (16 du mail oct. 2026 + 9 du devis 2025).
-- **Implémenté** : 21/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 7 [décliner baguette B1+B3], 9 [onglets Bilan], 10 [périodes vides V2+V3], 11 [compteur surface 2.1], 12 [tourteaux RT], 13 [Grange], 15 [batch_type], 16 [export nom + colonnes], 17 [validation profil], 18 [tooltip génisses], 22 [source baguettes], 23 [feedback login], 24 [métadonnées référentiel]) — le ticket 6 est le doublon du 1.
-- **Doc écrite, prête à implémenter** : 4/25 (tickets 19, 20, 21, 25).
+- **Implémenté** : 22/25 (tickets 1, 2+8 [bloc paille], 3 [2.1 paille en tonnes], 4 [bouton Présence], 5 [dupliquer carte], 7 [décliner baguette B1+B3], 9 [onglets Bilan], 10 [périodes vides V2+V3], 11 [compteur surface 2.1], 12 [tourteaux RT], 13 [Grange], 15 [batch_type], 16 [export nom + colonnes], 17 [validation profil], 18 [tooltip génisses], 19 [graphique pâture verte], 22 [source baguettes], 23 [feedback login], 24 [métadonnées référentiel]) — le ticket 6 est le doublon du 1.
+- **Doc écrite, prête à implémenter** : 3/25 (tickets 20, 21, 25).
 - **À clarifier (décision requise)** : 1/25 (ticket 14, INRAE) ; + à trancher : option 12 (1/2), bonus 11, option 2.2 du ticket 3 (céréales → backlog BL-1).
 - **Au backlog** : ticket 25 (BL-3, pop-up partenaires) + suppression référentiel ex-ticket 24 §2.2 (BL-2) — décision 2026-11-23.
 
@@ -77,8 +77,8 @@
 6. **Tickets TODO code** : ticket 15 (AnimalProfileModal, ~0,75 j), ticket 16
    (Export, ~1,5 j).
 
-7. **Tickets devis 2025 restants** : 17 (~0,5 j), 18 (~0,1 j), 19 (~1 j),
-   20 (~2 j), 21 (~1 j), 23 (~0,5 j), 24 (~2 j), 25 (~0,5 j) — 22 ✅ fait.
+7. **Tickets devis 2025 restants** : 17 (~0,5 j), 18 (~0,1 j), 19 (~1 j) ✅,
+   20 (~2 j), 21 (~1 j), 23 (~0,5 j), 24 (~2 j) ✅, 25 (~0,5 j) — 22 ✅, 19 ✅ faits.
 
 8. **Backlog** : [BACKLOG.md](BACKLOG.md) — BL-1 (céréales en tonnes, ticket 3 §2.2,
    ~1 j), BL-2 (suppression référentiel, ex-ticket 24 §2.2, ~1 j),

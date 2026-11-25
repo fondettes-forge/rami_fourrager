@@ -2,8 +2,8 @@
 
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
-> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 22, 23, 24**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24).
+> Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 19, 22, 23, 24**.
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24 ; maj 2026-11-25 : ajout ticket 19).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -16,9 +16,9 @@
   npm run serve        # Node 18 requis
   ```
 - Charger le **workspace de démo** (celui qui contient des lots, une grange, un assolement).
-- Les tests unitaires (`straw.spec.js` + `referential.spec.js` = **22/22**) couvrent
-  déjà la logique ; cette recette est la **validation visuelle** des critères
-  d'acceptation.
+- Les tests unitaires (`straw.spec.js` + `referential.spec.js` + `pastureGreen.spec.js` =
+  **30/30**) couvrent déjà la logique ; cette recette est la **validation visuelle**
+  des critères d'acceptation.
 
 > **Point de vigilance** : les 4 autres suites unitaires (farm, workspace, herd,
 > report) échouaient **déjà sur master avant ces tickets** — ce ne sont pas des
@@ -157,6 +157,24 @@
 
 ---
 
+## Ticket 19 — Graphique « pâture verte disponible et besoin du troupeau »
+
+| #   | Action                                                                                           | Résultat attendu                                                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | _Assolement_ → colonne de droite, sous le graphique de l'assolement (heatmap)                    | un **nouveau graphique** « Pâture verte disponible et besoin du troupeau » s'affiche (barres groupées, 2 séries, P1–P13)                          |
+| 2   | Saisir un assolement avec des pâtures → « Appliquer à la simulation » → revenir sur _Assolement_ | la série **« Pâture verte disponible »** (barres vert foncé) est non nulle sur les périodes où il y a production de pâture                        |
+| 3   | Avoir des lots en pâturage (stratégie de pâturage ≠ 0) → appliquer                               | la série **« Besoin du troupeau »** (barres vert clair) est non nulle sur ces périodes, cohérente avec la consommation pâturée                    |
+| 4   | Survoler une période (tooltip)                                                                   | les **2 valeurs** (disponible + besoin) en **kgMS** s'affichent                                                                                   |
+| 5   | **Cas limite** : simulation sans assolement appliqué (pas de `totalAvailablePastureByPeriod`)    | pas de crash — le graphique affiche le message « Aucune donnée de pâture disponible (saisissez un assolement puis appliquez-le à la simulation) » |
+| 6   | Vérifier les autres modules (_Troupeau_, _Bilan_)                                                | pas de régression (le getter est **affichage pur** — il n'affecte aucun calcul existant)                                                          |
+
+> **Point de vigilance (unité)** : les deux séries sont en **kgMS/période** (comme
+> `production_total`). L'unité exacte du « besoin » dans l'Excel de référence est
+> à confirmer avec INRAE (Antoine) — si l'Excel est en kgMS/jour ou tMS, il faudra
+> ajuster le facteur d'affichage uniquement (getter `getPastureGreenComparison`).
+
+---
+
 ## Ticket 4 — Bouton AJOUTER Présence
 
 | #   | Action                                            | Résultat attendu                                                             |
@@ -277,11 +295,11 @@
 
 ```bash
 cd services/frontend/ui
-npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata"
+npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata|pastureGreen"
 ```
 
-→ **45/45 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
-metadata 9).
+→ **53/53 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
+metadata 9 + pastureGreen 8).
 
 ## Build (optionnel)
 

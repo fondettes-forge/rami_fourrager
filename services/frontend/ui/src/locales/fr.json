@@ -323,6 +323,13 @@
       "superficial": "Sols superficiels",
       "reachable": "Surfaces accessibles au pâturage"
     },
+    "pastureGreenChart": {
+      "title": "Pâture verte disponible et besoin du troupeau",
+      "available": "Pâture verte disponible",
+      "need": "Besoin du troupeau",
+      "unity": "kgMS",
+      "empty": "Aucune donnée de pâture disponible (saisissez un assolement puis appliquez-le à la simulation)"
+    },
     "rotations": {
       "title": "Saisie de l'assolement",
       "table": {
