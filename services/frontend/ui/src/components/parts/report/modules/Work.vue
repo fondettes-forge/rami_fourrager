@@ -14,7 +14,7 @@
           <v-card-title class="text-h4 font-weight-light">
             {{ $t('report.main.modules.work.work.title') }}
           </v-card-title>
-          <v-divider></v-divider>
+          <v-divider />
           <v-card-text>
             <v-row justify="center">
               <v-col cols="5">
@@ -70,7 +70,7 @@
                     inset
                     vertical
                   />
-                  <v-spacer></v-spacer>
+                  <v-spacer />
                 </v-toolbar>
               </template>
               <template v-slot:header="{ props }">
@@ -116,10 +116,12 @@
           class="mb-1"
           style="height: 100%"
         >
-          <v-card-title class="text-h4 font-weight-light">{{
-            $t('report.main.modules.work.pasture.title')
-          }}</v-card-title>
-          <v-divider></v-divider>
+          <v-card-title class="text-h4 font-weight-light">
+            {{
+              $t('report.main.modules.work.pasture.title')
+            }}
+          </v-card-title>
+          <v-divider />
           <v-card-text>
             <surplus />
           </v-card-text>

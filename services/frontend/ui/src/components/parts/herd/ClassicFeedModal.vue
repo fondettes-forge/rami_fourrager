@@ -1,15 +1,15 @@
 <template>
   <div>
     <v-dialog
-      max-width="500px"
       v-model="forceOpen"
+      max-width="500px"
       persistent
     >
       <v-form
         ref="classicFeedForm"
-        @submit.prevent="saveItem"
         v-model="valid"
         lazy-validation
+        @submit.prevent="saveItem"
       >
         <v-card>
           <v-card-title>
@@ -34,7 +34,7 @@
                     :rules="[rules.required]"
                     :no-data-text="$t('validation.noData')"
                     clearable
-                  ></v-select>
+                  />
                 </v-col>
                 <v-col
                   cols="12"
@@ -48,18 +48,18 @@
                     :rules="[rules.required, rules.integer]"
                     hide-spin-buttons
                     min="0"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
             </v-container>
           </v-card-text>
 
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
-              @click="cancelModal"
               color="grey"
               text
+              @click="cancelModal"
             >
               {{ $t('btn.cancel') }}
             </v-btn>
@@ -81,7 +81,7 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'classicFeedModal',
+    name: 'ClassicFeedModal',
     props: {
       pageColor: {
         type: String,
@@ -99,6 +99,17 @@
         type: Boolean,
         required: true,
       },
+    },
+    data() {
+      return {
+        // showModal: false,
+        feedItem: null,
+        valid: true,
+        rules: {
+          required: (val) => !!val || this.$t('validation.required'),
+          integer: (val) => /^\d+$/.test(val) || this.$t('validation.integer'),
+        },
+      }
     },
     watch: {
       item: {
@@ -124,17 +135,6 @@
       //     }
       //   },
       // },
-    },
-    data() {
-      return {
-        // showModal: false,
-        feedItem: null,
-        valid: true,
-        rules: {
-          required: (val) => !!val || this.$t('validation.required'),
-          integer: (val) => /^\d+$/.test(val) || this.$t('validation.integer'),
-        },
-      }
     },
     computed: {
       ...mapGetters('referential', {

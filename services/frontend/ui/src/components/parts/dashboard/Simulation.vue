@@ -1,16 +1,16 @@
 <template>
   <base-dashboard-card
     :title="$t('dashboard.simulation.title')"
-    cardColor="#4caf5073"
-    titleColor="transparent"
+    card-color="#4caf5073"
+    title-color="transparent"
     :dark="true"
     icon="mdi-head-cog-outline"
-    :withSubtitle="true"
+    :with-subtitle="true"
     :description="$t('dashboard.simulation.description', { desc: simulation.description })"
   >
     <template
-      v-slot:subtitle
       v-if="simulation.name"
+      v-slot:subtitle
     >
       {{ $t('dashboard.simulation.name', { name: simulation.name }) }}
     </template>

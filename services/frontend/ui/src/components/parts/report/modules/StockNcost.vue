@@ -12,7 +12,7 @@
           <v-card-title class="text-h4 font-weight-light">
             {{ $t('report.main.modules.stockNcost.stockGraph.title') }}
           </v-card-title>
-          <v-divider></v-divider>
+          <v-divider />
           <v-card-text>
             <stock-graph />
           </v-card-text>
@@ -48,11 +48,11 @@
         type: Object,
       },
     },
-
-    created() {},
     data() {
       return {}
     },
+
+    created() {},
     computed: {
       ...mapGetters('simulator/report', {
         pastureStock: 'getPastureStock',

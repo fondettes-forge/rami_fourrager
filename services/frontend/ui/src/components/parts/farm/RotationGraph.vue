@@ -17,7 +17,7 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'rotation-graph',
+    name: 'RotationGraph',
     data() {
       return {
         periods: [

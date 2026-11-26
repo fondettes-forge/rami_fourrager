@@ -29,7 +29,7 @@
             width="25px"
             rounded
             class="mr-2"
-          ></v-sheet>
+          />
           <span class="legend-title">{{ $t('herd.details.graph.legend.pasture') }} </span>
         </v-row>
       </v-col>
@@ -46,7 +46,7 @@
             width="25px"
             rounded
             class="mr-2"
-          ></v-sheet>
+          />
           <span class="legend-title">{{ $t('herd.details.graph.legend.hay') }}</span>
         </v-row>
       </v-col>
@@ -63,7 +63,7 @@
             width="25px"
             rounded
             class="mr-2"
-          ></v-sheet>
+          />
           <span class="legend-title">{{ $t('herd.details.graph.legend.EH') }}</span>
         </v-row>
       </v-col>
@@ -80,7 +80,7 @@
             width="25px"
             rounded
             class="mr-2"
-          ></v-sheet>
+          />
           <span class="legend-title">{{ $t('herd.details.graph.legend.EMS') }}</span>
         </v-row>
       </v-col>
@@ -97,7 +97,7 @@
             width="25px"
             rounded
             class="mr-2"
-          ></v-sheet>
+          />
           <span class="legend-title">{{ $t('herd.details.graph.legend.EL') }}</span>
         </v-row>
       </v-col>
@@ -114,7 +114,7 @@
             width="25px"
             rounded
             class="mr-2"
-          ></v-sheet>
+          />
           <span class="legend-title">{{ $t('herd.details.graph.legend.FL') }}</span>
         </v-row>
       </v-col>
@@ -130,7 +130,7 @@
             width="25px"
             rounded
             class="mr-2"
-          ></v-sheet>
+          />
           <span class="legend-title">{{ $t('herd.details.graph.legend.others') }}</span>
         </v-row>
       </v-col>
@@ -140,7 +140,7 @@
 
 <script>
   export default {
-    name: 'graph-feeds-requirements-legend',
+    name: 'GraphFeedsRequirementsLegend',
   }
 </script>
 

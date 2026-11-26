@@ -10,10 +10,10 @@
       <v-card class="text-center">
         <v-card-title class="text-h5"> {{ $t('dashboard.no_simulation_dialog.title') }} </v-card-title>
         <v-card-text class="text-body-1 text-center">
-          {{ $t('dashboard.no_simulation_dialog.row1') }} <br />
-          {{ $t('dashboard.no_simulation_dialog.for') }} <br />
-          {{ $t('dashboard.no_simulation_dialog.row2') }} <br />
-          {{ $t('dashboard.no_simulation_dialog.or') }} <br />
+          {{ $t('dashboard.no_simulation_dialog.row1') }} <br>
+          {{ $t('dashboard.no_simulation_dialog.for') }} <br>
+          {{ $t('dashboard.no_simulation_dialog.row2') }} <br>
+          {{ $t('dashboard.no_simulation_dialog.or') }} <br>
           {{ $t('dashboard.no_simulation_dialog.row3') }}
         </v-card-text>
 

@@ -7,12 +7,12 @@
     >
       <v-card-title>
         {{ $t('report.main.modules.stockNcost.stockTable.costIndicator.modal.title') }}
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn
           outlined
           color="info"
-          @click="exportToCSV"
           class="btn-export"
+          @click="exportToCSV"
         >
           {{ $t('btn.exportToCSV') }}
         </v-btn>

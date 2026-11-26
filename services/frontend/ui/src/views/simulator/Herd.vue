@@ -24,20 +24,20 @@
                 inset
                 vertical
               />
-              <v-spacer></v-spacer>
+              <v-spacer />
               <v-btn
-                @click="showHerdModal"
                 :color="pageColor"
                 outlined
                 small
                 :class="{ 'animate-button': animate }"
+                @click="showHerdModal"
               >
                 {{ $t('herd.main.list.btn_add') }}
               </v-btn>
             </v-card-title>
             <v-card-text>
               <herd-modal
-                :showModal="showModal"
+                :show-modal="showModal"
                 @add-lot="addLot"
                 @cancel-add-lot="cancelAddLot"
               />
@@ -59,17 +59,17 @@
                       inset
                       vertical
                     />
-                    <v-spacer></v-spacer>
+                    <v-spacer />
                     <v-icon
-                      @click="deleteLot(lot)"
                       medium
+                      @click="deleteLot(lot)"
                     >
                       mdi-delete
                     </v-icon>
                     <v-icon
-                      @click="showDetails(index)"
                       large
                       :color="pageColor"
+                      @click="showDetails(index)"
                     >
                       mdi-square-edit-outline
                     </v-icon>
@@ -94,12 +94,11 @@
             v-if="selectedLot === null"
             class="ma-0"
             style="height: 100%"
-          >
-          </v-card>
+          />
           <v-card
+            v-else
             id="batch-details"
             class="ma-0"
-            v-else
           >
             <v-card-title class="text-center justify-center py-6">
               <v-row>
@@ -113,8 +112,8 @@
                 </v-col>
                 <v-col class="pt-0 pb-0">
                   <graphs-modal
-                    :selectedLot="selectedLot"
-                    :pageColor="pageColor"
+                    :selected-lot="selectedLot"
+                    :page-color="pageColor"
                   />
                 </v-col>
               </v-row>
@@ -145,42 +144,42 @@
                     </v-tab>
                     <!-- batch Details -->
                     <v-tab-item>
-                      <v-divider></v-divider>
+                      <v-divider />
                       <batch-details
-                        :pageColor="pageColor"
-                        :selectedLot="selectedLot"
+                        :page-color="pageColor"
+                        :selected-lot="selectedLot"
                       />
                     </v-tab-item>
                     <!-- Housing Details -->
                     <v-tab-item>
-                      <v-divider></v-divider>
+                      <v-divider />
                       <housing-details
-                        :pageColor="pageColor"
-                        :selectedLot="selectedLot"
+                        :page-color="pageColor"
+                        :selected-lot="selectedLot"
                       />
                     </v-tab-item>
                     <!-- Classic Feeds Details -->
                     <v-tab-item>
-                      <v-divider></v-divider>
+                      <v-divider />
                       <classic-feed
-                        :pageColor="pageColor"
-                        :selectedLot="selectedLot"
+                        :page-color="pageColor"
+                        :selected-lot="selectedLot"
                       />
                     </v-tab-item>
                     <!-- Concentrated Feeds Details -->
                     <v-tab-item>
-                      <v-divider></v-divider>
+                      <v-divider />
                       <concentrated-feed
-                        :pageColor="pageColor"
-                        :selectedLot="selectedLot"
+                        :page-color="pageColor"
+                        :selected-lot="selectedLot"
                       />
                     </v-tab-item>
                     <!-- Pasture Details -->
                     <v-tab-item>
-                      <v-divider></v-divider>
+                      <v-divider />
                       <pasture-details
-                        :pageColor="pageColor"
-                        :selectedLot="selectedLot"
+                        :page-color="pageColor"
+                        :selected-lot="selectedLot"
                       />
                     </v-tab-item>
                   </v-tabs>
@@ -207,10 +206,6 @@
 
   export default {
     name: 'Herd',
-    mixins: [navigationGuard],
-    confirmNavigation(callback) {
-      this.$confirmNavigation(callback)
-    },
     components: {
       HerdModal,
       HousingDetails,
@@ -220,6 +215,10 @@
       PastureDetails,
       GraphsModal,
       DownloadFile,
+    },
+    mixins: [navigationGuard],
+    confirmNavigation(callback) {
+      this.$confirmNavigation(callback)
     },
     data() {
       return {

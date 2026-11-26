@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-dialog
-      max-width="600px"
       v-model="showModal"
+      max-width="600px"
       persistent
       no-click-animation
     >
       <template v-slot:activator="{ on }">
         <v-btn
           color="green"
-          v-on="on"
           outlined
+          v-on="on"
         >
           {{ $t('workspace.content.datatables.classicFeed.create.btn') }}
         </v-btn>
@@ -31,9 +31,9 @@
 
         <v-form
           ref="workspaceClassicFeedForm"
-          @submit.prevent="saveItem"
           v-model="valid"
           lazy-validation
+          @submit.prevent="saveItem"
         >
           <v-card-text>
             <v-text-field
@@ -41,7 +41,7 @@
               :rules="[rules.required]"
               :label="$t('workspace.content.datatables.classicFeed.create.dialog.name')"
               required
-            ></v-text-field>
+            />
 
             <v-select
               v-model="feedItem.correspondingStock"
@@ -51,11 +51,13 @@
               :label="$t('workspace.content.datatables.classicFeed.create.dialog.correspondingStock')"
               :rules="[rules.required, rules.validStock]"
               :no-data-text="$t('validation.noData')"
-            ></v-select>
+            />
 
-            <v-subheader>{{
-              $t('workspace.content.datatables.classicFeed.create.dialog.nutritional_values')
-            }}</v-subheader>
+            <v-subheader>
+              {{
+                $t('workspace.content.datatables.classicFeed.create.dialog.nutritional_values')
+              }}
+            </v-subheader>
 
             <v-row>
               <v-col
@@ -71,7 +73,7 @@
                   type="number"
                   min="0"
                   hide-spin-buttons
-                ></v-text-field>
+                />
               </v-col>
             </v-row>
           </v-card-text>
@@ -81,11 +83,11 @@
         </v-card-text> -->
 
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
-              @click="cancelModal"
               color="grey"
               text
+              @click="cancelModal"
             >
               {{ $t('workspace.content.datatables.classicFeed.create.dialog.btn_cancel') }}
             </v-btn>
@@ -107,7 +109,7 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'classicFeedModal',
+    name: 'ClassicFeedModal',
     props: {
       item: {
         type: null,
@@ -117,6 +119,19 @@
         type: Boolean,
         required: true,
       },
+    },
+    data() {
+      return {
+        showModal: false,
+        valid: true,
+        feedItem: null,
+        rules: {
+          required: (value) => !!value || this.$t('validation.required'),
+          number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
+          validStock: (value) =>
+            !value || this.barnStockItems.some((stock) => stock.code === value) || this.$t('validation.validStock'),
+        },
+      }
     },
     watch: {
       item: {
@@ -151,19 +166,6 @@
           }
         },
       },
-    },
-    data() {
-      return {
-        showModal: false,
-        valid: true,
-        feedItem: null,
-        rules: {
-          required: (value) => !!value || this.$t('validation.required'),
-          number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
-          validStock: (value) =>
-            !value || this.barnStockItems.some((stock) => stock.code === value) || this.$t('validation.validStock'),
-        },
-      }
     },
     computed: {
       ...mapGetters('referential', {

@@ -27,26 +27,26 @@
               {{
                 $t('workspace.referential.uptodate', { date: new Date(lastConnectionDate).toLocaleDateString('fr-FR') })
               }}
-              <br />
-              <br />
+              <br>
+              <br>
               {{ $t('workspace.referential.description') }}
             </div>
             <div v-else>
               {{
                 $t('workspace.referential.toUpdate', { date: new Date(lastConnectionDate).toLocaleDateString('fr-FR') })
               }}
-              <br />
-              <br />
+              <br>
+              <br>
               {{ $t('workspace.referential.description') }}
             </div>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
               outlined
               color="#F39C12"
-              @click="refresh"
               class="text-h6"
+              @click="refresh"
             >
               {{ $t('workspace.referential.btn_refresh') }}
             </v-btn>
@@ -81,8 +81,7 @@
         cols="12"
         lg="12"
         class="pt-0 pb-0"
-      >
-      </v-col>
+      />
     </v-row>
   </v-container>
 </template>
@@ -92,7 +91,7 @@
   import WorkspaceContent from './Content.vue'
 
   export default {
-    name: 'workspaceView',
+    name: 'WorkspaceView',
     components: {
       Actions,
       WorkspaceContent,

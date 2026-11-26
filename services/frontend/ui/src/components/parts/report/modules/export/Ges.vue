@@ -10,7 +10,7 @@
       </div>
     </v-card-title>
     <v-card-actions class="pa-4">
-      <v-spacer></v-spacer>
+      <v-spacer />
       <test-ges />
     </v-card-actions>
   </v-card>
@@ -19,15 +19,15 @@
   import TestGes from './TestGes.vue'
 
   export default {
-    name: 'export',
+    name: 'Export',
+    components: {
+      TestGes,
+    },
     props: {
       title: {
         type: String,
         default: 'Export',
       },
-    },
-    components: {
-      TestGes,
     },
     data() {
       return {

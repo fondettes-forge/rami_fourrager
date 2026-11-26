@@ -20,7 +20,7 @@
 <script>
   import { mapGetters } from 'vuex'
   export default {
-    name: 'coverageGraph',
+    name: 'CoverageGraph',
     props: {
       selectedLot: {
         type: null,

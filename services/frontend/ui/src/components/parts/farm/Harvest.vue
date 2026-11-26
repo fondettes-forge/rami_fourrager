@@ -22,7 +22,7 @@
             inset
             vertical
           />
-          <v-spacer></v-spacer>
+          <v-spacer />
         </v-toolbar>
       </template>
 

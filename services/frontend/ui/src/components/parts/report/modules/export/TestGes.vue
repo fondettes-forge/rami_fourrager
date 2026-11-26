@@ -33,13 +33,13 @@
                     v-if="typeof item.value === 'string'"
                     v-model="item.value"
                     dense
-                  ></v-text-field>
+                  />
                   <v-text-field
                     v-else-if="typeof item.value === 'number'"
                     v-model.number="item.value"
                     type="number"
                     dense
-                  ></v-text-field>
+                  />
                   <v-text-field
                     v-else-if="typeof item.value === 'object'"
                     v-model="item.value.quantity"

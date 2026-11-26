@@ -3,7 +3,7 @@
     <v-card>
       <graph-feeds-requirements
         :selected-lot="selectedLot"
-        :withTitle="true"
+        :with-title="true"
         :title="$t('herd.details.graph.title')"
       />
     </v-card>

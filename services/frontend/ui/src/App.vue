@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-view />
-    <modals-container></modals-container>
+    <modals-container />
   </div>
 </template>
 

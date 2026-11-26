@@ -22,9 +22,9 @@
                   inset
                   vertical
                 />
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <mapping-modal
-                  :forceOpen="dialog"
+                  :force-open="dialog"
                   :item="newItem"
                   @add-item="saveItem"
                   @cancel-modal="closeModal"
@@ -39,23 +39,23 @@
                 <td>
                   <v-icon
                     v-if="!item.protected"
-                    @click="deleteItem('mapping', item)"
                     small
+                    @click="deleteItem('mapping', item)"
                   >
                     mdi-delete
                   </v-icon>
                   <v-icon
-                    @click="editItem('mapping', item)"
                     medium
                     color="green"
+                    @click="editItem('mapping', item)"
                   >
                     mdi-square-edit-outline
                   </v-icon>
                   <v-btn
-                    @click="onUseMapping(item)"
                     small
                     outlined
                     color="primary"
+                    @click="onUseMapping(item)"
                   >
                     {{ 'utiliser ce mapping' }}
                   </v-btn>
@@ -95,7 +95,7 @@
                       <v-checkbox
                         v-model="selectAllSimulations"
                         @change="toggleSelectAll"
-                      ></v-checkbox>
+                      />
                     </v-list-item-action>
                     <v-list-item-content>
                       <v-list-item-title>Toutes les simulations</v-list-item-title>
@@ -109,9 +109,9 @@
                     <v-list-item-action>
                       <v-checkbox
                         :input-value="selectedSimulations.includes(index)"
-                        @change="toggleSimulation(index)"
                         :disabled="selectAllSimulations"
-                      ></v-checkbox>
+                        @change="toggleSimulation(index)"
+                      />
                     </v-list-item-action>
                     <v-list-item-content>
                       <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -126,7 +126,7 @@
       </v-col>
     </v-row>
     <preview-modal
-      :forceOpen="previewDialog"
+      :force-open="previewDialog"
       :rows="previewRows"
       @close-modal="closePreview"
     />
@@ -141,13 +141,10 @@
   // TODO mettre un controle sur le nom de la simulation qui est obligatoire !
   // les colonnes n'apparaise ni dans l'apercu ni dans le fichier csv
   export default {
-    name: 'export',
+    name: 'Export',
     components: {
       MappingModal,
       PreviewModal,
-    },
-    mounted() {
-      this.deactivateAllMapping()
     },
     data() {
       return {
@@ -159,6 +156,9 @@
         previewDialog: false,
         previewRows: [],
       }
+    },
+    mounted() {
+      this.deactivateAllMapping()
     },
     computed: {
       ...mapGetters('workspace', {

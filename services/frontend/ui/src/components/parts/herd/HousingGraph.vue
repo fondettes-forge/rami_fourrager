@@ -23,6 +23,9 @@
         type: null,
       },
     },
+    data() {
+      return {}
+    },
     watch: {
       selection: {
         handler(newValue, oldValue) {
@@ -54,9 +57,6 @@
           }
         },
       },
-    },
-    data() {
-      return {}
     },
     computed: {
       ...mapGetters('simulator/herd', {

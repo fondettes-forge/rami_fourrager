@@ -10,8 +10,8 @@
       <v-card
         :elevation="2"
         hover
-        @click="downloadFile"
         class="pt-0 pb-0"
+        @click="downloadFile"
       >
         <v-alert
           color="primary lighten-3"
@@ -31,7 +31,7 @@
 </template>
 <script>
   export default {
-    name: 'donwload-file',
+    name: 'DonwloadFile',
     methods: {
       async downloadFile() {
         this.$store

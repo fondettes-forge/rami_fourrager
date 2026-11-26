@@ -17,9 +17,9 @@
     </template>
     <v-form
       ref="duplicateForm"
-      @submit.prevent="duplicate"
       v-model="valid"
       lazy-validation
+      @submit.prevent="duplicate"
     >
       <v-card>
         <v-card-title>{{ $t('herd.duplication.title') }}</v-card-title>
@@ -29,8 +29,7 @@
             :value="sourceItem.name"
             :label="$t('herd.duplication.source')"
             readonly
-          >
-          </v-text-field>
+          />
           <v-select
             v-model="selectedTargets"
             :items="sources"
@@ -47,11 +46,11 @@
           >
             <template v-slot:prepend-item>
               <v-checkbox
-                class="ml-4"
                 v-model="isSelectAll"
-                @click="toggleSelectAll()"
+                class="ml-4"
                 hide-details
                 ripple
+                @click="toggleSelectAll()"
               >
                 <template v-slot:label>
                   <span> {{ $t('herd.duplication.selectall') }} </span>
@@ -62,7 +61,7 @@
           </v-select>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
             color="grey"
             text
@@ -97,16 +96,6 @@
         required: true,
       },
     },
-    watch: {
-      sourceItem: {
-        immediate: true,
-        handler(newValue, oldValue) {
-          if (newValue != null) {
-            this.sources = this.ids.filter((element) => element.id !== newValue.id)
-          }
-        },
-      },
-    },
     data() {
       return {
         valid: true,
@@ -119,6 +108,16 @@
         selectedTargets: [],
         isSelectAll: false,
       }
+    },
+    watch: {
+      sourceItem: {
+        immediate: true,
+        handler(newValue, oldValue) {
+          if (newValue != null) {
+            this.sources = this.ids.filter((element) => element.id !== newValue.id)
+          }
+        },
+      },
     },
     methods: {
       duplicate() {

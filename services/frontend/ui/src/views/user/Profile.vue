@@ -18,8 +18,8 @@
           <v-form
             ref="userForm"
             v-model="valid"
-            @submit.prevent="save"
             lazy-validation
+            @submit.prevent="save"
           >
             <v-container class="py-0">
               <v-row>

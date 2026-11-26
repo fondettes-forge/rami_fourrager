@@ -3,7 +3,7 @@
     <v-simple-table>
       <thead>
         <tr>
-          <th></th>
+          <th />
           <th
             v-for="(period, index) in periods"
             :key="index"
@@ -92,7 +92,7 @@
             <pasture-strategy-form
               :selected-lot="selectedLot"
               :period="index"
-            ></pasture-strategy-form>
+            />
           </td>
         </tr>
       </tbody>
@@ -116,14 +116,6 @@
         required: true,
       },
     },
-    watch: {
-      selectedLot: {
-        immediate: true,
-        handler(newValue, oldValue) {
-          this.batch = this.getBatch(newValue)
-        },
-      },
-    },
     data() {
       return {
         batch: null,
@@ -133,6 +125,14 @@
           integer: (val) => /^\d+$/.test(val) || this.$t('validation.integer'),
         },
       }
+    },
+    watch: {
+      selectedLot: {
+        immediate: true,
+        handler(newValue, oldValue) {
+          this.batch = this.getBatch(newValue)
+        },
+      },
     },
     computed: {
       ...mapGetters('referential', {

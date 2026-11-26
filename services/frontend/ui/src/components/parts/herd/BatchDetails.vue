@@ -11,7 +11,7 @@
       :color="pageColor"
       :item-color="pageColor"
       @change="loadProfiles"
-    ></v-select>
+    />
     <v-autocomplete
       v-model="profile"
       :items="animalProfiles"
@@ -23,8 +23,7 @@
       filled
       return-object
       required
-    >
-    </v-autocomplete>
+    />
     <div class="d-flex align-center">
       <v-text-field
         v-model.number="count"
@@ -35,7 +34,7 @@
         :color="pageColor"
         hide-spin-buttons
         @focus="confirmUpdate"
-      ></v-text-field>
+      />
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-icon
@@ -50,7 +49,7 @@
         <span>{{ $t('herd.details.count_tooltip') }}</span>
       </v-tooltip>
     </div>
-    <v-divider></v-divider>
+    <v-divider />
     <v-select
       v-model="housingType"
       :items="housingTypes"
@@ -60,14 +59,14 @@
       :label="$t('herd.details.housing_types')"
       :color="pageColor"
       :item-color="pageColor"
-    ></v-select>
+    />
   </v-container>
 </template>
 <script>
   import { mapGetters, mapMutations } from 'vuex'
 
   export default {
-    name: 'batchDetails',
+    name: 'BatchDetails',
     props: {
       selectedLot: {
         type: null,
@@ -76,15 +75,6 @@
       pageColor: {
         type: String,
         required: true,
-      },
-    },
-    watch: {
-      selectedLot: {
-        immediate: true,
-        handler(newValue, oldValue) {
-          this.batch = this.getBatch(newValue)
-          this.loadProfiles(this.batch.type)
-        },
       },
     },
     data() {
@@ -96,6 +86,15 @@
           integer: (val) => /^\d+$/.test(val) || this.$t('validation.integer'),
         },
       }
+    },
+    watch: {
+      selectedLot: {
+        immediate: true,
+        handler(newValue, oldValue) {
+          this.batch = this.getBatch(newValue)
+          this.loadProfiles(this.batch.type)
+        },
+      },
     },
     computed: {
       ...mapGetters('referential', {

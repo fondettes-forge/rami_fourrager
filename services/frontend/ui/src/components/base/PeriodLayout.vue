@@ -8,8 +8,8 @@
       <v-tab
         v-for="(period, index) in periods"
         :key="index"
-        @click="$emit('selected', index)"
         class="period-tab"
+        @click="$emit('selected', index)"
       >
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
@@ -38,18 +38,18 @@
             class="mx-4"
             inset
             vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
+          />
+          <v-spacer />
           <base-duplicate-modal
             :ids="periods"
-            :sourceItem="period"
+            :source-item="period"
             @duplicate="duplicate"
           />
           <v-btn
             v-if="showAddButton !== false"
             :color="pageColor"
-            @click="$emit('add-modal')"
             outlined
+            @click="$emit('add-modal')"
           >
             {{ $t('btn.add') }}
           </v-btn>

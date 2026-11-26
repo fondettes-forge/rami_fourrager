@@ -8,9 +8,9 @@
       <v-card-title>{{ $t('herd.modal.title') }}</v-card-title>
       <v-form
         ref="batchForm"
-        @submit.prevent="addLot"
         v-model="valid"
         lazy-validation
+        @submit.prevent="addLot"
       >
         <v-card-text>
           <v-select
@@ -21,9 +21,9 @@
             item-value="id"
             return-object
             :rules="[rules.required]"
-            @change="loadProfiles"
             :allow-overflow="true"
-          ></v-select>
+            @change="loadProfiles"
+          />
           <v-autocomplete
             v-model="lotItem.profile"
             :items="animalProfiles"
@@ -35,8 +35,7 @@
             required
             clearable
             :allow-overflow="true"
-          >
-          </v-autocomplete>
+          />
           <div class="d-flex align-center">
             <v-text-field
               v-model.number="lotItem.count"
@@ -45,7 +44,7 @@
               type="number"
               hide-spin-buttons
               min="0"
-            ></v-text-field>
+            />
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <v-icon
@@ -62,7 +61,7 @@
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
             text
             color="grey"

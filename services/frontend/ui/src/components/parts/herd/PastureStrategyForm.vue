@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-checkbox v-model="pastureStrategy"></v-checkbox>
+    <v-checkbox v-model="pastureStrategy" />
   </div>
 </template>
 <script>
@@ -18,6 +18,11 @@
         required: true,
       },
     },
+    data() {
+      return {
+        batch: null,
+      }
+    },
     watch: {
       selectedLot: {
         immediate: true,
@@ -25,11 +30,6 @@
           this.batch = this.getBatch(newValue)
         },
       },
-    },
-    data() {
-      return {
-        batch: null,
-      }
     },
     computed: {
       ...mapGetters('simulator/herd', {

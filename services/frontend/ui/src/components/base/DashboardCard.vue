@@ -12,15 +12,15 @@
         <template v-slot:activator="{ on, attrs }">
           <v-card-title
             v-bind="attrs"
-            v-on="description !== '' && on"
             class=""
+            v-on="description !== '' && on"
           >
             <v-row>
               <v-col cols="1">
                 <v-icon
+                  v-if="icon"
                   medium
                   left
-                  v-if="icon"
                 >
                   {{ icon }}
                 </v-icon>
@@ -33,12 +33,12 @@
                   {{ title }}
                 </div>
               </v-col>
-              <v-spacer></v-spacer>
+              <v-spacer />
               <v-col
                 v-if="withButton"
                 class="pa-0 ma-0"
               >
-                <slot name="button"></slot>
+                <slot name="button" />
               </v-col>
             </v-row>
           </v-card-title>
@@ -51,26 +51,21 @@
         v-if="withSubtitle"
         class="mt-0 text-subtitle-1 font-weight-light"
       >
-        <slot name="subtitle"></slot>
+        <slot name="subtitle" />
       </v-card-subtitle>
     </v-sheet>
     <v-card-text
       class="text-body-1 ma-0"
       style="background-color: #ffffff38; height: 100%"
     >
-      <slot name="content"></slot>
+      <slot name="content" />
     </v-card-text>
   </v-card>
 </template>
 
 <script>
   export default {
-    name: 'Dashboard-Card',
-
-    created() {},
-    data() {
-      return {}
-    },
+    name: 'DashboardCard',
     props: {
       icon: {
         type: String,
@@ -119,11 +114,16 @@
         required: false,
       },
     },
-    methods: {},
+    data() {
+      return {}
+    },
     computed: {
       cardClasses() {
         return 'pb-0 mb-3 mt-0 ma-0 ' + this.classes
       },
     },
+
+    created() {},
+    methods: {},
   }
 </script>

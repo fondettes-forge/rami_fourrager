@@ -9,8 +9,8 @@
       <template v-slot:activator="{ on }">
         <v-btn
           color="green"
-          v-on="on"
           outlined
+          v-on="on"
         >
           {{ $t('workspace.content.datatables.mapping.create.btn') }}
         </v-btn>
@@ -21,9 +21,9 @@
         </v-card-title>
         <v-form
           ref="workspaceMappingForm"
-          @submit.prevent="saveItem"
           v-model="valid"
           lazy-validation
+          @submit.prevent="saveItem"
         >
           <v-card-text>
             <v-container>
@@ -34,8 +34,8 @@
                     :label="$t('workspace.content.datatables.mapping.create.name')"
                     :rules="[rules.required]"
                     required
-                  ></v-text-field>
-                  <v-divider class="my-3"></v-divider>
+                  />
+                  <v-divider class="my-3" />
                   <v-sheet
                     elevation="2"
                     class="pa-6"
@@ -47,7 +47,7 @@
                           v-model="newField.key"
                           :label="$t('workspace.content.datatables.mapping.create.field.key')"
                           required
-                        ></v-text-field>
+                        />
                       </v-col>
                       <v-col cols="12">
                         <v-select
@@ -57,7 +57,7 @@
                           item-text="label"
                           return-object
                           :label="$t('workspace.content.datatables.mapping.create.field.value_to_get')"
-                        ></v-select>
+                        />
                       </v-col>
                       <v-col
                         cols="12"
@@ -65,8 +65,8 @@
                       >
                         <v-btn
                           color="primary"
-                          @click="addField"
                           :disabled="!newField.key"
+                          @click="addField"
                         >
                           {{ $t('workspace.content.datatables.mapping.create.field.btn_add') }}
                         </v-btn>
@@ -88,14 +88,14 @@
                         v-model="item.key"
                         :rules="[rules.required]"
                         required
-                      ></v-text-field>
+                      />
                     </template>
                     <template v-slot:item.value="{ item }">
                       <v-select
                         v-model="item.value"
                         :items="simulationFields"
                         required
-                      ></v-select>
+                      />
                     </template>
                     <template v-slot:item.actions="{ index }">
                       <v-btn icon>
@@ -113,11 +113,11 @@
             </v-container>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
-              @click="cancelModal"
               color="grey"
               text
+              @click="cancelModal"
             >
               {{ $t('btn.cancel') }}
             </v-btn>
@@ -140,7 +140,7 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'mappingModal',
+    name: 'MappingModal',
     props: {
       item: { type: null, required: true },
       forceOpen: { type: Boolean, required: true },

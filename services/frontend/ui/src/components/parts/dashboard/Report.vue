@@ -1,12 +1,12 @@
 <template>
   <base-dashboard-card
     :title="$t('dashboard.report.title')"
-    cardColor="blue"
-    titleColor="transparent"
+    card-color="blue"
+    title-color="transparent"
     :dark="true"
     icon="mdi-chart-box-outline"
-    :withButton="true"
-    :withSubtitle="true"
+    :with-button="true"
+    :with-subtitle="true"
   >
     <template v-slot:content>
       <dimensioning />
@@ -32,7 +32,7 @@
   import { mapGetters } from 'vuex'
   import Dimensioning from '../report/Dimensioning.vue'
   export default {
-    name: 'report-dashboard',
+    name: 'ReportDashboard',
     components: {
       Dimensioning,
     },

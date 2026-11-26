@@ -39,11 +39,17 @@
   import { EventBus } from '@/plugins/event_bus/eventBus'
 
   export default {
-    name: 'logout',
+    name: 'Logout',
     data() {
       return {
         logoutDialog: false,
       }
+    },
+    mounted() {
+      window.addEventListener('beforeunload', this.handleBeforeUnload)
+    },
+    beforeDestroy() {
+      window.removeEventListener('beforeunload', this.handleBeforeUnload)
     },
 
     methods: {
@@ -75,12 +81,6 @@
         event.returnValue = '' // Nécessaire pour certains navigateurs
         this.logoutDialog = true // Affiche le dialogue
       },
-    },
-    mounted() {
-      window.addEventListener('beforeunload', this.handleBeforeUnload)
-    },
-    beforeDestroy() {
-      window.removeEventListener('beforeunload', this.handleBeforeUnload)
     },
   }
 </script>

@@ -1,15 +1,15 @@
 <template>
   <div>
     <v-dialog
-      max-width="500px"
       v-model="forceOpen"
+      max-width="500px"
       persistent
     >
       <v-form
         ref="concentratedFeedForm"
-        @submit.prevent="saveItem"
         v-model="valid"
         lazy-validation
+        @submit.prevent="saveItem"
       >
         <v-card>
           <v-card-title>
@@ -32,7 +32,7 @@
                     :label="$t('herd.concentratedfeed.modal.type')"
                     return-object
                     :rules="[rules.required]"
-                  ></v-select>
+                  />
                 </v-col>
                 <v-col
                   cols="12"
@@ -47,18 +47,18 @@
                     clearable
                     hide-spin-buttons
                     min="0"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
             </v-container>
           </v-card-text>
 
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
-              @click="cancelModal"
               color="grey"
               text
+              @click="cancelModal"
             >
               {{ $t('btn.cancel') }}
             </v-btn>
@@ -80,7 +80,7 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    name: 'concentratedFeedModal',
+    name: 'ConcentratedFeedModal',
     props: {
       pageColor: {
         type: String,
@@ -99,6 +99,17 @@
         required: true,
       },
     },
+    data() {
+      return {
+        oldFeedItem: null,
+        feedItem: null,
+        valid: true,
+        rules: {
+          required: (val) => !!val || this.$t('validation.required'),
+          integer: (val) => /^\d+$/.test(val) || this.$t('validation.integer'),
+        },
+      }
+    },
     watch: {
       item: {
         immediate: true,
@@ -113,17 +124,6 @@
           }
         },
       },
-    },
-    data() {
-      return {
-        oldFeedItem: null,
-        feedItem: null,
-        valid: true,
-        rules: {
-          required: (val) => !!val || this.$t('validation.required'),
-          integer: (val) => /^\d+$/.test(val) || this.$t('validation.integer'),
-        },
-      }
     },
     computed: {
       ...mapGetters('referential', {

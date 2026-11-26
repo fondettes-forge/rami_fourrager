@@ -17,7 +17,7 @@
           type="warning"
         >
           {{ $t('workspace.actions.create.content') }}
-          <br />
+          <br>
           {{ $t('workspace.actions.create.description') }}
         </v-alert>
       </div>
@@ -26,8 +26,8 @@
 
       <div v-if="workspace.tag === 'exported'">
         {{ $t('workspace.actions.import.content') }}
-        <br />
-        <br />
+        <br>
+        <br>
         {{ $t('workspace.actions.import.description') }}
       </div>
 
@@ -40,21 +40,21 @@
           type="warning"
         >
           {{ $t('workspace.actions.export.content') }}
-          <br />
-          <br />
+          <br>
+          <br>
           {{ $t('workspace.actions.export.description') }}
         </v-alert>
       </div>
     </v-card-text>
     <template v-slot:actions>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         v-if="workspace.tag === undefined"
         outlined
         color="#065c4a"
-        @click="createWorkspace"
         class="text-h6"
         :class="{ 'animate-button': animateWorkspaceCreation }"
+        @click="createWorkspace"
       >
         {{ $t('workspace.actions.create.btn') }}
       </v-btn>
@@ -62,8 +62,8 @@
       <v-btn
         outlined
         color="grey lighten-1"
-        @click="importWorkspace"
         class="text-h6"
+        @click="importWorkspace"
       >
         {{ $t('workspace.actions.import.btn') }}
       </v-btn>
@@ -71,8 +71,8 @@
       <v-btn
         outlined
         color="primary"
-        @click="exportWorkspace"
         class="text-h6"
+        @click="exportWorkspace"
       >
         {{ $t('workspace.actions.export.btn') }}
       </v-btn>

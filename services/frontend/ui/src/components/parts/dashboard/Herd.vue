@@ -5,7 +5,7 @@
         <v-col>
           <div class="text-h3 font-weight-light">{{ $t('herd.title') }}</div>
         </v-col>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-col>
           <div>
             <v-btn
@@ -30,11 +30,11 @@
         >
           <graph-feeds-requirements
             :selected-lot="index"
-            :withYaxis="true"
-            :withLegend="false"
-            :xAxisLabelRotate="true"
+            :with-yaxis="true"
+            :with-legend="false"
+            :x-axis-label-rotate="true"
             :layout="{ width: 'auto', height: '200px' }"
-            :withTitle="true"
+            :with-title="true"
             :title="$t('dashboard.herd.graph.title', { id: index + 1 })"
           />
         </div>
@@ -47,7 +47,7 @@
   import { mapState } from 'vuex'
 
   export default {
-    name: 'herd-dashboard',
+    name: 'HerdDashboard',
     components: {
       GraphFeedsRequirements,
     },

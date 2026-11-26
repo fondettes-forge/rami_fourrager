@@ -1,15 +1,15 @@
 <template>
   <v-container>
     <base-period-layout
-      :pageColor="pageColor"
-      toolBarTitleKey="herd.housing.title"
-      :showAddButton="false"
+      :page-color="pageColor"
+      tool-bar-title-key="herd.housing.title"
+      :show-add-button="false"
       @selected="periodSelected"
       @duplicate="duplicate"
     >
       <template v-slot:graph>
         <housing-graph
-          :selectedLot="selectedLot"
+          :selected-lot="selectedLot"
           :selection="selectedPeriodIndex"
         />
       </template>
@@ -22,7 +22,7 @@
           hide-spin-buttons
           min="0"
           :color="pageColor"
-        ></v-text-field>
+        />
         <v-text-field
           v-model.number="days"
           :rules="[daysRule]"
@@ -31,7 +31,7 @@
           hide-spin-buttons
           min="0"
           :color="pageColor"
-        ></v-text-field>
+        />
       </template>
     </base-period-layout>
   </v-container>
@@ -41,7 +41,10 @@
   import HousingGraph from './HousingGraph.vue'
 
   export default {
-    name: 'housingDetails',
+    name: 'HousingDetails',
+    components: {
+      HousingGraph,
+    },
     props: {
       selectedLot: {
         type: null,
@@ -50,17 +53,6 @@
       pageColor: {
         type: String,
         required: true,
-      },
-    },
-    components: {
-      HousingGraph,
-    },
-    watch: {
-      selectedLot: {
-        immediate: true,
-        handler(newValue, oldValue) {
-          this.batch = this.getBatch(newValue)
-        },
       },
     },
     data() {
@@ -72,6 +64,14 @@
           integer: (val) => /^\d+$/.test(val) || this.$t('validation.integer'),
         },
       }
+    },
+    watch: {
+      selectedLot: {
+        immediate: true,
+        handler(newValue, oldValue) {
+          this.batch = this.getBatch(newValue)
+        },
+      },
     },
     computed: {
       ...mapGetters('simulator/herd', {

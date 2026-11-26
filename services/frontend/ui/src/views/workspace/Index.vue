@@ -26,8 +26,8 @@
               {{
                 $t('workspace.referential.uptodate', { date: new Date(lastConnectionDate).toLocaleDateString('fr-FR') })
               }}
-              <br />
-              <br />
+              <br>
+              <br>
               {{ $t('workspace.referential.description') }}
             </div>
             <div v-else>
@@ -41,13 +41,13 @@
                     date: new Date(lastConnectionDate).toLocaleDateString('fr-FR'),
                   })
                 }}
-                <br />
+                <br>
                 {{ $t('workspace.referential.description') }}
               </v-alert>
             </div>
           </v-card-text>
           <template v-slot:actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
               :class="{ 'animate-button': animateReferentialButton }"
               outlined
@@ -98,7 +98,7 @@
                 max-height="300px"
                 class="mt-8"
                 type="table"
-              ></v-skeleton-loader>
+              />
             </div>
           </v-card-text>
         </base-material-card>
@@ -112,7 +112,7 @@
   import WorkspaceContent from './Content.vue'
 
   export default {
-    name: 'workspaceView',
+    name: 'WorkspaceView',
     components: {
       Actions,
       WorkspaceContent,

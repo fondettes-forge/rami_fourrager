@@ -1,7 +1,7 @@
 <template>
   <base-dashboard-card
     :title="$t('autonomy.title')"
-    cardColor="blue lighten-3"
+    card-color="blue lighten-3"
     :dark="true"
     icon="mdi-recycle-variant"
   >
@@ -17,12 +17,12 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-alert
                     v-bind="attrs"
-                    v-on="on"
                     class="pa-1 ma-2"
                     dense
                     :type="
                       autonomy >= 0 ? $t('autonomy.autonomy.step.high.color') : $t('autonomy.autonomy.step.low.color')
                     "
+                    v-on="on"
                   >
                     {{
                       autonomy >= 0 ? $t('autonomy.autonomy.step.high.label') : $t('autonomy.autonomy.step.low.label')
@@ -31,14 +31,13 @@
                 </template>
 
                 <span>{{ $t('autonomy.autonomy.tooltip.punchline') }}</span>
-                <br />
+                <br>
                 <span>{{ $t('autonomy.autonomy.tooltip.details') }}</span>
               </v-tooltip>
               <v-tooltip right>
                 <template v-slot:activator="{ on, attrs }">
                   <v-alert
                     v-bind="attrs"
-                    v-on="on"
                     class="pa-1 ma-2"
                     dense
                     :type="
@@ -46,6 +45,7 @@
                         ? $t('autonomy.potential.step.high.color')
                         : $t('autonomy.potential.step.low.color')
                     "
+                    v-on="on"
                   >
                     {{
                       potential >= 90
@@ -55,7 +55,7 @@
                   </v-alert>
                 </template>
                 <span>{{ $t('autonomy.potential.tooltip.punchline') }}</span>
-                <br />
+                <br>
                 <span>{{ $t('autonomy.potential.tooltip.details') }}</span>
               </v-tooltip>
             </v-col>

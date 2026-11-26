@@ -29,14 +29,14 @@
               v-for="(mod, tabIndex) in modules"
               :key="tabIndex"
             >
-              <v-divider></v-divider>
+              <v-divider />
               <!-- <div>{{ $t('report.main.modules.' + mod.descriptionKey) }}</div> -->
               <!-- Afficher dynamiquement le composant du module correspondant -->
               <component
                 :is="mod.component"
-                :data="mod.data"
-                :pageColor="pageColor"
                 v-if="mod.component"
+                :data="mod.data"
+                :page-color="pageColor"
               />
             </v-tab-item>
           </v-tabs>

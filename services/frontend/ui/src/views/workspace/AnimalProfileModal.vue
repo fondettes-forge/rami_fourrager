@@ -21,9 +21,9 @@
       </v-card-title>
       <v-form
         ref="animalProfileForm"
-        @submit.prevent="saveItem"
         v-model="valid"
         lazy-validation
+        @submit.prevent="saveItem"
       >
         <v-card-text>
           <v-row>
@@ -32,9 +32,11 @@
                 elevation="2"
                 class="pa-6"
               >
-                <v-subheader>{{
-                  $t('workspace.content.datatables.animalProfile.create.dialog.subheader.copy')
-                }}</v-subheader>
+                <v-subheader>
+                  {{
+                    $t('workspace.content.datatables.animalProfile.create.dialog.subheader.copy')
+                  }}
+                </v-subheader>
                 <v-row justify="center">
                   <v-col cols="10">
                     <v-select
@@ -43,9 +45,9 @@
                       item-text="name"
                       item-value="id"
                       return-object
-                      @change="handleBTChange"
                       :disabled="copyDisabled"
-                    ></v-select>
+                      @change="handleBTChange"
+                    />
                     <v-autocomplete
                       v-model="animalProfileToCopy"
                       :items="animalProfiles"
@@ -58,16 +60,15 @@
                       class="autocomplet-transparent-background"
                       :disabled="copyDisabled"
                       clearable
-                    >
-                    </v-autocomplete>
+                    />
                   </v-col>
                 </v-row>
                 <v-row justify="end">
                   <v-btn
                     color="primary"
                     outlined
-                    @click="copyAnimalProfile"
                     :disabled="copyDisabled"
+                    @click="copyAnimalProfile"
                   >
                     {{ $t('btn.copy') }}
                   </v-btn>
@@ -102,24 +103,24 @@
                       :rules="[rules.required]"
                       required
                       @change="handleBTChange"
-                    ></v-select>
+                    />
 
                     <v-text-field
                       v-model="animalProfile.name"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.name')"
                       :rules="[rules.required]"
                       required
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="animalProfile.age_mois"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.age_mois')"
                       :rules="[rules.required]"
                       required
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="animalProfile.sem_MB"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.sem_MB')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model.number="animalProfile.weight_MB_kg"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.weight_MB_kg')"
@@ -128,7 +129,7 @@
                       type="number"
                       min="0"
                       hide-spin-buttons
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model.number="animalProfile.NEC_MB"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.NEC_MB')"
@@ -137,11 +138,11 @@
                       type="number"
                       min="0"
                       hide-spin-buttons
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model="animalProfile.lactation_duration"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.lactation_duration')"
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model.number="animalProfile.weight_birth_kg"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.weight_birth_kg')"
@@ -150,7 +151,7 @@
                       type="number"
                       min="0"
                       hide-spin-buttons
-                    ></v-text-field>
+                    />
                     <v-text-field
                       v-model.number="animalProfile.milk_product_kg"
                       :label="$t('workspace.content.datatables.animalProfile.create.dialog.milk_product_kg')"
@@ -159,7 +160,7 @@
                       type="number"
                       min="0"
                       hide-spin-buttons
-                    ></v-text-field>
+                    />
                   </v-sheet>
                 </v-tab-item>
                 <v-tab-item>
@@ -184,7 +185,7 @@
                           type="number"
                           min="0"
                           hide-spin-buttons
-                        ></v-text-field>
+                        />
                       </template>
 
                       <template v-slot:[`item.UFL`]="{ item }">
@@ -198,7 +199,7 @@
                           type="number"
                           min="0"
                           hide-spin-buttons
-                        ></v-text-field>
+                        />
                       </template>
 
                       <template v-slot:[`item.PDI`]="{ item }">
@@ -212,7 +213,7 @@
                           type="number"
                           min="0"
                           hide-spin-buttons
-                        ></v-text-field>
+                        />
                       </template>
 
                       <template v-slot:[`item.PL`]="{ item }">
@@ -226,7 +227,7 @@
                           type="number"
                           min="0"
                           hide-spin-buttons
-                        ></v-text-field>
+                        />
                       </template>
                     </v-data-table>
                   </v-sheet>
@@ -237,11 +238,11 @@
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
-            @click="cancelModal"
             color="grey"
             text
+            @click="cancelModal"
           >
             {{ $t('btn.cancel') }}
           </v-btn>
@@ -273,6 +274,42 @@
         required: true,
       },
       dialog: Boolean,
+    },
+    data() {
+      return {
+        animalProfileToCopy: null,
+        animalProfiles: [],
+        copyDisabled: false,
+        animalProfile: {},
+        periodHeaders: [
+          {
+            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.period'),
+            value: 'period_id',
+            align: 'start',
+          },
+          {
+            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.CI'),
+            value: 'CI',
+          },
+          {
+            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.UFL'),
+            value: 'UFL',
+          },
+          {
+            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.PDI'),
+            value: 'PDI',
+          },
+          {
+            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.PL'),
+            value: 'PL',
+          },
+        ],
+        valid: true,
+        rules: {
+          required: (value) => !!value || this.$t('validation.required'),
+          number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
+        },
+      }
     },
     watch: {
       item: {
@@ -311,42 +348,6 @@
           }
         },
       },
-    },
-    data() {
-      return {
-        animalProfileToCopy: null,
-        animalProfiles: [],
-        copyDisabled: false,
-        animalProfile: {},
-        periodHeaders: [
-          {
-            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.period'),
-            value: 'period_id',
-            align: 'start',
-          },
-          {
-            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.CI'),
-            value: 'CI',
-          },
-          {
-            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.UFL'),
-            value: 'UFL',
-          },
-          {
-            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.PDI'),
-            value: 'PDI',
-          },
-          {
-            text: this.$t('workspace.content.datatables.animalProfile.create.dialog.PL'),
-            value: 'PL',
-          },
-        ],
-        valid: true,
-        rules: {
-          required: (value) => !!value || this.$t('validation.required'),
-          number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
-        },
-      }
     },
     computed: {
       ...mapGetters('referential', {

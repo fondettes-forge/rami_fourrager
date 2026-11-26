@@ -13,7 +13,7 @@
   import CostIndicatorModal from '@components/parts/report/modules/stockNcost/CostIndicatorModal'
 
   export default {
-    name: 'cost-indicator',
+    name: 'CostIndicator',
     props: {
       pageColor: {
         type: String,

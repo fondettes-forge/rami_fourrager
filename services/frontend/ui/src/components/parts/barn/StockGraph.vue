@@ -15,26 +15,6 @@
 <script>
   import { mapGetters } from 'vuex'
   export default {
-    data() {
-      return {
-        periods: [
-          this.$t('periods.graph.start'),
-          this.$t('periods.graph.P1'),
-          this.$t('periods.graph.P2'),
-          this.$t('periods.graph.P3'),
-          this.$t('periods.graph.P4'),
-          this.$t('periods.graph.P5'),
-          this.$t('periods.graph.P6'),
-          this.$t('periods.graph.P7'),
-          this.$t('periods.graph.P8'),
-          this.$t('periods.graph.P9'),
-          this.$t('periods.graph.P10'),
-          this.$t('periods.graph.P11'),
-          this.$t('periods.graph.P12'),
-          this.$t('periods.graph.end'),
-        ],
-      }
-    },
     props: {
       withLegend: {
         type: Boolean,
@@ -60,6 +40,26 @@
         type: Boolean,
         default: true,
       },
+    },
+    data() {
+      return {
+        periods: [
+          this.$t('periods.graph.start'),
+          this.$t('periods.graph.P1'),
+          this.$t('periods.graph.P2'),
+          this.$t('periods.graph.P3'),
+          this.$t('periods.graph.P4'),
+          this.$t('periods.graph.P5'),
+          this.$t('periods.graph.P6'),
+          this.$t('periods.graph.P7'),
+          this.$t('periods.graph.P8'),
+          this.$t('periods.graph.P9'),
+          this.$t('periods.graph.P10'),
+          this.$t('periods.graph.P11'),
+          this.$t('periods.graph.P12'),
+          this.$t('periods.graph.end'),
+        ],
+      }
     },
     computed: {
       ...mapGetters('simulator/report', {

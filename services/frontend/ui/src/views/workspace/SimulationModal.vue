@@ -1,8 +1,8 @@
 <template>
   <v-dialog
+    v-model="dialog"
     persistent
     no-click-animation
-    v-model="dialog"
     max-width="600"
   >
     <v-card>
@@ -10,22 +10,22 @@
       <v-form
         ref="simulationForm"
         v-model="valid"
-        @submit.prevent="saveItem"
         lazy-validation
+        @submit.prevent="saveItem"
       >
         <v-card-text>
           <v-text-field
             v-model="simulation.name"
             label="Nom"
             :rules="[rules.required]"
-          ></v-text-field>
+          />
           <v-textarea
             v-model="simulation.description"
             label="Description"
-          ></v-textarea>
+          />
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
             color="grey"
             text
@@ -59,16 +59,6 @@
       },
       dialog: Boolean,
     },
-    watch: {
-      item: {
-        immediate: true,
-        handler(newValue, oldValue) {
-          if (newValue != null) {
-            this.simulation = deepCopy(newValue)
-          }
-        },
-      },
-    },
     data() {
       return {
         simulation: {},
@@ -78,6 +68,16 @@
           number: (value) => (!isNaN(value) && isFinite(value)) || this.$t('validation.number'),
         },
       }
+    },
+    watch: {
+      item: {
+        immediate: true,
+        handler(newValue, oldValue) {
+          if (newValue != null) {
+            this.simulation = deepCopy(newValue)
+          }
+        },
+      },
     },
     methods: {
       cancelModal() {

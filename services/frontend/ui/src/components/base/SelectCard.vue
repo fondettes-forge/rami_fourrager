@@ -46,7 +46,7 @@
         :items="dropdownOptions"
         item-text="name"
         item-value="id"
-      ></v-select>
+      />
     </div>
     <template v-if="$slots.actions">
       <v-divider class="mt-2" />

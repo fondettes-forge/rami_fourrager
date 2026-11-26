@@ -16,11 +16,11 @@
             class="mx-4"
             inset
             vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
+          />
+          <v-spacer />
           <v-dialog
-            max-width="500px"
             v-model="dialog"
+            max-width="500px"
           >
             <template v-slot:activator="{ on }">
               <v-btn
@@ -47,9 +47,9 @@
                       sm="12"
                     >
                       <v-text-field
-                        :label="$t('user.modal.username')"
                         v-model="editedItem.username"
-                      ></v-text-field>
+                        :label="$t('user.modal.username')"
+                      />
                     </v-col>
                     <v-col
                       cols="12"
@@ -57,9 +57,9 @@
                       sm="12"
                     >
                       <v-text-field
-                        :label="$t('user.modal.email')"
                         v-model="editedItem.email"
-                      ></v-text-field>
+                        :label="$t('user.modal.email')"
+                      />
                     </v-col>
                     <v-col
                       cols="12"
@@ -67,9 +67,9 @@
                       sm="12"
                     >
                       <v-text-field
-                        :label="$t('user.modal.password')"
                         v-model="editedItem.password"
-                      ></v-text-field>
+                        :label="$t('user.modal.password')"
+                      />
                     </v-col>
                     <v-col
                       cols="12"
@@ -85,25 +85,25 @@
                         return-object
                         required
                         clearable
-                      ></v-select>
+                      />
                     </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
 
               <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn
-                  @click="close"
                   color="grey"
                   text
+                  @click="close"
                 >
                   {{ $t('btn.cancel') }}
                 </v-btn>
                 <v-btn
-                  @click="save"
                   color="primary"
                   outlined
+                  @click="save"
                 >
                   {{ $t('btn.save') }}
                 </v-btn>
@@ -114,23 +114,23 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon
-          @click="editItem(item)"
           class="mr-2"
           small
+          @click="editItem(item)"
         >
           mdi-pencil
         </v-icon>
         <v-icon
-          @click="deleteItem(item)"
           small
+          @click="deleteItem(item)"
         >
           mdi-delete
         </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn
-          @click="initialize"
           color="primary"
+          @click="initialize"
         >
           {{ $t('btn.refresh') }}
         </v-btn>

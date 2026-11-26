@@ -10,7 +10,7 @@
       </div>
     </v-card-title>
     <v-card-actions class="pa-4">
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         outlined
         color="primary"
@@ -87,7 +87,7 @@
 </template>
 <script>
   export default {
-    name: 'export',
+    name: 'Export',
     props: {
       title: {
         type: String,

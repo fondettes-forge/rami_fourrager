@@ -27,7 +27,7 @@
                 type="number"
                 hide-spin-buttons
                 min="0"
-              ></v-text-field>
+              />
             </div>
             <div>
               <div class="text-h4 font-weight-light">{{ $t('barn.concentrated.title') }}</div>
@@ -37,14 +37,14 @@
                 type="number"
                 hide-spin-buttons
                 min="0"
-              ></v-text-field>
+              />
               <v-text-field
                 v-model.number="proteicQuantity"
                 :label="$t('barn.concentrated.proteicQuantity')"
                 type="number"
                 hide-spin-buttons
                 min="0"
-              ></v-text-field>
+              />
               <!-- ticket 12 — stock initial tourteaux (RT) -->
               <v-text-field
                 v-model.number="tourteauxQuantity"
@@ -52,7 +52,7 @@
                 type="number"
                 hide-spin-buttons
                 min="0"
-              ></v-text-field>
+              />
             </div>
             <div>
               <div class="text-h4 font-weight-light">{{ $t('barn.refusal.title') }}</div>
@@ -62,7 +62,7 @@
                 type="number"
                 hide-spin-buttons
                 min="0"
-              ></v-text-field>
+              />
             </div>
           </v-sheet>
         </v-col>
@@ -72,9 +72,9 @@
         >
           <div>
             <stock-graph
-              :withLegend="true"
-              :xAxisLabelRotate="false"
-              :withTitle="true"
+              :with-legend="true"
+              :x-axis-label-rotate="false"
+              :with-title="true"
               :title="$t('report.main.modules.stockNcost.stockGraph.title')"
             />
           </div>
@@ -97,11 +97,11 @@
                   class="mx-4"
                   inset
                   vertical
-                ></v-divider>
-                <v-spacer></v-spacer>
+                />
+                <v-spacer />
                 <v-dialog
-                  max-width="500px"
                   v-model="dialog"
+                  max-width="500px"
                 >
                   <template v-slot:activator="{ on }">
                     <v-btn
@@ -133,7 +133,7 @@
                               item-value="code"
                               :label="$t('barn.modal.select_label')"
                               return-object
-                            ></v-select>
+                            />
                           </v-col>
                           <v-col
                             cols="12"
@@ -146,26 +146,26 @@
                               type="number"
                               hide-spin-buttons
                               min="0"
-                            ></v-text-field>
+                            />
                           </v-col>
                         </v-row>
                       </v-container>
                     </v-card-text>
 
                     <v-card-actions>
-                      <v-spacer></v-spacer>
+                      <v-spacer />
                       <v-btn
-                        @click="close"
                         color="grey"
                         text
+                        @click="close"
                       >
                         {{ $t('btn.cancel') }}
                       </v-btn>
                       <v-btn
-                        @click="save"
                         color="primary"
                         text
                         outlined
+                        @click="save"
                       >
                         {{ $t('btn.save') }}
                       </v-btn>
@@ -179,8 +179,8 @@
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon
-                @click="deleteItem(item)"
                 small
+                @click="deleteItem(item)"
               >
                 mdi-delete
               </v-icon>

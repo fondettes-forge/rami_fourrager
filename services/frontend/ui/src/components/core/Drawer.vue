@@ -63,7 +63,7 @@
     </v-list>
     <template v-slot:append>
       <div>
-        <v-divider></v-divider>
+        <v-divider />
         <div class="text-h4 font-weight-light white--text text-center pa-3">
           {{ $t("drawer.sponsor.title") }}
         </div>
@@ -74,8 +74,8 @@
           <v-img
             class="rounded-xl rounded-br-0"
             src="@/assets/images/partners/logo_centrevaldeloire2.png"
-            @click="goToPartners"
             style="cursor: pointer"
+            @click="goToPartners"
           />
         </div>
       </div>

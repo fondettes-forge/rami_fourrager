@@ -9,9 +9,9 @@
       :key="toast.id"
       :type="toast.type"
       dismissible
-      @input="removeToast(index)"
       :value="true"
       width="25em"
+      @input="removeToast(index)"
     >
       {{ toast.message }}
     </v-alert>
@@ -29,6 +29,11 @@
     computed: {
       visibleToasts() {
         return this.toasts.slice(0, 5)
+      },
+    },
+    watch: {
+      toasts() {
+        this.manageTimeouts()
       },
     },
     methods: {
@@ -80,11 +85,6 @@
             })
           }
         })
-      },
-    },
-    watch: {
-      toasts() {
-        this.manageTimeouts()
       },
     },
   }

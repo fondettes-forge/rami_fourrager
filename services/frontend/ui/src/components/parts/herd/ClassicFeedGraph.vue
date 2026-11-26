@@ -30,6 +30,11 @@
         type: Boolean,
       },
     },
+    data() {
+      return {
+        batch: null,
+      }
+    },
     watch: {
       selectedLot: {
         immediate: true,
@@ -69,11 +74,6 @@
       },
     },
     created() {},
-    data() {
-      return {
-        batch: null,
-      }
-    },
     computed: {
       ...mapGetters('referential', {
         periods: 'periodList',

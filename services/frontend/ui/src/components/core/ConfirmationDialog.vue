@@ -12,18 +12,18 @@
         {{ $t('confirmation_dialog.question') }}
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn
           color="primary"
-          @click="confirm"
           outlined
+          @click="confirm"
         >
           {{ $t('confirmation_dialog.btn_confirm') }}
         </v-btn>
         <v-btn
           color="error"
-          @click="cancel"
           outlined
+          @click="cancel"
         >
           {{ $t('confirmation_dialog.btn_cancel') }}
         </v-btn>

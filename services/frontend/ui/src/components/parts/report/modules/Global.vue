@@ -8,10 +8,10 @@
         indeterminate
         color="primary"
         size="70"
-      ></v-progress-circular>
+      />
     </v-overlay>
     <v-row class="mt-4">
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         class="mr-2"
         color="primary"
@@ -47,7 +47,7 @@
             <div v-else>{{ $t('report.main.modules.global.print.preview.placeholder') }}</div>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
               text
               color="grey"
@@ -80,7 +80,7 @@
               <v-card-title>
                 {{ $t('report.main.modules.global.print.template.simulation.name', { name: simulation.name }) }}
               </v-card-title>
-              <v-divider></v-divider>
+              <v-divider />
               <v-card-text>
                 <div>
                   {{
@@ -97,7 +97,7 @@
               elevation="2"
             >
               <v-card-title> {{ $t('report.main.modules.global.print.template.rotation') }}</v-card-title>
-              <v-divider></v-divider>
+              <v-divider />
               <v-card-text>
                 <rotation-graph />
               </v-card-text>
@@ -107,7 +107,7 @@
               elevation="2"
             >
               <v-card-title> {{ $t('report.main.modules.global.print.template.herd') }}</v-card-title>
-              <v-divider></v-divider>
+              <v-divider />
               <v-card-text>
                 <herd-print-area />
               </v-card-text>
@@ -120,16 +120,16 @@
               <v-card-title>
                 {{ $t('report.main.modules.stockNcost.stockGraph.title') }}
               </v-card-title>
-              <v-divider></v-divider>
+              <v-divider />
               <v-card-text>
                 <stock-graph
-                  :withToolBox="false"
-                  :withLegend="false"
-                  :withYaxis="true"
+                  :with-tool-box="false"
+                  :with-legend="false"
+                  :with-yaxis="true"
                 />
                 <div style="padding-left: 80px">
-                  <harvest :withTotal="false" />
-                  <surplus :withTotal="false" />
+                  <harvest :with-total="false" />
+                  <surplus :with-total="false" />
                 </div>
               </v-card-text>
             </v-card>
@@ -141,7 +141,7 @@
               elevation="2"
             >
               <v-card-title>{{ $t('report.main.modules.global.print.template.climat.title') }}</v-card-title>
-              <v-divider></v-divider>
+              <v-divider />
               <v-card-text>
                 <v-list
                   dense
@@ -182,7 +182,7 @@
               <v-card-title>
                 {{ $t('report.main.modules.global.print.template.dimensioning') }}
               </v-card-title>
-              <v-divider></v-divider>
+              <v-divider />
               <v-card-text>
                 <dimensioning />
               </v-card-text>
@@ -195,7 +195,7 @@
               <v-card-title>
                 {{ $t('report.main.modules.global.print.template.autonomy.title') }}
               </v-card-title>
-              <v-divider></v-divider>
+              <v-divider />
               <v-card-text>
                 <autonomy />
                 <div>

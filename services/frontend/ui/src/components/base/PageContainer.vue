@@ -48,7 +48,7 @@
 </template>
 <script>
   export default {
-    name: 'pageContainer',
+    name: 'PageContainer',
     props: {
       containerName: { type: String },
       pageColor: { type: String },

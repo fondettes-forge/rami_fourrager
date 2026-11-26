@@ -18,15 +18,15 @@
           <graph-feeds-requirements
             :id="`graph-feeds-requirements-${index}`"
             :selected-lot="index"
-            :withYaxis="true"
-            :withLegend="false"
-            :withTitle="false"
-            :withToolBox="false"
-            :withTooltip="false"
-            :xAxisLabelRotate="true"
+            :with-yaxis="true"
+            :with-legend="false"
+            :with-title="false"
+            :with-tool-box="false"
+            :with-tooltip="false"
+            :x-axis-label-rotate="true"
           />
         </div>
-        <v-divider></v-divider>
+        <v-divider />
       </v-col>
     </v-row>
   </div>
@@ -36,7 +36,7 @@
   import GraphFeedsRequirements from '@/components/parts/herd/GraphFeedsRequirements.vue'
 
   export default {
-    name: 'herd-print-area',
+    name: 'HerdPrintArea',
     components: {
       GraphFeedsRequirements,
     },

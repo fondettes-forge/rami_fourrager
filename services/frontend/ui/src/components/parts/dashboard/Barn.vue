@@ -8,7 +8,7 @@
         <v-col>
           <div class="text-h3 font-weight-light">{{ $t('barn.title') }}</div>
         </v-col>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-col>
           <div>
             <v-btn
@@ -28,9 +28,9 @@
     <template v-slot:content>
       <v-row>
         <stock-graph
-          :withLegend="false"
-          :xAxisLabelRotate="true"
-          :withTitle="true"
+          :with-legend="false"
+          :x-axis-label-rotate="true"
+          :with-title="true"
           :title="$t('report.main.modules.stockNcost.stockGraph.title')"
         />
       </v-row>
@@ -40,7 +40,7 @@
 <script>
   import StockGraph from '@/components/parts/barn/StockGraph.vue'
   export default {
-    name: 'barn-dashboard',
+    name: 'BarnDashboard',
     components: {
       StockGraph,
     },

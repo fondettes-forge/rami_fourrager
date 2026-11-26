@@ -17,11 +17,11 @@
             >
               <simulation />
               <climat
-                :siteModel="simulation.site"
-                :siteDropdownOptions="siteList"
+                :site-model="simulation.site"
+                :site-dropdown-options="siteList"
+                :climatic-year-model="simulation.climaticYear"
+                :climatic-year-dropdown-options="climaticYears"
                 @changeSite="handleSiteChange"
-                :climaticYearModel="simulation.climaticYear"
-                :climaticYearDropdownOptions="climaticYears"
                 @changeClimaticYear="handleCYchange"
                 @confirmSiteChange="deleteStics"
               />
@@ -84,7 +84,6 @@
 
   export default {
     name: 'Dashboard',
-    mixins: [navigationGuard],
     components: {
       Farm,
       Report,
@@ -94,6 +93,7 @@
       Simulation,
       Autonomy,
     },
+    mixins: [navigationGuard],
     confirmNavigation(callback) {
       this.$confirmNavigation(callback)
     },

@@ -74,13 +74,13 @@
       </div>
     </div>
 
-    <slot></slot>
+    <slot />
     <v-card-text
       v-if="$slots.content"
       class="text-body-1 ma-0"
       style="background-color: #ffffff38; height: 100%"
     >
-      <slot name="content"></slot>
+      <slot name="content" />
     </v-card-text>
 
     <template v-if="$slots.actions">

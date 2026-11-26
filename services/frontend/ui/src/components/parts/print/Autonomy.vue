@@ -10,7 +10,7 @@
     >
       {{ autonomy >= 0 ? $t('autonomy.autonomy.step.high.label') : $t('autonomy.autonomy.step.low.label') }}
     </v-alert>
-    <v-divider></v-divider>
+    <v-divider />
     <div class="text-h4 indigo--text font-italic">
       {{ $t('autonomy.print.potential.title') }}
     </div>

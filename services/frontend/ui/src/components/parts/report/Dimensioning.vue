@@ -19,9 +19,9 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
                     v-bind="attrs"
-                    v-on="on"
                     color="deep-orange"
                     dark
+                    v-on="on"
                   >
                     mdi-cow
                   </v-icon>
@@ -49,9 +49,9 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
                     v-bind="attrs"
-                    v-on="on"
                     color="deep-orange"
                     dark
+                    v-on="on"
                   >
                     mdi-scale-balance
                   </v-icon>
@@ -95,9 +95,9 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
                     v-bind="attrs"
-                    v-on="on"
                     :color="item.iconColor"
                     dark
+                    v-on="on"
                   >
                     {{ item.icon }}
                   </v-icon>
@@ -122,7 +122,7 @@
 <script>
   import { mapGetters } from 'vuex'
   export default {
-    name: 'dimensioning',
+    name: 'Dimensioning',
     data() {
       return {}
     },

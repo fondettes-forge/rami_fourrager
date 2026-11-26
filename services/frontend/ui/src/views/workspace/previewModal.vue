@@ -23,18 +23,18 @@
                 <v-toolbar-title>
                   {{ $t('workspace.content.export.preview.tableTitle') }}
                 </v-toolbar-title>
-                <v-spacer></v-spacer>
+                <v-spacer />
               </v-toolbar>
             </template>
           </v-data-table>
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
-            @click="cancelModal"
             color="grey"
             text
+            @click="cancelModal"
           >
             {{ $t('btn.cancel') }}
           </v-btn>
@@ -69,14 +69,6 @@
         showModal: false,
       }
     },
-    watch: {
-      forceOpen: {
-        immediate: true,
-        handler(newVal) {
-          this.showModal = newVal
-        },
-      },
-    },
     computed: {
       headers() {
         if (!this.rows.length) return []
@@ -84,6 +76,14 @@
           text: key === 'simulation_name' ? this.$t(`export.columns.${key}`) : key,
           value: key,
         }))
+      },
+    },
+    watch: {
+      forceOpen: {
+        immediate: true,
+        handler(newVal) {
+          this.showModal = newVal
+        },
       },
     },
     methods: {

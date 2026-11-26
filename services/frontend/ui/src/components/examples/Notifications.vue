@@ -274,7 +274,7 @@
               class="hidden-sm-and-down"
               md="4"
             >
-              <v-sheet></v-sheet>
+              <v-sheet />
             </v-col>
 
             <v-col
@@ -292,7 +292,7 @@
               class="hidden-sm-and-down"
               md="4"
             >
-              <v-sheet> </v-sheet>
+              <v-sheet />
             </v-col>
 
             <v-col cols="12">

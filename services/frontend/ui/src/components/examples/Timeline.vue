@@ -23,7 +23,7 @@
             <v-card class="pa-6">
               <v-chip
                 :color="timeline.color"
-                class="overline mb-3"
+                class="text-overline mb-3"
                 small
               >
                 {{ timeline.chip }}
@@ -60,7 +60,7 @@
                     >
                       <v-icon
                         left
-                        textContent="timeline.actionIcon"
+                        text-content="timeline.actionIcon"
                       />
                       <v-icon right>
                         {{ menu ? 'mdi-menu-up' : 'mdi-menu-down' }}
@@ -75,7 +75,7 @@
                         :key="a"
                         link
                       >
-                        <v-list-item-title textContent="a" />
+                        <v-list-item-title text-content="a" />
                       </v-list-item>
                     </v-list>
                   </v-sheet>

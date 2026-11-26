@@ -1,15 +1,15 @@
 <template>
   <base-dashboard-card
     :title="$t('dashboard.climat.title')"
-    cardColor="#ff980080"
+    card-color="#ff980080"
     icon="mdi-earth"
   >
     <template v-slot:content>
       <v-row>
         <v-col cols="12">
           <v-select
-            class="ma-2"
             ref="siteSelect"
+            class="ma-2"
             hide-details
             outlined
             color="orange"
@@ -20,23 +20,23 @@
             :items="siteDropdownOptions"
             item-text="name"
             item-value="id"
+            :light="true"
             @change="onSiteChange"
             @click="onSiteClick"
-            :light="true"
-          ></v-select>
+          />
           <v-select
+            v-model="selectedClimaticYear"
             class="ma-2"
             hide-details
             outlined
             :label="$t('dashboard.climat.climaticyear.label')"
-            v-model="selectedClimaticYear"
             :items="climaticYearDropdownOptions"
             item-text="name"
             item-value="id"
             color="orange"
             item-color="orange"
             style="background-color: white"
-          ></v-select>
+          />
         </v-col>
 
         <!-- Boîte de dialogue de confirmation -->
@@ -49,7 +49,7 @@
             <v-card-subtitle class="mt-0">{{ $t('dashboard.climat.confirmation.subtitle') }} </v-card-subtitle>
             <v-card-text>{{ $t('dashboard.climat.confirmation.punchline') }}</v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
               <v-btn
                 color="green darken-1"
                 text

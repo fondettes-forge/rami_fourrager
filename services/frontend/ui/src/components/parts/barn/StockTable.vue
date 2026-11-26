@@ -25,14 +25,14 @@
             inset
             vertical
           />
-          <v-spacer></v-spacer>
+          <v-spacer />
 
-          <cost-indicator pageColor="primary" />
+          <cost-indicator page-color="primary" />
           <v-btn
             outlined
             color="grey"
-            @click="exportToCSV"
             class="ml-1"
+            @click="exportToCSV"
           >
             {{ $t('btn.exportToCSV') }}
           </v-btn>
@@ -83,7 +83,7 @@
           dense
           single-line
           @change="updateItem(item, 'purchaseCost', $event)"
-        ></v-text-field>
+        />
       </template>
       <template v-slot:item.sale="{ item }">
         <v-text-field
@@ -95,7 +95,7 @@
           dense
           single-line
           @change="updateItem(item, 'sale', $event)"
-        ></v-text-field>
+        />
       </template>
       <template v-slot:item.costOfSell="{ item }">
         <v-text-field
@@ -107,7 +107,7 @@
           dense
           single-line
           @change="updateItem(item, 'costOfSell', $event)"
-        ></v-text-field>
+        />
       </template>
       <template v-slot:item.productionCost="{ item }">
         <v-text-field
@@ -119,7 +119,7 @@
           dense
           single-line
           @change="updateItem(item, 'productionCost', $event)"
-        ></v-text-field>
+        />
       </template>
       <template v-slot:item.total="{ item }">
         {{ (item.total = round(totalCost(item), 0)) }}
@@ -133,10 +133,10 @@
         <td>{{ round(subTotal(items, 'finalStock'), 0) }}</td>
         <td>{{ round(subTotal(items, 'final_initialStock'), 0) }}</td>
         <td>{{ round(subTotal(items, 'purchase'), 0) }}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td />
+        <td />
+        <td />
+        <td />
         <td>{{ round(subTotal(items, 'total'), 0) }}</td>
       </template>
     </v-data-table>
@@ -148,7 +148,7 @@
   import CostIndicator from '@components/parts/report/modules/stockNcost/costIndicator'
 
   export default {
-    name: 'stock-table',
+    name: 'StockTable',
     components: {
       CostIndicator,
     },
@@ -160,59 +160,6 @@
       datas: {
         type: Array,
         required: true,
-      },
-    },
-    methods: {
-      updateItem(item, key, value) {
-        item[key] = value
-        this.$emit('update-stock', { code: item.code, key: key, value: value })
-      },
-      round(value, digit) {
-        return _.round(value, digit)
-      },
-      totalCost(stock) {
-        let total = 0
-        if (stock.category === '1_fourrage' && stock.code === 'P') {
-          total =
-            stock.consommation * stock.productionCost +
-            stock.purchase * stock.purchaseCost -
-            stock.sale * stock.costOfSell
-        }
-        if (stock.category === '3_straw' || (stock.category === '1_fourrage' && stock.code !== 'P')) {
-          total =
-            stock.production * stock.productionCost +
-            stock.purchase * stock.purchaseCost -
-            stock.sale * stock.costOfSell
-        }
-        if (stock.category === '2_concentrated') {
-          total = stock.purchase * stock.purchaseCost + stock.sale * stock.costOfSell
-        }
-        return total
-      },
-      subTotal(items, column) {
-        // on exclut les lignes cachées (lignes de synthèse, ex. « paille ») pour éviter le double comptage
-        return items.filter((item) => !item.hidden).reduce((sum, item) => sum + item[column], 0)
-      },
-
-      exportToCSV() {
-        // Récupérer les en-têtes visibles
-        const headers = this.headers.map((header) => header.text)
-
-        // Récupérer les données à exporter
-        const rows = this.datas.map((item) => this.headers.map((header) => item[header.value] || ''))
-
-        // Générer le contenu CSV
-        const csvContent = [headers, ...rows].map((row) => row.map((value) => `"${value}"`).join(';')).join('\r\n')
-
-        // Créer et télécharger le fichier CSV
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-        const link = document.createElement('a')
-        const url = URL.createObjectURL(blob)
-        link.setAttribute('href', url)
-        link.setAttribute('download', 'stocks_et_couts.csv')
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
       },
     },
     data() {
@@ -293,6 +240,59 @@
           },
         ],
       }
+    },
+    methods: {
+      updateItem(item, key, value) {
+        item[key] = value
+        this.$emit('update-stock', { code: item.code, key: key, value: value })
+      },
+      round(value, digit) {
+        return _.round(value, digit)
+      },
+      totalCost(stock) {
+        let total = 0
+        if (stock.category === '1_fourrage' && stock.code === 'P') {
+          total =
+            stock.consommation * stock.productionCost +
+            stock.purchase * stock.purchaseCost -
+            stock.sale * stock.costOfSell
+        }
+        if (stock.category === '3_straw' || (stock.category === '1_fourrage' && stock.code !== 'P')) {
+          total =
+            stock.production * stock.productionCost +
+            stock.purchase * stock.purchaseCost -
+            stock.sale * stock.costOfSell
+        }
+        if (stock.category === '2_concentrated') {
+          total = stock.purchase * stock.purchaseCost + stock.sale * stock.costOfSell
+        }
+        return total
+      },
+      subTotal(items, column) {
+        // on exclut les lignes cachées (lignes de synthèse, ex. « paille ») pour éviter le double comptage
+        return items.filter((item) => !item.hidden).reduce((sum, item) => sum + item[column], 0)
+      },
+
+      exportToCSV() {
+        // Récupérer les en-têtes visibles
+        const headers = this.headers.map((header) => header.text)
+
+        // Récupérer les données à exporter
+        const rows = this.datas.map((item) => this.headers.map((header) => item[header.value] || ''))
+
+        // Générer le contenu CSV
+        const csvContent = [headers, ...rows].map((row) => row.map((value) => `"${value}"`).join(';')).join('\r\n')
+
+        // Créer et télécharger le fichier CSV
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+        const link = document.createElement('a')
+        const url = URL.createObjectURL(blob)
+        link.setAttribute('href', url)
+        link.setAttribute('download', 'stocks_et_couts.csv')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      },
     },
   }
 </script>

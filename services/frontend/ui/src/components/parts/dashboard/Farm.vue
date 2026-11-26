@@ -8,7 +8,7 @@
         <v-col>
           <div class="text-h3 font-weight-light">{{ $t('farm.title') }}</div>
         </v-col>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-col>
           <div>
             <v-btn
@@ -37,7 +37,7 @@
   import RotationGraph from '@/components/parts/farm/RotationGraph.vue'
 
   export default {
-    name: 'farm-dashboard',
+    name: 'FarmDashboard',
     components: {
       RotationGraph,
     },

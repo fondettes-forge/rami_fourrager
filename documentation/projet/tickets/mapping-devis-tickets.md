@@ -7,6 +7,10 @@
 >
 > **Objectif** : vérifier que les 24 tickets couvrent les items du tableau de
 > devis, et identifier ce qui n'a **pas de ticket** (à créer).
+>
+> **Complément** : voir [devis_en_attente/INDEX.md](../devis_en_attente/INDEX.md)
+> pour la **vue par devis** (chaque devis 01D–05D avec ses tâches, son total,
+> son statut de facturation, et les tickets associés).
 
 ---
 
@@ -57,11 +61,11 @@
 
 ### C. Nouvelles fonctionnalités — devis `2025081803D` → `05D`
 
-| Ligne | Item (résumé)                                                             | « fait »               | Ticket                                                   | Statut                    |
-| ----- | ------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------- | ------------------------- |
-| 26    | Formulaire création/màj/suppression **site perso** (+ années climatiques) | — (p. « à voir », 2 j) | [ticket-20](tickets/ticket-20-gestion-sites.md)          | 📄 à implémenter          |
-| 28    | **Duplication de simulation** (« Enregistrer-sous »)                      | — (p. 4, 1 j)          | [ticket-21](tickets/ticket-21-duplication-simulation.md) | 📄 à implémenter          |
-| 30    | Page des **partenaires** — pop-up avec tous les logos                     | — (p. 6, 1 j)          | [ticket-25](tickets/ticket-25-page-partenaires.md)       | 📄 à implémenter (pop-up) |
+| Ligne | Item (résumé)                                                             | « fait »               | Ticket                                                   | Statut                             |
+| ----- | ------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------- | ---------------------------------- |
+| 26    | Formulaire création/màj/suppression **site perso** (+ années climatiques) | — (p. « à voir », 2 j) | [ticket-20](tickets/ticket-20-gestion-sites.md)          | 📄 à implémenter                   |
+| 28    | **Duplication de simulation** (« Enregistrer-sous »)                      | — (p. 4, 1 j)          | [ticket-21](tickets/ticket-21-duplication-simulation.md) | 📄 à implémenter                   |
+| 30    | Page des **partenaires** — pop-up avec tous les logos                     | — (p. 6, 1 j)          | [ticket-25](tickets/ticket-25-page-partenaires.md)       | ⏳ au backlog ([BL-3](BACKLOG.md)) |
 
 > **Vérification R31** : `PartnersPage.vue` existe déjà avec **tous les logos**
 > (7 blocs : financeurs, partenaires projet, développement, partenaires

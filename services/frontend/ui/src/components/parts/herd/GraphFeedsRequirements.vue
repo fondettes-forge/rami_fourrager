@@ -7,8 +7,8 @@
     <template v-slot:activator="{ on, attrs }">
       <div
         v-bind="attrs"
-        v-on="on"
         class="chart-container"
+        v-on="on"
       >
         <v-chart
           ref="feedsRequirementsChart"
