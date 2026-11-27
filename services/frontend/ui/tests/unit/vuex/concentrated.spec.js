@@ -168,6 +168,75 @@ describe('ticket 12 — getConsumptionByBarnStockItem (case RT)', () => {
 })
 
 // ---------------------------------------------------------------------------
+// 4bis — setReport (report) : fusion des soldedStock anciens (bug ticket paille)
+// ---------------------------------------------------------------------------
+
+describe('bug paille — setReport fusionne les soldedStock anciens', () => {
+  it('un workspace sans RT (pré-ticket 12) ne fait plus crasher sur soldedStock.RT', () => {
+    const state = { soldedStock: reportModule.state.soldedStock }
+    // reproduit le report.soldedStock d'un workspace ancien : tout sauf RT
+    const legacySoldedStock = Object.fromEntries(Object.entries(state.soldedStock).filter(([code]) => code !== 'RT'))
+
+    reportModule.mutations.setReport(state, { soldedStock: legacySoldedStock })
+
+    expect(state.soldedStock.RT).toEqual({
+      purchaseCost: 0,
+      sale: 0,
+      costOfSell: 0,
+      productionCost: 0,
+    })
+  })
+
+  it('un workspace sans STRAW ni P non plus est comblé (règle générale)', () => {
+    const state = { soldedStock: reportModule.state.soldedStock }
+    const legacySoldedStock = Object.fromEntries(
+      Object.entries(state.soldedStock).filter(([code]) => code !== 'RT' && code !== 'STRAW' && code !== 'P')
+    )
+
+    reportModule.mutations.setReport(state, { soldedStock: legacySoldedStock })
+
+    expect(state.soldedStock.STRAW).toEqual({
+      purchaseCost: 0,
+      sale: 0,
+      costOfSell: 0,
+      productionCost: 0,
+    })
+    expect(state.soldedStock.P).toEqual({
+      purchaseCost: 0,
+      sale: 0,
+      costOfSell: 0,
+      productionCost: 0,
+    })
+  })
+
+  it('les valeurs existantes d un workspace sont conservées (pas écrasées par les défauts)', () => {
+    const state = { soldedStock: reportModule.state.soldedStock }
+    const legacySoldedStock = Object.fromEntries(Object.entries(state.soldedStock).filter(([code]) => code !== 'RT'))
+    // valeurs saisies dans l'ancien workspace (ex. workspace de démo)
+    legacySoldedStock.RC = { purchaseCost: 46.8, sale: 459, costOfSell: 46.8, productionCost: 0 }
+    legacySoldedStock.STRAW = { purchaseCost: 50, sale: 0, costOfSell: 0, productionCost: 0 }
+
+    reportModule.mutations.setReport(state, { soldedStock: legacySoldedStock })
+
+    expect(state.soldedStock.RC).toEqual({ purchaseCost: 46.8, sale: 459, costOfSell: 46.8, productionCost: 0 })
+    expect(state.soldedStock.STRAW).toEqual({ purchaseCost: 50, sale: 0, costOfSell: 0, productionCost: 0 })
+    // et RT (absent) est comblé
+    expect(state.soldedStock.RT).toEqual({ purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 })
+  })
+
+  it('defaultSoldedStock exporté est la source unique des codes (SimulationModal)', () => {
+    const { defaultSoldedStock } = require('@/store/modules/report')
+    const fresh = defaultSoldedStock()
+    // les 11 codes connus sont présents
+    expect(Object.keys(fresh).sort()).toEqual(
+      ['P', 'FH', 'EH', 'EM', 'RC', 'RP', 'RT', 'AS', 'EL', 'FL', 'STRAW'].sort()
+    )
+    // l'état par défaut du module est cohérent avec la fabrique
+    expect(reportModule.state.soldedStock).toEqual(fresh)
+  })
+})
+
+// ---------------------------------------------------------------------------
 // 5 — initialStocks (barn) : RT exclu
 // ---------------------------------------------------------------------------
 

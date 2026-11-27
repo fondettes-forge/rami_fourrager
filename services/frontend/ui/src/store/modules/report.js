@@ -34,28 +34,38 @@ import {
   getCostIndicator,
   getCostIndicatorsKpis,
 } from './mixins'
-import { replaceNan } from '@/plugins/utils'
+import { replaceNan, deepCopy } from '@/plugins/utils'
+
+// ticket 12 / 8 — soldedStock par défaut : les codes inconnus d'un ancien workspace
+// sont comblés par cette fabrique (cf. setReport) pour éviter les crashs sur
+// state.soldedStock[code].purchaseCost (ex. RT absent d'un workspace créé
+// avant le ticket 12)
+export function defaultSoldedStock() {
+  return {
+    P: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    FH: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    EH: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    EM: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    RC: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    RP: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    RT: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    AS: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    EL: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    FL: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+    STRAW: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
+  }
+}
 
 export default {
   namespaced: true,
   state: {
-    soldedStock: {
-      P: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      FH: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      EH: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      EM: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      RC: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      RP: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      RT: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      AS: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      EL: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      FL: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-      STRAW: { purchaseCost: 0, sale: 0, costOfSell: 0, productionCost: 0 },
-    },
+    soldedStock: defaultSoldedStock(),
   },
   mutations: {
     setReport(state, { soldedStock }) {
-      state.soldedStock = soldedStock
+      // fusion : les codes absents d'un workspace ancien (ex. RT) sont comblés
+      // avec les valeurs par défaut, les codes existants sont conservés tels quels
+      state.soldedStock = { ...defaultSoldedStock(), ...deepCopy(soldedStock) }
     },
     setSoldedStock(state, stock) {
       state.soldedStock[stock.code][stock.key] = stock.value

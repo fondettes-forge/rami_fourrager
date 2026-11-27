@@ -407,3 +407,66 @@ aucune migration de schéma, aucun nouveau pattern) :
 2b parsing `split('-')`), à traiter séparément.
 
 **Tests** : 8/8 ✅ (`concentrated.spec.js`) ; 30/30 avec referential + straw.
+
+## 8. Fix crash `soldedStock.RT` sur workspace ancien (2026-11-27)
+
+> Détecté pendant la recette du bloc paille : `[Vue warn]: Error in render:
+"TypeError: can't access property \"purchaseCost\", state.soldedStock[stockCode]
+is undefined"` (lorsque le tableau STOCKS ET COUTS est rendu).
+
+### 8.1 Cause racine
+
+Le workspace de démo (`workspace/workspace.json`) a un `report.soldedStock` créé
+**avant** le ticket 12 : 10 codes (`P, FH, EH, EM, RC, RP, AS, EL, FL, STRAW`),
+**pas de `RT`**.
+
+À la charge d'une simulation, `workspace/loadSimulator` fait :
+
+```js
+commit("simulator/report/setReport", sim.report, { root: true });
+```
+
+et la mutation `setReport` (`report.js`) faisait un **remplacement total** :
+
+```js
+state.soldedStock = soldedStock;
+```
+
+→ le store reprenait exactement le `soldedStock` du workspace, sans `RT`. Le getter
+`getConcentratedFeedsStock` (qui itère `['RC','RP','RT']`) lisait alors
+`state.soldedStock['RT'].purchaseCost` → `TypeError` au rendu.
+
+Le ticket 12 avait bien ajouté `RT` à l'état **par défaut** du store et au template
+de création (`SimulationModal.vue`), mais n'avait pas prévu les workspaces **existants**
+chargés via `setReport`. Le ticket 8 (`STRAW`) n'avait pas cassé la recette parce que
+`STRAW` existait déjà dans le JSON ; `RT` est le 1er code ajouté **après** la création
+du workspace de démo.
+
+### 8.2 Correction (2 fichiers)
+
+Même pattern que `barn.js` L5 (migration défensive à la charge) :
+
+1. **`report.js`** : factorisation en fabrique `defaultSoldedStock()` (les 11 codes
+   connus), exportée ; `setReport` **fusionne** au lieu de remplacer :
+   ```js
+   setReport(state, { soldedStock }) {
+     state.soldedStock = { ...defaultSoldedStock(), ...deepCopy(soldedStock) }
+   }
+   ```
+   Codes absents d'un workspace ancien → comblés par défaut ; codes existants →
+   conservés tels quels. Idempotent, sans migration du `workspace.json`.
+2. **`SimulationModal.vue`** : le bloc `soldedStock` en dur (10 codes, sans `RT`)
+   est remplacé par `defaultSoldedStock()` importé de `report.js` → source unique,
+   plus jamais de dérive entre le template de création et l'état du store.
+
+### 8.3 Tests
+
+4 tests ajoutés dans `concentrated.spec.js` (section « bug paille ») :
+
+- workspace sans `RT` → `soldedStock.RT` comblé (le crash exact) ;
+- workspace sans `STRAW` ni `P` → comblés (règle générale) ;
+- valeurs existantes conservées (`RC.sale = 459`, `STRAW.purchaseCost = 50`) +
+  `RT` comblé (pas d'écrasement des saisies) ;
+- `defaultSoldedStock()` = les 11 codes, cohérent avec l'état du module.
+
+`concentrated.spec.js` : 12/12 ✅ ; 73/73 sur les 8 suites du fichier de recette.

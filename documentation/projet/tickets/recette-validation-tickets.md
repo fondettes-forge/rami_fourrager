@@ -3,7 +3,7 @@
 > Recette de **validation manuelle (UI)** des tickets implémentés, en complément des
 > tests unitaires.
 > Tickets couverts : **1 (+6), 2+8 (bloc paille), 3 (2.1 paille en tonnes), 4, 5, 7, 9, 10, 11, 12, 13, 16, 18, 19, 20, 21, 22, 23, 24**.
-> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24 ; maj 2026-11-25 : ajout tickets 19, 21, 20).
+> Date : 2026-11-17 (maj 2026-11-18 : ajout tickets 11, 18 ; maj 2026-11-24 : ajout tickets 7, 22, 12, 23, 10, 16, 24 ; maj 2026-11-25 : ajout tickets 19, 21, 20 ; maj 2026-11-27 : fix crash `soldedStock.RT` sur workspace ancien — ticket 12 / bug paille).
 > Index des tickets : [tickets/INDEX.md](tickets/INDEX.md).
 
 ---
@@ -26,6 +26,13 @@
 
 ---
 
+on a un irrigable à "" au lieu de null
+null dans farming méthode au lieu de string
+
+il faut améliorer les commandes make d'update pour pouvoir update un seul fichier avec son nom et non mapping-all
+
+problèem de création
+
 ## Ticket 1 (+6) — Carte ration introuvable
 
 | #   | Action                                                                                                                          | Résultat attendu                                                                        |
@@ -35,6 +42,10 @@
 | 3   | **Cas limite (le vrai bug)** : simuler une liste référentielle vide (mode offline / API down, ou vider `feed_types` en console) | la carte custom **apparaît toujours**, pas d'erreur / `TypeError`                       |
 | 4   | Distribuer la carte à un lot sur une période → _Bilan → Stocks et coûts_                                                        | la consommation du code **FH** reflète la distribution                                  |
 | 5   | _(fix C3)_ _Troupeau → lot → Ajouter un concentré_                                                                              | un concentré custom créé apparaît (pas de doublon, pas de confusion avec les fourrages) |
+
+on peut pas copier depuis une autre carte ration, les codes doivent être affiché dans le select
+
+OK
 
 ---
 
@@ -49,6 +60,18 @@
 | 5   | **Stock final**                                                                              | = stock initial + production − (conso aliment + conso logement) ; pas de double comptage dans les totaux/coûts  |
 | 6   | Graphique « Evolution des stocks » de la Grange                                              | affiche la paille                                                                                               |
 
+PAS OK mais en cours faire le point
+A vérifier, de quel paille on parle dans Stock de paille disponible au 1er janvier et on peut ajouté de la paille aliment. comment les deux cohabitent-tils ?
+
+la paille et les concentré de la grange doivent être créé de la même manière que touty les autre stocks
+
+il faut véritablement 2 flux les aliments paille, des pailles logements et des paille aliment, les pailles aliments aparaisse dans le tableau des stocks et et le paille logment à part
+on a un conflit et un bug
+
+dans stock et cout la paille aliment n'est pas consommée et il manque la ligne paille logement
+
+**fix soldedStock (2026-11-27, ticket 12 §8)** : le workspace de démo n'avait pas de `RT` dans `report.soldedStock` (créé avant le ticket 12) → `setReport` remplaçait tout le store → `state.soldedStock['RT'].purchaseCost` = `TypeError` au rendu du tableau. Correction : `setReport` fusionne désormais avec `defaultSoldedStock()` (codes absents comblés, valeurs saisies conservées). Voir ticket-12 §8.
+
 ---
 
 ## Ticket 3 — Paille en tonnes (2.1)
@@ -60,6 +83,9 @@
 | 3   | **Migration** : recharger un workspace ancien où le stock paille était saisi en kg (ex. 10 000) | converti en **10 t** à la charge ; une valeur ≤ 1000 (déjà en t) reste inchangée |
 | 4   | _(Backlog BL-1, non fait)_                                                                      | les céréales restent en **qtx** — vérifier que c'est bien le comportement actuel |
 
+PAS OK
+bug dans stock et cout avec de la paille
+
 ---
 
 ## Ticket 9 — Ordre des onglets Bilan
@@ -69,15 +95,21 @@
 | 1   | _Bilan_                 | ordre des onglets : **Stocks et coûts \| Travail \| Bilan Global**                              |
 | 2   | Parcourir les 3 onglets | chaque onglet charge et s'affiche correctement (pas de régression, le bilan global agrège bien) |
 
+OK
+
 ---
 
 ## Ticket 13 — Ordre des stocks de la Grange
 
-| #   | Action                                                               | Résultat attendu                                                                                                                                                                                                                       |
-| --- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | _Grange → Ajouter un stock_                                          | le select propose dans l'ordre : **Foin \| Foin de légumineuses \| Ensilage et enrub. d'herbe \| Ensilage de maïs et sorgho \| Ensilage de légumineuses \| Céréales en grain \| Protéagineux en grain \| autre stock** (Paille en fin) |
-| 2   | Table des stocks + select « stock correspondant » des cartes rations | suivent le même ordre                                                                                                                                                                                                                  |
-| 3   | Codes                                                                | **inchangés** → calculs/stocks inchangés (pas de régression)                                                                                                                                                                           |
+| #                   | Action                                                               | Résultat attendu                                                                                                                                                                                                                       |
+| ------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1                   | _Grange → Ajouter un stock_                                          | le select propose dans l'ordre : **Foin \| Foin de légumineuses \| Ensilage et enrub. d'herbe \| Ensilage de maïs et sorgho \| Ensilage de légumineuses \| Céréales en grain \| Protéagineux en grain \| autre stock** (Paille en fin) |
+| 2                   | Table des stocks + select « stock correspondant » des cartes rations | suivent le même ordre                                                                                                                                                                                                                  |
+| 3                   | Codes                                                                | **inchangés** → calculs/stocks inchangés (pas de régression)                                                                                                                                                                           |
+| OK mais à améliorer |
+
+il manque une majuscule à autres stock
+on peut enlever autres stocks
 
 ---
 
@@ -95,6 +127,8 @@
 > Le 2.1 ne change aucun calcul : il affiche le getter `totalSurfaces` (existant).
 > Le **2.2 (retrait des Surfaces à Contraintes)** est un bonus **non fait** —
 > à valider avec Antoine avant implémentation.
+
+OK
 
 ---
 
@@ -144,6 +178,14 @@
 | 4   | Enregistrer → datatable des baguettes du workspace                                                                               | la baguette est créée **sur l'année climatique de destination**                                                                                                                                                     |
 | 5   | _(Option 2.3, à clarifier avec Antoine)_                                                                                         | la déclinaison **depuis l'édition** d'une baguette existante n'est pas encore possible (bloc copier désactivé en édition)                                                                                           |
 
+KO
+il faut revoir l'UI , le fait d'avoir mis tout à gauche. le selecteur de baguettes à gauche est pour sélectionner la baguette source, on clic sur copier et ça rempli le formulaire de droite.
+il faut redéfinir la destination dans un autre composant que celui de la selection de la source.
+
+on doit pouvoir réattribuer à n'import quel site et n'importe quel année climatique d'un site sélectionné.
+
+à la modification on doit pouvoir changer la baguette d'année climatique d'un site sélectionné. donc on peut changer de site et d'année climatique associé au nouveau site.
+
 ---
 
 ## Ticket 22 — Colonne « source » des baguettes
@@ -154,6 +196,7 @@
 | 2   | Saisir une source (ex. « estimation ») et enregistrer                      | la baguette est créée avec sa source                                                                                                              |
 | 3   | DataTable des baguettes du workspace                                       | une colonne **« Source »** apparaît (entre « Nom » et « Actions ») et affiche la valeur saisie                                                    |
 | 4   | Backend (si référentiel déployé)                                           | après `alembic upgrade head` + re-seed, l'API `stic` renvoie `source` ; les baguettes du référentiel ont `source` vide (colonne vide dans le CSV) |
+| OK  |
 
 ---
 
@@ -173,6 +216,7 @@
 > à confirmer avec INRAE (Antoine) — si l'Excel est en kgMS/jour ou tMS, il faudra
 > ajuster le facteur d'affichage uniquement (getter `getPastureGreenComparison`).
 
+OK
 ---
 
 ## Ticket 4 — Bouton AJOUTER Présence
@@ -207,6 +251,9 @@
 > La carte dupliquée n'a **pas l'`id`** de la source (id dérivé à la volée par
 > `mergeLists`, ticket 1 §2.4). Le nom est préfixé « (copie) » pour que
 > l'utilisateur le renomme.
+
+OK mais à améliorer
+la duplication fonctionne mais il faut appliquer aussi le pattern de duplication des valeurs comme pour les baguettes et les profils
 
 ---
 
@@ -289,9 +336,12 @@
 > `nutritional_values.source` (mapping existant, inchangé) ; la `source` des
 > baguettes / sites / années climatiques est lue sur l'entité.
 
+la source et la description s'affiche bien dans le worspace mais
 ---
 
 ## Ticket 21 — Duplication de simulation (« Enregistrer-sous »)
+
+A revoir
 
 | #   | Action                                                                  | Résultat attendu                                                                                                             |
 | --- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -306,6 +356,8 @@
 
 > La duplication est **locale au workspace** (pas de backend) — cohérent avec
 > l'architecture verrouillée. La copie est référencée par objet (pas d'`id`).
+
+bug : le formulaire de duplication ne se referme pas même avec le bouton annulé
 
 ---
 
@@ -337,7 +389,7 @@ cd services/frontend/ui
 npx --no-install vue-cli-service test:unit --testPathPattern "straw|referential|concentrated|coverage|metadata|pastureGreen|duplicateSimulation|site"
 ```
 
-→ **69/69 ✅** (straw 15 + referential 7 + concentrated 8 + coverage 6 +
+→ **73/73 ✅** (straw 15 + referential 7 + concentrated 12 + coverage 6 +
 metadata 9 + pastureGreen 8 + duplicateSimulation 4 + site 12).
 
 ## Build (optionnel)
