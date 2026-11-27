@@ -31,7 +31,7 @@ null dans farming méthode au lieu de string
 
 il faut améliorer les commandes make d'update pour pouvoir update un seul fichier avec son nom et non mapping-all
 
-problèem de création
+problème de création des sitres et des années climatiques dans le workspace
 
 ## Ticket 1 (+6) — Carte ration introuvable
 
